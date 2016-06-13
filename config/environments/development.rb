@@ -19,6 +19,8 @@ Chess::Application.configure do
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
+  config.action_mailer.default_url_options = { host: 'localhost:3030' }
+
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load
 
