@@ -3,7 +3,7 @@ class Piece < ActiveRecord::Base
   belongs_to :games
 
 def is_obstructed?
-	return false
+  return false
 end
 
 end
