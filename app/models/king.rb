@@ -1,6 +1,7 @@
 class King < Piece
 
   def valid_move?
+    game_loc
     #find king's original location
     #find king's new location
     #if/else statement that checks if piece moves within its movable parameters
@@ -23,5 +24,19 @@ class King < Piece
       #if x_cord && y_cord == negative value return false
       #if x_cord > 7 && y_cord > 7 return false
       #else return true
+  end
+
+  def orig_position
+    #finds the king's original location
+
+  end
+
+  def new_position
+
+  end
+
+  def game_loc
+    @game = Game.find(current_game)
+    return @game
   end
 end
