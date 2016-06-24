@@ -1,8 +1,6 @@
 Chess::Application.routes.draw do
   devise_for :users
   root 'home_pages#index'
-  resources :games, only: :create
-
   resources :games do
     resources :pieces
   end
