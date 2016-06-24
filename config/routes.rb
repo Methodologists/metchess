@@ -2,6 +2,10 @@ Chess::Application.routes.draw do
   devise_for :users
   root 'home_pages#index'
 
+  resources :games do
+    resources :pieces
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
