@@ -3,6 +3,10 @@ Chess::Application.routes.draw do
   root 'home_pages#index'
   resources :games, only: :create
 
+  resources :games do
+    resources :pieces
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
