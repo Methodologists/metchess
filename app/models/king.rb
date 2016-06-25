@@ -36,7 +36,6 @@ class King < Piece
   end
 
   def game_loc
-    @game = Game.find(current_game)
     return @game
   end
 end
