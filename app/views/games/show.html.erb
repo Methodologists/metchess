@@ -2,8 +2,14 @@
   <% 8.times do |row| %>
     <tr>
       <% 8.times do |column| %>
-        <td data-row="<%= row %>" data-column="<%= column %>">
-          <div class="content">&nbsp;</div></td>
+        <% piece = Piece.where(x_cord: column, y_cord: row, game_id: @game).first %>
+        <% if piece %>
+          <td data-row="<%= row %>" data-column="<%= column %>">
+            <div class="content"><%= piece.color %></div></td>
+        <% else %>
+          <td data-row="<%= row %>" data-column="<%= column %>">
+            <div class="content">&nbsp;</div></td>
+        <% end %>
       <% end %>
     </tr>
   <% end %>
