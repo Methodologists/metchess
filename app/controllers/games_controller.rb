@@ -1,6 +1,5 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!
-  #before_action :initialize_board!
 
   def new
     @game = Game.new
