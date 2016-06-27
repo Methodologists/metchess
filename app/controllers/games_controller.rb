@@ -1,6 +1,5 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!
-  #before_action :initialize_board!
 
   def new
     @game = Game.new
@@ -13,6 +12,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    @pieces = @game.pieces
   end
 
 
