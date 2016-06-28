@@ -2,6 +2,20 @@ class Piece < ActiveRecord::Base
   belongs_to :users
   belongs_to :games
 
+<<<<<<< HEAD
+
+
+
+
+
+
+
+=======
+  def is_obstructed?
+    return false
+  end
+
+#CapturePieces
 
   def move_to!
     #capture!
@@ -26,11 +40,6 @@ class Piece < ActiveRecord::Base
   def remove_captured_piece
     #set coord to nil? -- what other ways can we go about "deleting" the piece from the board
   end
-
-
-
-
-
-
+>>>>>>> master
 
 end
