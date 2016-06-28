@@ -119,6 +119,7 @@ class Piece < ActiveRecord::Base
 	def move_to!(x, y)
     @game = game
 
+
 end
 
 
