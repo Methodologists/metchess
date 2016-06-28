@@ -1,45 +1,29 @@
 class Piece < ActiveRecord::Base
-  belongs_to :users
-  belongs_to :games
+  belongs_to :user
+  belongs_to :game
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-=======
   def is_obstructed?
     return false
   end
 
-#CapturePieces
+#Capture Pieces Methods - Validates if the other piece is valid to capture, moves current piece to new location
 
-  def move_to!
-    #capture!
-    #move to capture_location
+  def move_to!(new_x, new_y)
+    remove_captured_piece!(new_x, new_y)
+    update_coordinates!(new_x, new_y)
   end
 
-  def capture!
-    #if capture_color?
-    #then remove_captured_piece
+  def remove_captured_piece!(x,y)
+    #sets the coordinates of the piece being captured to nil
+    captured_piece = Piece.find(x_cord: x, y_cord: y)
+    captured_piece.x_cord = nil
+    captured_piece.y_cord = nil
   end
 
-  def capture_location
-    #position of piece being captured --
-    #piece.find x & y cords -- return this into 2 variables x, y
+  def update_coordinates!(x, y)
+    #updates the coordinates of the capturing piece's coordinates
+    x_cord = x
+    y_cord = y
   end
-
-  def capture_color?
-    #capture_location -- piece's color
-    #if capture piece color == current piece color, return false; else return true
-  end
-
-  def remove_captured_piece
-    #set coord to nil? -- what other ways can we go about "deleting" the piece from the board
-  end
->>>>>>> master
 
 end
