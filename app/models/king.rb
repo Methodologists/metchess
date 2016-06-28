@@ -1,54 +1,43 @@
 class King < Piece
 
-  def valid_move?(new_position)
-    if position_exist?(new_position) && pass_king_rules?(new_position)
+  def valid_move?(new_x, new_y)
+    #it's moving to
+    if position_exist?(new_x, new_y) && pass_king_rules?(new_x, new_y)
       return true
     else
       return false
     end
   end
 
-  def position_exist?(position)
+  def position_exist?(new_x, new_y)
     #checks if moving position exists
-    if position[0] < 0 | position[0] > 7 | position[1] < 0 | position[1] > 7
+    if new_x < 0 || new_x > 7 || new_y < 0 || new_y > 7
       return false
     else
       return true
     end
   end
 
-  def current_location
-    #finds the king's original location
-    position = [game_loc.king.x_cord, game_loc.king.y_cord]
-    return position
-  end
-
-  def game_loc
-    #find current game's game_id
-    current_game = @game.game_id
-    return current_game
-  end
-
-  def allowable_positions
-    right_one = [current_location[0] + 1, current_location[1]]
-    left_one = [current_location[0] - 1, current_location[1]]
-    up_one = [current_location[0], current_location[1] + 1]
-    down_one = [current_location[0], current_location[1] - 1]
-    upper_right = [current_location[0] + 1, current_location[1] + 1]
-    upper_left = [current_location[0] - 1, current_location[1] + 1]
-    lower_right = [current_location[0] + 1, current_location[1] - 1]
-    lower_left = [current_location[0] - 1, current_location[1] - 1]
+  def allowed_positions
+    right_one = [x_cord + 1, y_cord]
+    left_one = [x_cord - 1, y_cord]
+    up_one = [x_cord, y_cord + 1]
+    down_one = [x_cord, y_cord - 1]
+    upper_right = [x_cord + 1, y_cord + 1]
+    upper_left = [x_cord - 1, y_cord + 1]
+    lower_right = [x_cord + 1, y_cord - 1]
+    lower_left = [x_cord - 1, y_cord - 1]
     valid_moves = [right_one, left_one, up_one, down_one, upper_right, upper_left, lower_right, lower_left]
     return valid_moves
   end
 
-  def pass_king_rules?(position)
-    allowable_positions.each do |x|
-      if position == x
+  def pass_king_rules?(new_x, new_y)
+    allowed_positions.each do |position|
+      if [new_x, new_y] == position
         return true
-      else
-        return false
       end
     end
+
+    return false
   end
 end
