@@ -3,12 +3,40 @@ require 'rails_helper'
 RSpec.describe Piece, type: :model do
   describe "#move_to!" do
     context "when another piece is on the new spot" do
-      it "captures an enemy piece on the new spot by updating its coords to nil"
-      it "updates the x and y coords of the piece"
-      it "does not update own coords if friend piece on the new spot"
+      it "captures it by updating its coords to nil" do
+        piece1 = Piece.create(x_cord: 0, y_cord: 0, color: "white")
+        piece2 = Piece.create(x_cord: 1, y_cord: 1, color: "black")
+        piece1.move_to!(1, 1)
+        piece1.reload
+        piece2.reload
+        expect(piece2.x_cord).to be_nil
+        expect(piece2.y_cord).to be_nil
+      end
+
+      it "does not update own coords if other piece is a friend" do
+        piece1 = Piece.create(x_cord: 0, y_cord: 0, color: "white")
+        piece2 = Piece.create(x_cord: 1, y_cord: 1, color: "white")
+        piece1.move_to!(1, 1)        
+        piece1.reload
+        piece2.reload
+
+        # piece1 doesn't move
+        expect(piece1.x_cord).to eq 0
+        expect(piece1.y_cord).to eq 0
+
+        # piece2 still on the board
+        expect(piece2.x_cord).to eq 1
+        expect(piece2.y_cord).to eq 1
+      end
     end
+
     context "when no piece on the new spot" do
-      it "updates the x and y coords of the piece"
+      it "updates the x and y coords of the piece" do
+        piece = Piece.create(x_cord: 0, y_cord: 0)
+        piece.move_to!(1, 1)
+        expect(piece.x_cord).to eq 1
+        expect(piece.y_cord).to eq 1
+      end
     end
   end
 end

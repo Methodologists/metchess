@@ -9,21 +9,13 @@ class Piece < ActiveRecord::Base
 #Capture Pieces Methods - Validates if the other piece is valid to capture, moves current piece to new location
 
   def move_to!(new_x, new_y)
-    remove_captured_piece!(new_x, new_y)
-    update_coordinates!(new_x, new_y)
-  end
+    capture_piece = Piece.find_by(x_cord: new_x, y_cord: new_y)
+    return if capture_piece && capture_piece.color == self.color
 
-  def remove_captured_piece!(x,y)
-    #sets the coordinates of the piece being captured to nil
-    captured_piece = Piece.find(x_cord: x, y_cord: y)
-    captured_piece.x_cord = nil
-    captured_piece.y_cord = nil
+    # we know that if the rest of this method is executed, either
+    #   * capture_piece is nil
+    #   * capture_piece is opposite color
+    capture_piece.update(x_cord: nil, y_cord: nil) if capture_piece
+    self.update(x_cord: new_x, y_cord: new_y)
   end
-
-  def update_coordinates!(x, y)
-    #updates the coordinates of the capturing piece's coordinates
-    x_cord = x
-    y_cord = y
-  end
-
 end
