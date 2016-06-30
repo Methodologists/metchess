@@ -5,7 +5,7 @@
         <% piece = Piece.where(x_cord: column, y_cord: row, game_id: @game).first %>
         <% if piece %>
           <td data-row="<%= row %>" data-column="<%= column %>">
-            <div class="content"><%= piece.color %></div></td>
+            <div class="content text-center piece" data-piece_id="<%= piece.id %>"><%= piece.image %></div></td>
         <% else %>
           <td data-row="<%= row %>" data-column="<%= column %>">
             <div class="content">&nbsp;</div></td>
