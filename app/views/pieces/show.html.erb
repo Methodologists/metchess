@@ -1,1 +1,22 @@
-Hi Mom
+<table class="chessboard">
+  <% 8.times do |row| %>
+    <tr>
+      <% 8.times do |column| %>
+      <% pieces = Piece.all.where(x_cord: column, y_cord: row, game_id: @game).first %>
+        <td data-row="<%= row %>" data-column="<%= column %>">
+          <% @pieces.each do |piece| %>
+            <% if piece.x_cord == column && piece.y_cord == row %>
+              <div class="content text-center piece" data-piece_id="<%= piece.id %>">
+                <%= piece.image %>
+              </div>
+            <% else %>
+              <div class="content">&nbsp;</div>
+            <% end%>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+
