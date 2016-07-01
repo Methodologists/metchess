@@ -17,9 +17,7 @@ RSpec.describe PiecesController, type: :controller do
       expect(piece.x_cord).to eq(0)
       expect(piece.y_cord).to eq(2)
     end
+
   end
-
-
-
 
 end

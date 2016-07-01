@@ -1,0 +1,5 @@
+Shall we play a game?
+<%= link_to 'New game', new_game_path %>
+<% @games.each do |game| %>
+  <p><%= link_to game.game_id, game_path(game) %></p>
+<% end %>

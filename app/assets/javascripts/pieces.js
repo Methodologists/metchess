@@ -8,5 +8,6 @@ $(document).ready(function(){
       var pieceId= piece.data();
       console.log(pieceId);
     };
+    
   });
 });
