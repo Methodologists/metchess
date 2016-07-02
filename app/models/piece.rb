@@ -113,7 +113,6 @@ class Piece < ActiveRecord::Base
   def move_to!(new_x, new_y)
     piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y)
 
-    # nothing happens if there is a piece in new location & is our own_piece
     return if piece_to_capture && own_piece?(piece_to_capture)
 
     # if the rest of this method is executed, either

@@ -28,6 +28,7 @@ RSpec.describe Piece, type: :model do
         expect(piece2.x_cord).to eq 1
         expect(piece2.y_cord).to eq 1
       end
+
     end
 
     context "when no piece on the new spot" do
