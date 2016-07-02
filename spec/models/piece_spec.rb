@@ -4,8 +4,8 @@ RSpec.describe Piece, type: :model do
   describe "#move_to!" do
     context "when another piece is on the new spot" do
       it "captures it by updating its coords to nil" do
-        piece1 = Piece.create(x_cord: 0, y_cord: 0, color: "white")
-        piece2 = Piece.create(x_cord: 1, y_cord: 1, color: "black")
+        piece1 = Piece.create(x_cord: 0, y_cord: 0, color: "white", game_id: 1)
+        piece2 = Piece.create(x_cord: 1, y_cord: 1, color: "black", game_id: 1)
         piece1.move_to!(1, 1)
         piece1.reload
         piece2.reload
@@ -14,8 +14,8 @@ RSpec.describe Piece, type: :model do
       end
 
       it "does not update own coords if other piece is a friend" do
-        piece1 = Piece.create(x_cord: 0, y_cord: 0, color: "white")
-        piece2 = Piece.create(x_cord: 1, y_cord: 1, color: "white")
+        piece1 = Piece.create(x_cord: 0, y_cord: 0, color: "white", game_id: 1)
+        piece2 = Piece.create(x_cord: 1, y_cord: 1, color: "white", game_id: 1)
         piece1.move_to!(1, 1)        
         piece1.reload
         piece2.reload
@@ -29,6 +29,15 @@ RSpec.describe Piece, type: :model do
         expect(piece2.y_cord).to eq 1
       end
 
+      it "does not update piece cords in other games" do
+        piece1 = Piece.create(x_cord: 0, y_cord: 0, color: "white", game_id: 1)
+        piece2 = Piece.create(x_cord: 1, y_cord: 1, color: "black", game_id: 2)
+        piece1.move_to!(1, 1)
+        piece1.reload
+        piece2.reload
+        expect(piece2.x_cord).to eq 1
+        expect(piece2.y_cord).to eq 1
+      end
     end
 
     context "when no piece on the new spot" do

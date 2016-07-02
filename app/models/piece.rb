@@ -111,7 +111,8 @@ class Piece < ActiveRecord::Base
 
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
-    piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y)
+    current_game = self.game_id
+    piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: current_game)
 
     return if piece_to_capture && own_piece?(piece_to_capture)
 
