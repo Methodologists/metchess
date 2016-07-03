@@ -7,7 +7,6 @@ $(document).ready(function(){
     if(piece.length > 0){
       var pieceId= piece.data();
       console.log(pieceId);
-    };
-    
+    }; 
   });
 });

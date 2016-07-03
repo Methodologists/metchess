@@ -27,9 +27,4 @@ class GamesController < ApplicationController
     params.require(:game).permit(:player_white_id, :player_black_id)
   end
 
-  def piece_params
-    params.require(:piece).permit(:x_cord, :y_cord)
-  end
-
-  
 end

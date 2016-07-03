@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .chessboard {
-  width: 40%;
+  width: 60%;
   border: 3px solid black;
 }
 
@@ -27,6 +27,20 @@
   right: 0;
 }
 
+.chessboard td .piece {
+  font-size: 200%;
+  text-align: center;
+}
+
+.chessboard td .piece a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.chessboard td .piece a:hover {
+  color: red;
+}
+
 .chessboard tr:nth-child(even) td:nth-child(odd) {
   background-color: #696254;
 }
@@ -42,3 +56,8 @@
 .chessboard tr:nth-child(even) td:nth-child(even) {
   background-color: #D9CAA9;
 }
+
+.chessboard td.highlighted {
+  background-color: blue !important;
+}
+
