@@ -1,6 +1,6 @@
 class Piece < ActiveRecord::Base
-  belongs_to :users
-  belongs_to :games
+  belongs_to :user
+  belongs_to :game
 
   def is_obstructed?(x, y)
 
@@ -86,19 +86,15 @@ class Piece < ActiveRecord::Base
       alert("your move is not legal.");
     end
 
-
     return false
 
   end
-
 
   def occupied?(x, y)
     game.pieces.where(x_cord: x, y_cord: y).present?
   end 
 
-
   def moving_direction(x, y)
-
 
     if y_cord == y && x_cord == x
       return 'error'
@@ -113,11 +109,24 @@ class Piece < ActiveRecord::Base
     end
   end
 
+# Moving piece to new location & Captures piece if valid
+  def move_to!(new_x, new_y)
+    current_game = self.game_id
+    piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: current_game)
 
+    return if piece_to_capture && own_piece?(piece_to_capture)
 
+    # if the rest of this method is executed, either
+    #   * piece_to_capture is nil
+    #   * piece_to_capture is opposite color
 
-  def move_to!(x, y)
-    @game = game
+    piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
+    self.update(x_cord: new_x, y_cord: new_y)
+  end
+
+  def own_piece?(piece)
+    piece.color == self.color
+  end
 
 
 end
