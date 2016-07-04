@@ -237,12 +237,3 @@ class Piece < ActiveRecord::Base
 
 
 
-
-  def move_to!(x, y)
->>>>>>> master
-    @game = game
-
-
-end
-
-
