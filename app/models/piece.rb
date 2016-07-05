@@ -91,7 +91,6 @@ class Piece < ActiveRecord::Base
       alert("your move is not legal.");
     end
 
->>>>>>> 115ef43f51e409b28f13f5d737363f0f6102668c
     return false
 
   end
