@@ -15,9 +15,8 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game.find(params[:id])
+    @game = Game.includes(:pieces).find(params[:id])
     @piece = Piece.find(params[:id])
-    @pieces = @game.pieces
   end
 
 

@@ -5,13 +5,16 @@
         <% piece = Piece.where(x_cord: column, y_cord: row, game_id: @game).first %>
         <% if piece %>
           <td class="<%= 'highlighted' if @piece == piece %>" data-row="<%= row %>" data-column="<%= column %>">
-              <div class="content piece" data-piece_id="<%= piece.id %>">
-                <%= link_to edit_game_piece_path(@piece.id), { new_x: column, new_y: row } %>
-              </div>
+            <div class="content piece" data-piece_id="<%= piece.id %>">
+              <%= link_to piece.image, game_piece_path(game_id: @game, piece:{id: piece.id, new_x: column, new_y: row}), method: :put %>
+            </div>   
           </td>
         <% else %>
           <td data-row="<%= row %>" data-column="<%= column %>">
-            <div class="content">&nbsp;</div></td>
+            <div class="content">
+              <%= link_to '&nbsp;'.html_safe, game_piece_path(game_id: @game, piece:{new_x: column, new_y: row}), method: :put %>
+            </div>
+          </td>
         <% end %>
       <% end %>
     </tr>
