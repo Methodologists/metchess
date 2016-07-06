@@ -58,5 +58,35 @@ RSpec.describe Pawn, type: :model do
       p = Pawn.create(x_cord: 0, y_cord: 4, color: 'black') 
       expect(p.valid_move?(0, 5)).to eq(false)
     end
+
+    it "should check that Pawn doesn't move like Knight" do
+      p = Pawn.create(x_cord: 0, y_cord: 0)
+      expect(p.valid_move?(1, 2)).to eq(false)
+    end
+
+    it "should check that Pawn doesn't move like Rook vertically upward" do
+      p = Pawn.create(x_cord: 0, y_cord: 0)
+      expect(p.valid_move?(0, 7)).to eq(false)
+    end
+
+    it "should check that Pawn doesn't move like Rook horizontally to the left" do
+      p = Pawn.create(x_cord: 7, y_cord: 0)
+      expect(p.valid_move?(0, 0)).to eq(false)
+    end
+
+    it "should check that Pawn doesn't move like Rook horizontally to the right" do
+      p = Pawn.create(x_cord: 0, y_cord: 0)
+      expect(p.valid_move?(7, 0)).to eq(false)
+    end
+
+    it "should check that Pawn doesn't move like bishop" do
+      p = Pawn.create(x_cord: 0, y_cord: 0)
+      expect(p.valid_move?(7, 7)).to eq(false)
+    end
+
+    it "should check that Pawn doesn't move backwards diagonally" do
+      p = Pawn.create(x_cord: 1, y_cord: 1, color: 'white')
+      expect(p.valid_move?(0, 0)).to eq(false)
+    end
   end
 end
