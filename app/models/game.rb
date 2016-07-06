@@ -1,5 +1,6 @@
 class Game < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :white_player, class_name: "User", foreign_key: "player_white_id"
+  belongs_to :black_player, class_name: "User", foreign_key: "player_black_id"
   has_many :pieces
   after_create :initialize_board!
 
