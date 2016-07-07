@@ -1,4 +1,6 @@
 <h2>Join an existing game</h2>
 <% @games.each do |game| %>
-  <p><%= link_to game.name, game_path(game) %></p>
+  <% if game.player_black_id == nil %>
+    <p><%= link_to game.name, game_path(game) %></p>
+  <% end %>
 <% end %>
