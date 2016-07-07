@@ -5,13 +5,9 @@ class Pawn < Piece
   end
 
   def passes_pawn_rules?(x, y)
-    if two_squares_forward?(x, y)
-      return true
-    elsif one_square_forward?(x, y)
-      return true
-    elsif diagonal_move?(x, y)
-      return true
-    end
+    return true if two_squares_forward?(x, y)
+    return true if one_square_forward?(x, y)
+    return true if diagonal_move?(x, y)
 
     return false
   end
