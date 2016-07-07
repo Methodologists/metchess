@@ -128,5 +128,7 @@ class Piece < ActiveRecord::Base
     piece.color == self.color
   end
 
-
+  def on_board?(x, y)
+    x >= 0 && x <= 7 && y >=0 && y <= 7
+  end
 end

@@ -27,11 +27,6 @@ class Pawn < Piece
     diagonal_allowed?(x, y) && not_backwards?(x, y) && (y_cord - y).abs == 1 && (x_cord - x).abs == 1
   end
 
-  #Checks that square is on board
-  def on_board?(x, y)
-    x >= 0 && x <= 7 && y >=0 && y <= 7
-  end
-
   #Checks that pawn is on the originating square aka first_move_position depending on its color
   def first_move_position?
     return true if (y_cord == 1 && color == 'white') || (y_cord == 6 && color == 'black')
