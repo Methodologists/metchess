@@ -111,8 +111,7 @@ class Piece < ActiveRecord::Base
 
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
-    current_game = self.game_id
-    piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: current_game)
+    piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
 
     return if piece_to_capture && own_piece?(piece_to_capture)
 
@@ -121,11 +120,11 @@ class Piece < ActiveRecord::Base
     #   * piece_to_capture is opposite color
 
     piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
-    self.update(x_cord: new_x, y_cord: new_y)
+    update(x_cord: new_x, y_cord: new_y)
   end
 
   def own_piece?(piece)
-    piece.color == self.color
+    piece.color == color
   end
 
 
