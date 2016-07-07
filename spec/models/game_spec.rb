@@ -18,16 +18,4 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  describe '#check?' do
-    it 'checks coordinates for white king' do
-      g = Game.create
-      expect(g.check?.x_cord).to eq 4
-      expect(g.check?.y_cord).to eq 0
-    end
-
-    it 'checks if king is not in check' do
-      g= Game.create
-      expect(g.check?).to eq false
-    end
-  end
 end

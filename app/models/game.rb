@@ -61,11 +61,4 @@ class Game < ActiveRecord::Base
     Queen.create(game_id: self.id, color: 'black', x_cord: 3, y_cord: 7)
   end
 
-
-  def check?(new_x, new_y)
-    king = Piece.find_by(type: 'King')
-    return false
-    #findoordinates of the king
-    #
-  end
 end

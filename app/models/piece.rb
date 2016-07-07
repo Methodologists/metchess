@@ -128,5 +128,8 @@ class Piece < ActiveRecord::Base
     piece.color == self.color
   end
 
+  def check?(new_x, new_y)
+    true
+  end
 
 end
