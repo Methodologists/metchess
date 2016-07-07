@@ -5,10 +5,10 @@ class Rook < Piece
   end
 
   def passes_rook_rules?(x, y)
-    if self.x_cord == x || self.y_cord == y
-      return true
-    else
+    if (x_cord == x && y_cord == y)
       return false
+    else
+      (x_cord == x || y_cord == y)
     end
   end
 

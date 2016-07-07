@@ -41,5 +41,10 @@ RSpec.describe Rook, type: :model do
       r = Rook.create(x_cord: 7, y_cord: 0)
       expect(r.valid_move?(0, 0)).to eq(true)
     end
+
+    it "should check that rook isn't allowed to move to the same spot" do
+      r = Rook.create(x_cord: 0, y_cord: 0)
+      expect(r.valid_move?(0,0)).to eq(false)
+    end
   end
 end
