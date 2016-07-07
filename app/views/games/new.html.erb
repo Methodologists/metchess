@@ -1,6 +1,6 @@
 <h2>Shall we play a game?</h1>
   <%= simple_form_for @game do |f| %>
-    <%= f.input :name %>
-    <%= f.hidden_field :player_white_id, value: :current_user %>
+    <%= f.input :name, label: 'Name your new game' %>
+    <%= f.hidden_field :player_white_id, value: current_user.id %>
     <%= f.submit 'Start a new game' %>
   <% end %>
