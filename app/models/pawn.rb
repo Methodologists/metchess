@@ -12,16 +12,19 @@ class Pawn < Piece
     return false
   end
 
+  #Checks if position is 2 squares in front of Pawn
   def two_squares_forward?(x, y)
-    first_move_position? && not_backwards?(x, y) && (self.y_cord - y).abs == 2 && self.x_cord - x == 0
+    first_move_position? && not_backwards?(x, y) && (y_cord - y).abs == 2 && x_cord - x == 0
   end
 
+  #Checks if position is 1 square in front of Pawn
   def one_square_forward?(x, y)
-    not_backwards?(x, y) && (self.y_cord - y).abs == 1 && self.x_cord - x == 0
+    not_backwards?(x, y) && (y_cord - y).abs == 1 && x_cord - x == 0
   end
 
+  #Checks if position is diagonally in front of Pawn
   def diagonal_move?(x, y)
-    diagonal_allowed?(x, y) && not_backwards?(x, y) && (self.y_cord - y).abs == 1 && (self.x_cord - x).abs == 1
+    diagonal_allowed?(x, y) && not_backwards?(x, y) && (y_cord - y).abs == 1 && (x_cord - x).abs == 1
   end
 
   #Checks that square is on board
@@ -31,22 +34,14 @@ class Pawn < Piece
 
   #Checks that pawn is on the originating square aka first_move_position depending on its color
   def first_move_position?
-    if self.y_cord == 1 && self.color == 'white'
-      return true
-    elsif self.y_cord == 6 && self.color == 'black'
-      return true
-    else
-      return false
-    end
+    return true if (y_cord == 1 && color == 'white') || (y_cord == 6 && color == 'black')
+    
+    return false
   end
 
   #Checks whether or not position pawn is moving to is backwards
   def not_backwards?(x, y)
-    if self.color == 'white' && y > self.y_cord
-      return true
-    elsif self.color == 'black' && y < self.y_cord
-      return true
-    end
+    return true if (color == 'white' && y > y_cord) || (color == 'black' && y < y_cord)
 
     return false
   end
@@ -55,9 +50,7 @@ class Pawn < Piece
   def diagonal_allowed?(x, y)
     if square_occupied?(x, y)
       target_piece = Piece.find_by(x_cord: x, y_cord: y)
-      if self.color != target_piece.color
-        return true
-      end
+      return true if color != target_piece.color
     end
 
     return false
