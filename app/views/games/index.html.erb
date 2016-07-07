@@ -1,5 +1,4 @@
-Shall we play a game?
-<%= link_to 'New game', new_game_path %>
+<h2>Join an existing game</h2>
 <% @games.each do |game| %>
-  <p><%= link_to game.game_id, game_path(game) %></p>
+  <p><%= link_to game.name, game_path(game) %></p>
 <% end %>
