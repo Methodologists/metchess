@@ -18,8 +18,10 @@ RSpec.describe GamesController, type: :controller do
       user = FactoryGirl.create(:user)
       sign_in user
 
-      post :create, game: {name: 'Testgame'}
-
+      post :create, game: {name: 'Testgame',
+                            player_white_id: user.id}
+       # Above line doesn't seem right - I'm doing it manually here,
+        # not automatically as being done in new.html.erb                     
       game = Game.last
       expect(game.player_white_id).to eq(user.id)
     end

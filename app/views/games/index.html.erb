@@ -1,7 +1,12 @@
 <h2>Join an existing game</h2>
 <% @games.each do |game| %>
-  <% if game.player_black_id == nil %>
-    <p><%= link_to game.name, update_game_path(@game: {player_black_id: current_user.id}), method: :put %></p>
+  <% if game.player_black_id == nil && game.player_white_id != current_user.id %>
+    <%= "Game Name: #{game.name}; White Player: #{game.player_white_id}" %>
+    <%= simple_form_for game do |f| %>
+      <%= f.hidden_field :player_black_id, value: current_user.id %>
+      <%= f.submit 'Join this game' %>
+    <% end %>
+
   <% end %>
 
 <% end %>
