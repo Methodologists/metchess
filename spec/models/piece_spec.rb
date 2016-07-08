@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+ 
 RSpec.describe Piece, type: :model do
   describe "#move_to!" do
     context "when another piece is on the new spot" do
@@ -57,7 +57,11 @@ RSpec.describe Piece, type: :model do
         expect(k.check?).to eq true
       end
 
-      it 'checks if'
+      it 'checks if the rook can move into check' do
+        k = King.create(x_cord: 1, y_cord: 2, color: 'white')
+        r = Rook.create(x_cord: 2, y_cord: 3, color: 'black')
+
+      end
     end
   end
 end
