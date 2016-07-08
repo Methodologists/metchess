@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Pawn, type: :model do
-  describe "valid_move? action" do
+  describe "#valid_move?" do
+    it "should check that pawn can't move to same position" do
+      p = Pawn.create(x_cord: 1, y_cord: 1)
+      expect(p.valid_move?(1, 1)).to eq false
+    end
     it "should check that position it's moving to exists" do
       p = Pawn.create(x_cord: 7, y_cord: 7)
       expect(p.valid_move?(7, 8)).to eq(false)
