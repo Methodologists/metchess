@@ -128,6 +128,7 @@ class Piece < ActiveRecord::Base
   end
 
   def position_exist?(x, y)
-    x >= 0 && x <= 7 && y >= 0 && y <= 7
+    x >= 0 && x <= 7 && 
+      y >= 0 && y <= 7
   end
 end
