@@ -2,10 +2,13 @@
   <% 8.times do |row| %>
     <tr>
       <% 8.times do |column| %>
-        <% piece = Piece.where(x_cord: column, y_cord: row, game_id: @game).first %>
+        <% piece = @game.pieces.where(x_cord: column, y_cord: row).first %>
         <% if piece %>
           <td data-row="<%= row %>" data-column="<%= column %>">
-            <div class="content text-center piece" data-piece_id="<%= piece.id %>"><%= piece.image %></div></td>
+              <div class="content piece" data-piece_id="<%= piece.id %>">
+                <%= link_to piece.image, game_piece_path(game_id: @game, id: piece.id) %>
+              </div>
+          </td>
         <% else %>
           <td data-row="<%= row %>" data-column="<%= column %>">
             <div class="content">&nbsp;</div></td>
@@ -14,3 +17,5 @@
     </tr>
   <% end %>
 </table>
+
+
