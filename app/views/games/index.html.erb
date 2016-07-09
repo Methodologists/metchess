@@ -1,13 +1,14 @@
-<h2>Join an existing game</h2>
-<% @games.each do |game| %>
-  <% if game.player_black_id == nil && game.player_white_id != current_user.id %>
-    <%= "Game Name: #{game.name}; White Player: #{game.player_white_id}" %>
-    <!-- TODO: refactor to insert user email instead of player_white_id - new table link?? -->
-    <%= simple_form_for game do |f| %>
-      <%= f.hidden_field :player_black_id, value: current_user.id %>
-      <%= f.submit 'Join this game' %>
+<div class="col-xs-6 col-xs-offset-3">
+  <h3>Join an existing game</h3>
+    <% @games.each do |game| %>
+      <% if game.player_black_id == nil && game.player_white_id != current_user.id %>
+        <%= "Game Name: #{game.name}; White Player: #{game.player_white_id}" %>
+        <!-- TODO: refactor to insert user email instead of player_white_id - new table link?? -->
+        <%= simple_form_for game do |f| %>
+          <%= f.hidden_field :player_black_id, value: current_user.id %>
+          <%= f.submit 'Join this game', class: 'btn btn-info btn-sm' %>
+        <% end %>
+        <br />
+      <% end %>
     <% end %>
-
-  <% end %>
-
-<% end %>
+</div>

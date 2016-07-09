@@ -1,6 +1,8 @@
-<h2>Shall we play a game?</h1>
+<div class="col-xs-6 col-xs-offset-3">
+  <h3>Shall we play a game?</h3>
   <%= simple_form_for @game do |f| %>
     <%= f.input :name, label: 'Name your new game' %>
     <%= f.hidden_field :player_white_id, value: current_user.id %>
-    <%= f.submit 'Start a new game' %>
+    <%= f.submit 'Start a new game', class: 'btn btn-info btn-sm' %>
   <% end %>
+</div>
