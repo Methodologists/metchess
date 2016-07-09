@@ -48,20 +48,5 @@ RSpec.describe Piece, type: :model do
         expect(piece.y_cord).to eq 1
       end
     end
-
-    describe '#check?' do
-      it 'checks if king moves into check position' do
-        k = King.create(x_cord: 1, y_cord: 2, color: 'white')
-        q = Queen.create(x_cord: 0, y_cord: 0, color: 'black')
-        k.update(x_cord: 0, y_cord: 2)
-        expect(k.check?).to eq true
-      end
-
-      it 'checks if the rook can move into check' do
-        k = King.create(x_cord: 1, y_cord: 2, color: 'white')
-        r = Rook.create(x_cord: 2, y_cord: 3, color: 'black')
-
-      end
-    end
   end
 end

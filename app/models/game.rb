@@ -69,11 +69,32 @@ class Game < ActiveRecord::Base
   end
 
   def update_check_status!
-    if #check conditions are met
+    if black_king_in_check? || white_king_in_check?
       self.update(:check => "yes")
     else
       self.update(:check => "no")
     end
   end
 
+  def black_king_in_check?
+    black_king = King.find(:game_id => self.id, :color => 'black')
+    Piece.find_each(:game_id => self.id, :color => 'white') do |piece|
+      if piece.valid_move?(black_king.x_cord, black_king.y_cord)
+        return true
+      end
+    end
+
+    return false
+  end
+
+  def white_king_in_check?
+    white_king = King.find(:game_id => self.id, :color => 'white')
+    Piece.find_each(:game_id => self.id, :color => 'black') do |piece|
+      if piece.valid_move?(white_king.x_cord, black_king.y_cord)
+        return true
+      end
+    end
+
+    return false
+  end
 end
