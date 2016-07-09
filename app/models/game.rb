@@ -64,16 +64,7 @@ class Game < ActiveRecord::Base
   end
 
   def check?
-    update_check_status!
-    check == "yes"
-  end
-
-  def update_check_status!
-    if black_king_in_check? || white_king_in_check?
-      self.update(:check => "yes")
-    else
-      self.update(:check => "no")
-    end
+    black_king_in_check? || white_king_in_check?
   end
 
   def black_king_in_check?
