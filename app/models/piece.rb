@@ -1,5 +1,5 @@
 class Piece < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user  #is this needed?? - see note in user.rb
   belongs_to :game
 
 
