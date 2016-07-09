@@ -48,6 +48,16 @@ RSpec.describe Pawn, type: :model do
       expect(p.valid_move?(0, 4)).to eq(false)
     end
 
+    it "should check that white Pawn can't move 2 squares when reaching black first move position" do
+      p = Pawn.create(x_cord: 0, y_cord: 6, color: 'white')
+      expect(p.valid_move?(0, 4)).to eq(false)
+    end
+
+    it "should check that black Pawn can't move 2 squares when reaching white first move position" do
+      p = Pawn.create(x_cord: 0, y_cord: 1, color: 'black')
+      expect(p.valid_move?(0, 3)).to eq(false)
+    end
+
     it "should check that black Pawn can't move 2 squares when its not on first move position" do
       p = Pawn.create(x_cord: 0, y_cord: 5, color: 'black')
       expect(p.valid_move?(0, 3)).to eq(false)

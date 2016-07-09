@@ -22,7 +22,11 @@ ActiveRecord::Schema.define(version: 20160708203944) do
     t.integer  "player_black_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
   end
+
+  add_index "games", ["player_black_id"], name: "index_games_on_player_black_id", using: :btree
+  add_index "games", ["player_white_id"], name: "index_games_on_player_white_id", using: :btree
 
   create_table "pieces", force: true do |t|
     t.integer  "piece_id"
