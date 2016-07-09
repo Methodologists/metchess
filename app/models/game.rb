@@ -15,7 +15,8 @@ class Game < ActiveRecord::Base
   def make_pawns!
     8.times do |n|
         Pawn.create(
-            game_id: self.id, color: 'white', 
+            game_id: self.id, 
+            color: 'white', 
             x_cord: n,
             y_cord: 1
             )
@@ -23,7 +24,8 @@ class Game < ActiveRecord::Base
     #
     8.times do |n|
         Pawn.create(
-            game_id: self.id, color: 'black', 
+            game_id: self.id, 
+            color: 'black', 
             x_cord: n,
             y_cord: 6
             )
@@ -59,6 +61,19 @@ class Game < ActiveRecord::Base
   def make_queens!
     Queen.create(game_id: self.id, color: 'white', x_cord: 3, y_cord: 0)
     Queen.create(game_id: self.id, color: 'black', x_cord: 3, y_cord: 7)
+  end
+
+  def check?
+    update_check_status!
+    check == "yes"
+  end
+
+  def update_check_status!
+    if #check conditions are met
+      self.update(:check => "yes")
+    else
+      self.update(:check => "no")
+    end
   end
 
 end
