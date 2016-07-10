@@ -1,19 +1,20 @@
 class Bishop < Piece
 
-	def no_move?(x,y)
-		(x == x_cord) && (y == y_cord) ? true : false
+	def valid_move?(new_x, new_y)
+		position_exist?(new_x, new_y) && bishop_allowed_moves?(new_x, new_y) && (!(diagonally_obstructed?(new_x, new_y)))		
 	end
 
-	def off_board?(x,y)
-		(x > 8 || y > 8 || x < 1 || y < 1) ? true : false
+
+	def bishop_allowed_moves?(new_x, new_y)
+		if (new_x - x_cord).abs == (new_y - y_cord).abs
+			return true
 	end
 
-	def bishop_move (x,y)
-		(x - x_cord).abs == (y - y_cord).abs
-		#if obstructed diagonally
-		return false if no_move(x,y)
-		return false if off_board(x,y)
+	def diagonally_obstructed?(new_x,new_y)
+		#needs to break is_obstructed method to diagonally_obstructed?(x,y), horizontally_obstructed?(x,y), and vertically_obstructed?(x,y)
 	end
+
+
 
   def image
     if color == "white"
