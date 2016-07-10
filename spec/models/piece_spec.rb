@@ -50,15 +50,5 @@ RSpec.describe Piece, type: :model do
     end
   end
 
-  # describe "#check!" do
-  #   it "king is in check when black king and white king are one space apart" do
-  #     white_king = Piece.create(x_cord: 0, y_cord: 0, color: "white", type: "King")
-  #     black_king = Piece.create(x_cord: 2, y_cord: 2, color: "black", type: "King")
-  #     expect(white_king.game_in_check?).to eq true
-  #   end
-  # end
-
-
-
 
 end

@@ -132,14 +132,6 @@ class Piece < ActiveRecord::Base
     piece.color == color
   end
 
-  # def game_in_check?
-  #   king = Piece.find_by(type: "King", color: color)
-
-  #   Piece.each do
-  #     valid_move?(king.x_cord, king.y_cord) && piece.color != king.color
-  #   end
-  # end
-
 
   def position_exist?(x, y)
     x >= 0 && x <= 7 && y >= 0 && y <= 7
