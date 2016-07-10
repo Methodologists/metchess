@@ -88,4 +88,13 @@ class Game < ActiveRecord::Base
 
     return false
   end
+
+  # def check?
+  #  king = Piece.find_by(type: "King", color: color)
+
+  #  Piece.each do |check_piece|
+  #    valid_move?(king.x_cord, king.y_cord) && check_piece.color != king.color
+  #   end
+  # end
+
 end
