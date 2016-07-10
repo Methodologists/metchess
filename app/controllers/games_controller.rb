@@ -1,6 +1,10 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    @games = Game.all
+  end
+
   def new
     @game = Game.new
   end
@@ -11,8 +15,8 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game.find(params[:id])
-    @pieces = @game.pieces
+    @game = Game.includes(:pieces).find(params[:id])
+    @piece = Piece.find(params[:id])
   end
 
 
@@ -21,4 +25,5 @@ class GamesController < ApplicationController
   def game_params
     params.require(:game).permit(:player_white_id, :player_black_id)
   end
+
 end
