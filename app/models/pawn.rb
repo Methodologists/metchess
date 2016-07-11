@@ -37,7 +37,7 @@ class Pawn < Piece
 
   #Checks if Pawn has moved from its start position
   def not_moved?
-    moved == "no"
+    moved == false
   end
 
   #Checks whether or not position Pawn is moving to is backwards
@@ -64,9 +64,9 @@ class Pawn < Piece
   #Updates the moved status of the Pawn
   def update_moved_status!
     if y_cord == 1 || y_cord == 6
-      self.update(:moved => "no")
+      self.update(:moved => false)
     else
-      self.update(:moved => "yes")
+      self.update(:moved => true)
     end
   end
 
