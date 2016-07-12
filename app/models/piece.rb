@@ -1,5 +1,5 @@
 class Piece < ActiveRecord::Base
-  belongs_to :user
+  
   belongs_to :game
 
   def move_piece(new_x, new_y)
@@ -134,7 +134,8 @@ class Piece < ActiveRecord::Base
 
 
   def position_exist?(x, y)
-    x >= 0 && x <= 7 && y >= 0 && y <= 7
+    x >= 0 && x <= 7 && 
+      y >= 0 && y <= 7
   end
 end
 
