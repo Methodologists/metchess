@@ -17,19 +17,4 @@ RSpec.describe Game, type: :model do
       expect(Rook.count).to eq(4)
     end
   end
-
-  describe '#check?' do
-    it 'checks if king is in check' do
-      g = Game.create
-      k = King.update_all(:x_cord => 0, :y_cord => 3, :color => 'black')
-      r = Rook.update_all(:x_cord => 4, :y_cord => 3, :color => 'white')
-      expect(g.check?).to eq true
-    end
-
-    it 'checks if king is not in check' do
-      g = Game.create
-      k = King.update_all(:x_cord => 0, :y_cord => 3, :color => 'black')
-      expect(g.check?).to eq false
-    end
-  end
 end

@@ -1,6 +1,20 @@
 require 'rails_helper'
  
 RSpec.describe Piece, type: :model do
+  describe '#check?' do
+    it 'checks if king is in check' do
+      k = King.create(x_cord: 0, y_cord: 3, color: 'black', game_id: 1)
+      r = Rook.create(x_cord: 4, y_cord: 3, color: 'white', game_id: 1)
+      expect(k.check?).to eq true
+    end
+
+    it 'checks if king is not in check' do
+      k = King.create(:x_cord => 0, :y_cord => 3, :color => 'black', game_id: 1)
+      r = Rook.create(x_cord: 7, y_cord: 7, color: 'white', game_id: 1)
+      expect(k.check?).to eq false
+    end
+  end
+
   describe "#move_to!" do
     context "when another piece is on the new spot" do
       it "captures it by updating its coords to nil" do

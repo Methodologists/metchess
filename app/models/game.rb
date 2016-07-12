@@ -63,32 +63,6 @@ class Game < ActiveRecord::Base
     Queen.create(game_id: self.id, color: 'black', x_cord: 3, y_cord: 7)
   end
 
-  def check?
-    black_king_in_check? || white_king_in_check?
-  end
-
-  def black_king_in_check?
-    black_king = King.find(:game_id => self.id, :color => 'black')
-    Piece.find_each(:game_id => self.id, :color => 'white') do |piece|
-      if piece.valid_move?(black_king.x_cord, black_king.y_cord)
-        return true
-      end
-    end
-
-    return false
-  end
-
-  def white_king_in_check?
-    white_king = King.find(:game_id => self.id, :color => 'white')
-    Piece.find_each(:game_id => self.id, :color => 'black') do |piece|
-      if piece.valid_move?(white_king.x_cord, black_king.y_cord)
-        return true
-      end
-    end
-
-    return false
-  end
-
   # def check?
   #  king = Piece.find_by(type: "King", color: color)
 
