@@ -1,5 +1,13 @@
-Shall we play a game?
-<%= link_to 'New game', new_game_path %>
-<% @games.each do |game| %>
-  <p><%= link_to game.game_id, game_path(game) %></p>
-<% end %>
+<div class="col-xs-6 col-xs-offset-3">
+  <h3>Join an existing game</h3>
+    <% @games.each do |game| %>
+      <% if game.player_black_id == nil && game.player_white_id != current_user.id %>
+        <%= "Game Name: #{game.name}; White Player: #{game.white_player.email}" %>
+        <%= simple_form_for game do |f| %>
+          <%= f.hidden_field :player_black_id, value: current_user.id %>
+          <%= f.submit 'Join this game', class: 'btn btn-info btn-sm' %>
+        <% end %>
+        <br />
+      <% end %>
+    <% end %>
+</div>
