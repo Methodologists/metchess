@@ -136,42 +136,6 @@ class Piece < ActiveRecord::Base
   def position_exist?(x, y)
     x >= 0 && x <= 7 && y >= 0 && y <= 7
   end
-
-  def check?
-    black_king_in_check?# || white_king_in_check?
-  end
-
-  # def black_king_in_check?
-  #   black_king = King.where(:color => 'black')
-  #   Piece.find_each(:color => 'white') do |piece|
-  #     if piece.valid_move?(black_king.x_cord, black_king.y_cord)
-  #       return true
-  #     end
-  #   end
-
-  #   return false
-  # end
-
-  def black_king_in_check?
-    black_king = King.find_by(color: 'black', game_id: game)
-    rook = Rook.find_by(color: "white", game_id: game)
-    # white_pieces = [rook]
-    # white_pieces.each do |piece|
-    rook.valid_move?(black_king.x_cord, black_king.y_cord)
-    
-  end
-
-  def white_king_in_check?
-    white_king = King.where(:color => 'white')
-    Piece.find_each(:color => 'black') do |piece|
-      if piece.valid_move?(white_king.x_cord, black_king.y_cord)
-        return true
-      end
-    end
-
-    return false
-  end
-
 end
 
 
