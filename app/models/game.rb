@@ -68,6 +68,21 @@ class Game < ActiveRecord::Base
     black_king_in_check? || white_king_in_check?
   end
 
+  #def check?
+  #   king = King.where(game_id: id) # ==> king = [black king, white king]
+  #   actual_piece = Piece.where(game_id: id)
+  #   king.each do |king| #go one by one for each king, one at a time
+  #     actual_piece.each do |piece| #==> for each of the pieces
+  #       if (piece.color != king.color)
+  #         piece.valid_move?(king.x_cord, king.y_cord)
+  #         return true
+  #       end
+  #     end
+  #   end
+
+  #   return false
+  #end
+
   def black_king_in_check?
     black_king = King.find_by(:color => 'black', :game_id => id)
     Piece.where(:color => 'white', :game_id => id).each do |piece|
