@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20160711180721) do
     t.integer  "player_black_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "check"
     t.string   "name"
   end
 
