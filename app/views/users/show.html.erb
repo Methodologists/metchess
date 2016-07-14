@@ -1,0 +1,25 @@
+<div class="col-xs-6 col-xs-offset-3">
+  <h3>My Games</h3>
+  <i>logged in as <%= current_user.email %></i>
+  <br />
+  <br />
+  
+  <strong>As White Player:</strong>
+  <br />
+  <% @games.each do |game| %>
+    <% if game.player_white_id == current_user.id %>
+      <%= link_to "Game Name: #{game.name}", game_path(game) %>
+      <br />
+    <% end %>
+  <% end %>
+
+  <br />
+  <strong>As Black Player:</strong>
+  <br />
+  <% @games.each do |game| %>
+    <% if game.player_black_id == current_user.id %>
+      <%= link_to "Game Name: #{game.name}", game_path(game) %>
+      <br />
+    <% end %>
+  <% end %>
+</div>
