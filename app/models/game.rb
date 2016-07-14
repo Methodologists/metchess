@@ -61,4 +61,13 @@ class Game < ActiveRecord::Base
     Queen.create(game_id: self.id, color: 'white', x_cord: 3, y_cord: 0)
     Queen.create(game_id: self.id, color: 'black', x_cord: 3, y_cord: 7)
   end
+
+  #game states
+  def pending_opponent?
+    player_black_id.blank?
+  end
+
+  def ready_to_play?
+    player_white_id.present? && player_black_id.present?
+  end
 end

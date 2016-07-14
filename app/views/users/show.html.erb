@@ -8,7 +8,11 @@
   <br />
   <% @games.each do |game| %>
     <% if game.player_white_id == current_user.id %>
-      <%= link_to "Game Name: #{game.name}", game_path(game) %>
+      <% if game.pending_opponent? %>
+        <%= "#{game.name} is awaiting an opponent" %>
+      <% else %>
+        <%= link_to "Game Name: #{game.name}", game_path(game) %>
+      <% end %>
       <br />
     <% end %>
   <% end %>

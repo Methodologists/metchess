@@ -34,7 +34,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Create or Join a Game <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li>
-              <%= link_to 'Create a new game', new_game_path %>
+              <a href="#" data-toggle="modal" data-target="#createModal">Create a new game</a>
             </li>
             <li>
               <%= link_to 'Join an existing game', games_path %>
@@ -64,8 +64,25 @@
   <% end %>
 
 
-<%= yield %>
+  <%= yield %>
   
+
+<!-- Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Shall We Play a Game?</h4>
+      </div>
+      <div class="modal-body">
+        <%= render "games/new" %>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
