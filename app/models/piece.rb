@@ -132,10 +132,22 @@ class Piece < ActiveRecord::Base
     piece.color == color
   end
 
+# Valid move parameters 
+#   * if coordinates are on board
+#   * if moving to same position
+  def allowed_move?(x, y)
+    not_original_position?(x, y) && position_exist?(x, y)
+  end
+
   def position_exist?(x, y)
     x >= 0 && x <= 7 && 
       y >= 0 && y <= 7
   end
+
+  def not_original_position?(x, y)
+    !(x_cord == x && y_cord == y)
+  end
+
 end
 
 
