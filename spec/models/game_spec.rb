@@ -32,6 +32,8 @@ RSpec.describe Game, type: :model do
       g = Game.create
       k = King.find_by(color: 'black', game_id: g.id)
       k.update(x_cord: 0, y_cord: 3)
+      r = Rook.find_by(color: 'black', game_id: g.id)
+      r.update(x_cord: 4, y_cord: 3)
       expect(g.check?).to eq false
     end
   end

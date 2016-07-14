@@ -64,44 +64,45 @@ class Game < ActiveRecord::Base
     Queen.create(game_id: self.id, color: 'black', x_cord: 3, y_cord: 7)
   end
 
+  # def check?
+  #   black_king_in_check? || white_king_in_check?
+  # end
+
   def check?
-    black_king_in_check? || white_king_in_check?
+    king = King.where(game_id: id) # ==> king = [black king, white king]
+    actual_piece = Piece.where(game_id: id)
+    king.each do |king| #go one by one for each king, one at a time
+      puts king
+      actual_piece.each do |piece| #==> for each of the pieces
+        if (piece.color != king.color)
+          piece.valid_move?(king.x_cord, king.y_cord)
+          return true
+        end
+      end
+    end
+
+    return false
   end
 
-  #def check?
-  #   king = King.where(game_id: id) # ==> king = [black king, white king]
-  #   actual_piece = Piece.where(game_id: id)
-  #   king.each do |king| #go one by one for each king, one at a time
-  #     actual_piece.each do |piece| #==> for each of the pieces
-  #       if (piece.color != king.color)
-  #         piece.valid_move?(king.x_cord, king.y_cord)
-  #         return true
-  #       end
+  # def black_king_in_check?
+  #   black_king = King.find_by(:color => 'black', :game_id => id)
+  #   Piece.where(:color => 'white', :game_id => id).each do |piece|
+  #     if piece.valid_move?(black_king.x_cord, black_king.y_cord)
+  #       return true
   #     end
   #   end
 
   #   return false
-  #end
+  # end
 
-  def black_king_in_check?
-    black_king = King.find_by(:color => 'black', :game_id => id)
-    Piece.where(:color => 'white', :game_id => id).each do |piece|
-      if piece.valid_move?(black_king.x_cord, black_king.y_cord)
-        return true
-      end
-    end
+  # def white_king_in_check?
+  #   white_king = King.find_by(:color => 'white', :game_id => id)
+  #   Piece.where(:color => 'black', :game_id => id).each do |piece|
+  #     if piece.valid_move?(white_king.x_cord, white_king.y_cord)
+  #       return true
+  #     end
+  #   end
 
-    return false
-  end
-
-  def white_king_in_check?
-    white_king = King.find_by(:color => 'white', :game_id => id)
-    Piece.where(:color => 'black', :game_id => id).each do |piece|
-      if piece.valid_move?(white_king.x_cord, white_king.y_cord)
-        return true
-      end
-    end
-
-    return false
-  end
+  #   return false
+  # end
 end
