@@ -16,7 +16,7 @@ class Game < ActiveRecord::Base
   def make_pawns!
     8.times do |n|
         Pawn.create(
-            game_id: self.id, 
+            game_id: id, 
             color: 'white', 
             x_cord: n,
             y_cord: 1
@@ -25,7 +25,7 @@ class Game < ActiveRecord::Base
     #
     8.times do |n|
         Pawn.create(
-            game_id: self.id, 
+            game_id: id, 
             color: 'black', 
             x_cord: n,
             y_cord: 6
@@ -34,34 +34,34 @@ class Game < ActiveRecord::Base
   end
 
   def make_rooks!
-    Rook.create(game_id: self.id, color: 'white', x_cord: 0, y_cord: 0)
-    Rook.create(game_id: self.id, color: 'white', x_cord: 7, y_cord: 0)
-    Rook.create(game_id: self.id, color: 'black', x_cord: 0, y_cord: 7)
-    Rook.create(game_id: self.id, color: 'black', x_cord: 7, y_cord: 7)
+    Rook.create(game_id: id, color: 'white', x_cord: 0, y_cord: 0)
+    Rook.create(game_id: id, color: 'white', x_cord: 7, y_cord: 0)
+    Rook.create(game_id: id, color: 'black', x_cord: 0, y_cord: 7)
+    Rook.create(game_id: id, color: 'black', x_cord: 7, y_cord: 7)
   end
 
   def make_knights!
-    Knight.create(game_id: self.id, color: 'white', x_cord: 1, y_cord: 0)
-    Knight.create(game_id: self.id, color: 'white', x_cord: 6, y_cord: 0)
-    Knight.create(game_id: self.id, color: 'black', x_cord: 6, y_cord: 7)
-    Knight.create(game_id: self.id, color: 'black', x_cord: 1, y_cord: 7)
+    Knight.create(game_id: id, color: 'white', x_cord: 1, y_cord: 0)
+    Knight.create(game_id: id, color: 'white', x_cord: 6, y_cord: 0)
+    Knight.create(game_id: id, color: 'black', x_cord: 6, y_cord: 7)
+    Knight.create(game_id: id, color: 'black', x_cord: 1, y_cord: 7)
   end
 
   def make_bishops!
-    Bishop.create(game_id: self.id, color: 'white', x_cord: 2, y_cord: 0)
-    Bishop.create(game_id: self.id, color: 'white', x_cord: 5, y_cord: 0)
-    Bishop.create(game_id: self.id, color: 'black', x_cord: 5, y_cord: 7)
-    Bishop.create(game_id: self.id, color: 'black', x_cord: 2, y_cord: 7)
+    Bishop.create(game_id: id, color: 'white', x_cord: 2, y_cord: 0)
+    Bishop.create(game_id: id, color: 'white', x_cord: 5, y_cord: 0)
+    Bishop.create(game_id: id, color: 'black', x_cord: 5, y_cord: 7)
+    Bishop.create(game_id: id, color: 'black', x_cord: 2, y_cord: 7)
   end
 
   def make_kings!
-    King.create(game_id: self.id, color: 'white', x_cord: 4, y_cord: 0)
-    King.create(game_id: self.id, color: 'black', x_cord: 4, y_cord: 7)
+    King.create(game_id: id, color: 'white', x_cord: 4, y_cord: 0)
+    King.create(game_id: id, color: 'black', x_cord: 4, y_cord: 7)
   end
 
   def make_queens!
-    Queen.create(game_id: self.id, color: 'white', x_cord: 3, y_cord: 0)
-    Queen.create(game_id: self.id, color: 'black', x_cord: 3, y_cord: 7)
+    Queen.create(game_id: id, color: 'white', x_cord: 3, y_cord: 0)
+    Queen.create(game_id: id, color: 'black', x_cord: 3, y_cord: 7)
   end
 
   # def check?
@@ -72,7 +72,6 @@ class Game < ActiveRecord::Base
     king = King.where(game_id: id) # ==> king = [black king, white king]
     actual_piece = Piece.where(game_id: id)
     king.each do |king| #go one by one for each king, one at a time
-      puts king
       actual_piece.each do |piece| #==> for each of the pieces
         if (piece.color != king.color)
           piece.valid_move?(king.x_cord, king.y_cord)
