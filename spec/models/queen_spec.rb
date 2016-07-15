@@ -20,5 +20,15 @@ RSpec.describe Queen, type: :model do
           expect(queen.valid_move?(before_and_after_coords.last.first, before_and_after_coords.last.last)).to eq result
         end
       end
-  end
+
+      it "should check that initial queen coordinates that are nil return false" do
+        q = Queen.create(x_cord: nil, y_cord: nil)
+        expect(q.valid_move?(0, 0)).to eq false
+      end
+
+      it "should check that final queen coordinates that are nil return false" do
+        q = Queen.create(x_cord: 0, y_cord: 0)
+        expect(q.valid_move?(nil, nil)).to eq false
+      end
+    end
 end
