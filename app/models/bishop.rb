@@ -8,10 +8,6 @@ class Bishop < Piece
 		(new_x - x_cord).abs == (new_y - y_cord).abs
 	end
 
-  def not_original_position?(x, y)
-    !(x_cord == x && y_cord == y)
-  end
-
   def image
     if color == "white"
       "\u2657"

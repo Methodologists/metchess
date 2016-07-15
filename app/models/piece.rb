@@ -134,6 +134,10 @@ class Piece < ActiveRecord::Base
   def start_position_exist?(x, y)
     x != nil && y != nil
   end
+
+  def not_original_position?(x, y)
+    !(x_cord == x && y_cord == y)
+  end
 end
 
 
