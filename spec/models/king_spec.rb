@@ -36,5 +36,10 @@ RSpec.describe King, type: :model do
       k = King.create(x_cord: 0, y_cord: 0)
       expect(k.valid_move?(nil, nil)).to eq false
     end
+
+    it "should return false when king moves to its original position" do
+      k = King.create(x_cord: 0, y_cord: 0)
+      expect(k.valid_move?(0, 0)).to eq false
+    end
   end
 end

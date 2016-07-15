@@ -1,9 +1,7 @@
 class Piece < ActiveRecord::Base
-  
   belongs_to :game
 
 	def is_obstructed?(x, y)
-
 		#check moving direction
 		path = moving_direction(x, y)
 
@@ -43,7 +41,6 @@ class Piece < ActiveRecord::Base
 			end
 		end
 
-
 		#path is horizontal from left to right
 		if path == 'horizontal' && x_cord < x
 			(x_cord + 1).upto(x - 1) do |changing_x|
@@ -51,14 +48,12 @@ class Piece < ActiveRecord::Base
 			end
 		end
 
-
 		#path is horizontal from right to left
 		if path == 'horizontal' && x_cord > x
 			(x_cord - 1).downto(x + 1) do |changing_x|
 				return true if occupied?(changing_x, y_cord)
 			end
 		end
-
 
 		#path is vertical from down to up
 		if path == 'vertical' && y_cord < y
@@ -73,8 +68,6 @@ class Piece < ActiveRecord::Base
 				return true if occupied?(x_cord, changing_y)
 			end
 		end
-
-
 
 		#path does not exist
 		if path == 'error'
@@ -139,5 +132,3 @@ class Piece < ActiveRecord::Base
     !(x_cord == x && y_cord == y)
   end
 end
-
-
