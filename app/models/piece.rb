@@ -127,7 +127,7 @@ class Piece < ActiveRecord::Base
     piece.color == color
   end
 
-  def position_exist?(x, y)
+  def final_position_exist?(x, y)
     x != nil && y != nil && x >= 0 && x <= 7 && y >= 0 && y <= 7
   end
 
