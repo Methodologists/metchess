@@ -22,4 +22,8 @@
   <% end %>
 </table>
 
-<i><%= "Black Player: #{@game.black_player.email}" %></i> 
+<% if @game.black_player.present? %>
+  <i><%= "Black Player: #{@game.black_player.email}" %></i>
+<% else %>
+  <i>You need an opponent! Invite a friend to play.</i>
+<% end %>
