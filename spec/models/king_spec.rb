@@ -26,5 +26,15 @@ RSpec.describe King, type: :model do
       k = King.create(x_cord: 1, y_cord: 1)
       expect(k.valid_move?(1, 5)).to eq(false)
     end
+
+    it "should check that initial king coordinates that are nil return false" do
+      k = King.create(x_cord: nil, y_cord: nil)
+      expect(k.valid_move?(0, 0)).to eq false
+    end
+
+    it "should check that final king coordinates that are nil return false" do
+      k = King.create(x_cord: 0, y_cord: 0)
+      expect(k.valid_move?(nil, nil)).to eq false
+    end
   end
 end

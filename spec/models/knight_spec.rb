@@ -30,5 +30,14 @@ RSpec.describe Knight, type: :model do
           expect(knight.valid_move?(before_and_after_coords.last.first, before_and_after_coords.last.last)).to eq result
         end
       end
+    it "should check that initial knight coordinates that are nil return false" do
+      k = Knight.create(x_cord: nil, y_cord: nil)
+      expect(k.valid_move?(0, 0)).to eq false
+    end
+
+    it "should check that final knight coordinates that are nil return false" do
+      k = Knight.create(x_cord: 0, y_cord: 0)
+      expect(k.valid_move?(nil, nil)).to eq false
+    end
   end
 end
