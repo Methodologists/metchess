@@ -18,6 +18,16 @@ RSpec.describe Bishop, type: :model do
           expect(bishop.valid_move?(before_and_after_coords.last.first, before_and_after_coords.last.last)).to eq result
         end
       end
+
+    it "should check that initial bishop coordinates that are nil return false" do
+      b = Bishop.create(x_cord: nil, y_cord: nil)
+      expect(b.valid_move?(1, 1)).to eq false
+    end
+
+    it "should check that final bishop coordinates that are nil return false" do
+      b = Bishop.create(x_cord: 0, y_cord: 0)
+      expect(b.valid_move?(nil, nil)).to eq false
+    end
   end
 
 end
