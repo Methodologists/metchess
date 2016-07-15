@@ -30,9 +30,11 @@ RSpec.describe Game, type: :model do
 
     it 'checks if king is not in check' do
       g = Game.create
+      p = Piece.where(color: 'black', game_id: g.id)
+      p.each do |piece|
+        piece.update(x_cord: nil, y_cord: nil)
+      end
       k = King.find_by(color: 'white', game_id: g.id)
-      b = Bishop.find_by(color: 'black', game_id: g.id)
-      b.update(x_cord: nil, y_cord: nil)
       k.update(x_cord: 5, y_cord: 3)
       r = Rook.find_by(color: 'white', game_id: g.id)
       r.update(x_cord: 4, y_cord: 3)

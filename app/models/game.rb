@@ -69,13 +69,11 @@ class Game < ActiveRecord::Base
   # end
 
   def check?
-    king = King.where(game_id: id) # ==> king = [black king, white king]
-    actual_piece = Piece.where(game_id: id)
-    king.each do |king| #go one by one for each king, one at a time
-      actual_piece.each do |piece| #==> for each of the pieces
-        if (piece.color != king.color)
-          piece.valid_move?(king.x_cord, king.y_cord)
-          return true
+    kings = King.where(game_id: id)
+    kings.each do |king|
+      pieces.each do |piece|
+        if (piece.color != king.color) # && piece.is_obstructed?(king.x_cord, king.y_cord)
+          return true if piece.valid_move?(king.x_cord, king.y_cord) 
         end
       end
     end
