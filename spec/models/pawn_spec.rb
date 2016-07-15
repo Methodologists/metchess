@@ -102,5 +102,15 @@ RSpec.describe Pawn, type: :model do
       p = Pawn.create(x_cord: 1, y_cord: 1, color: 'white')
       expect(p.valid_move?(0, 0)).to eq(false)
     end
+
+    it "should check that initial pawn coordinates that are nil return false" do
+      p = Pawn.create(x_cord: nil, y_cord: nil)
+      expect(p.valid_move?(0, 0)).to eq false
+    end
+
+    it "should check that final pawn coordinates that are nil return false" do
+      p = Pawn.create(x_cord: 0, y_cord: 0)
+      expect(p.valid_move?(nil, nil)).to eq false
+    end
   end
 end
