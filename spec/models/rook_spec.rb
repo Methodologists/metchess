@@ -46,5 +46,15 @@ RSpec.describe Rook, type: :model do
       r = Rook.create(x_cord: 0, y_cord: 0)
       expect(r.valid_move?(0,0)).to eq(false)
     end
+
+    it "should check that initial rook coordinates that are nil return false" do
+      r = Rook.create(x_cord: nil, y_cord: nil)
+      expect(r.valid_move?(0, 0)).to eq false
+    end
+
+    it "should check that final rook coordinates that are nil return false" do
+      r = Rook.create(x_cord: 0, y_cord: 0)
+      expect(r.valid_move?(nil, nil)).to eq false
+    end
   end
 end
