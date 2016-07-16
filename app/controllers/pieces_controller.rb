@@ -16,6 +16,7 @@ class PiecesController < ApplicationController
 
   private
 
+
   def piece_params
     params.require(:piece).permit(:x_cord, :y_cord, :new_x, :new_y)
   end

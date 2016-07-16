@@ -1,5 +1,4 @@
 class Piece < ActiveRecord::Base
-  
   belongs_to :game
 
 	def is_obstructed?(x, y)
@@ -111,6 +110,8 @@ class Piece < ActiveRecord::Base
 
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
+    #game.my_turn? -- doesn't currently work. trying to check
+    #if correct player is making move before allowing move
     piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
 
     return if piece_to_capture && own_piece?(piece_to_capture)
@@ -121,6 +122,7 @@ class Piece < ActiveRecord::Base
 
     piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
     update(x_cord: new_x, y_cord: new_y)
+    game.next_turn
   end
 
   def own_piece?(piece)
@@ -148,6 +150,13 @@ class Piece < ActiveRecord::Base
   def piece_on_board?
     !(x_cord == nil && y_cord == nil)
   end
+
+  def my_turn?
+    return if player_turn == current_user.id
+    flash[:alert] = "Sorry, it's not your turn"
+    redirect_to game_path(@game)
+  end
+
 end
 
 
