@@ -1,30 +1,27 @@
 require 'rails_helper'
 
 RSpec.describe King, type: :model do
-  describe "valid_move?" do
-    it "should check that the position the king is moving to exists" do
-      k = King.create(x_cord: 0, y_cord: 0)
-      expect(k.valid_move?(-1, 0)).to eq(false)
-    end
 
-    it "should check that the position the king is moving to is allowed by the King's piece rules" do
-      k = King.create(x_cord: 0, y_cord: 0)
-      expect(k.valid_move?(0, 2)).to eq(false)
-    end
+    describe "#valid_move?" do
 
-    it "should make sure the king does not move like a knight" do
-      k = King.create(x_cord: 1, y_cord: 1)
-      expect(k.valid_move?(2, 3)).to eq(false)
-    end
-
-    it "should make sure the king does not move like a bishop" do
-      k = King.create(x_cord: 1, y_cord: 1)
-      expect(k.valid_move?(5, 5)).to eq(false)
-    end
-
-    it "should make sure the king does not move like a rook" do
-      k = King.create(x_cord: 1, y_cord: 1)
-      expect(k.valid_move?(1, 5)).to eq(false)
+      {
+        #starting at edge of board
+        [[0, 0], [1, 1]] => true, # moves diagonal
+        [[1, 1], [0, 1]] => true, # moves backwards
+        [[1, 1], [1, 2]] => true, # moves forward        
+        [[0, 0], [0, 0]] => false, # same position
+        [[0, 0], [2, 2]] => false, # wrong logic
+        [[0, 0], [2, -1]] => false, # off-board & wrong logic
+        [[0, 0], [-1, -1]] => false, # off-board & right logic
+        [[nil, nil], [1, 1]] => false, # if piece is not on board
+        [[1, 1], [nil, nil]] => false, # moving to nil coords
+        [[nil, nil], [nil, nil]] => false, # nil coords to nil coords
+        
+      }.each do |before_and_after_coords, result|
+        it "returns #{result} when moving from #{before_and_after_coords.first} to #{before_and_after_coords.last}" do
+          king = King.create(x_cord: before_and_after_coords.first.first, y_cord: before_and_after_coords.first.last)
+          expect(king.valid_move?(before_and_after_coords.last.first, before_and_after_coords.last.last)).to eq result
+      end
     end
   end
 end
