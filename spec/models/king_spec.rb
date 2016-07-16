@@ -26,5 +26,10 @@ RSpec.describe King, type: :model do
       k = King.create(x_cord: 1, y_cord: 1)
       expect(k.valid_move?(1, 5)).to eq(false)
     end
+
+    it "should make sure the king does not move like a rook" do
+      k = King.create(x_cord: nil, y_cord: nil)
+      expect(k.valid_move?(1, 5)).to eq(false)
+    end
   end
 end

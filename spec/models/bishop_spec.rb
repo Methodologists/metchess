@@ -11,6 +11,7 @@ RSpec.describe Bishop, type: :model do
         [[0, 0], [1, 2]] => false, # wrong logic
         [[0, 0], [2, -1]] => false, # off-board
         [[0, 0], [6, 6]] => true,
+        [[nil, nil], [6, 6]] => false, # if piece is not on board
 
       }.each do |before_and_after_coords, result|
         it "returns #{result} when moving from #{before_and_after_coords.first} to #{before_and_after_coords.last}" do
