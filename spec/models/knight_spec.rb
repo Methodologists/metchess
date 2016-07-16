@@ -24,12 +24,15 @@ RSpec.describe Knight, type: :model do
         [[3, 3], [1, 1]] => false, # wrong logic
         [[3, 3], [0, 0]] => false, # wrong logic
         [[3, 3], [-1, -1]] => false, # wrong logic & off-board
-        [[3, 3], [nil, nil]] => false, # wrong logic & off-board        
+        [[3, 3], [nil, nil]] => false, # move to nil coordinates
+        [[nil, nil], [0, 0]] => false, # move from nil coords        
+        [[nil, nil], [nil, nil]] => false, # nil coords to nil coords
+
       }.each do |before_and_after_coords, result|
         it "returns #{result} when moving from #{before_and_after_coords.first} to #{before_and_after_coords.last}" do
           knight = Knight.create(x_cord: before_and_after_coords.first.first, y_cord: before_and_after_coords.first.last)
           expect(knight.valid_move?(before_and_after_coords.last.first, before_and_after_coords.last.last)).to eq result
-        end
       end
+    end
   end
 end

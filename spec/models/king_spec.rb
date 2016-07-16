@@ -14,7 +14,9 @@ RSpec.describe King, type: :model do
         [[0, 0], [2, -1]] => false, # off-board & wrong logic
         [[0, 0], [-1, -1]] => false, # off-board & right logic
         [[nil, nil], [1, 1]] => false, # if piece is not on board
-
+        [[1, 1], [nil, nil]] => false, # moving to nil coords
+        [[nil, nil], [nil, nil]] => false, # nil coords to nil coords
+        
       }.each do |before_and_after_coords, result|
         it "returns #{result} when moving from #{before_and_after_coords.first} to #{before_and_after_coords.last}" do
           king = King.create(x_cord: before_and_after_coords.first.first, y_cord: before_and_after_coords.first.last)
