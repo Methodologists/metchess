@@ -1,3 +1,14 @@
+<script>
+  $(function() {
+    $('.piece').draggable({
+      containment: ".chessboard"
+
+
+    });
+  });
+</script>
+
+
 <table class="chessboard">
   <% 8.times do |row| %>
     <tr>
