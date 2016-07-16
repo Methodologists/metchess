@@ -1,8 +1,9 @@
 class Pawn < Piece
 
+# valid move for pawn
   def valid_move?(new_x, new_y)
     update_moved_status!
-    position_exist?(new_x, new_y) && passes_pawn_rules?(new_x, new_y)
+    allowed_move?(new_x, new_y) && passes_pawn_rules?(new_x, new_y)
   end
 
   def passes_pawn_rules?(x, y)
@@ -70,6 +71,7 @@ class Pawn < Piece
     end
   end
 
+# image for pawn
   def image
     if color == "white"
       "\u2659"

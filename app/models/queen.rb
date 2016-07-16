@@ -1,22 +1,16 @@
 class Queen < Piece
 
+# valid move for queen
   def valid_move?(new_x, new_y)
-    allowed = not_original_position?(new_x, new_y) && position_exist?(new_x, new_y)
-    allowed && (bishop_movement?(new_x, new_y) || rook_movement?(new_x, new_y))
+    allowed_move?(new_x, new_y) && passes_queen_rules?(new_x, new_y)
   end
 
-  def not_original_position?(x, y)
-    !(x_cord == x && y_cord == y)
+  def passes_queen_rules?(x, y)
+    # moves either like a bishop or like a rook
+    ((x-x_cord).abs == (y-y_cord).abs) || (x_cord == x || y_cord == y)
   end
 
-  def bishop_movement?(x,y)
-    (x-x_cord).abs == (y-y_cord).abs
-  end
-
-  def rook_movement?(x, y)
-    x_cord == x || y_cord == y
-  end
-
+# image for queen
   def image
     if color == "white"
       "\u2655"
