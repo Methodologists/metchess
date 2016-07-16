@@ -2,49 +2,25 @@ require 'rails_helper'
 
 RSpec.describe Rook, type: :model do
   describe "valid_move? action" do
-    it "should check that position rook is moving to exists" do
-      r = Rook.create(x_cord: 0, y_cord: 0)
-      expect(r.valid_move?(-5, 0)).to eq(false)
-    end
 
-    it "should check that rook moves horizontally to the right" do
-      r = Rook.create(x_cord: 0, y_cord: 0)
-      expect(r.valid_move?(7, 0)).to eq(true)
-    end
+    {
+      [[0, 0], [0, 0]] => false, #can't move to same position
+      [[0, 0], [7, 0]] => true, 
+      [[0, 0], [0, 7]] => true, 
+      [[7, 7], [0, 7]] => true, 
+      [[7, 7], [7, 0]] => true, 
+      [[0, 0], [-7, 7]] => false, #off board, wrong logic
+      [[0, 0], [0, 10]] => false, #off board
+      [[0, 0], [2, 1]] => false, #wrong logic
+      [[3, 3], [nil, nil]] => false, # move to nil coordinates
+      [[nil, nil], [0, 0]] => false, # move from nil coords        
+      [[nil, nil], [nil, nil]] => false, # nil coords to nil coords
 
-    it "should check that rook moves vertically upwards" do
-      r = Rook.create(x_cord: 0, y_cord: 0)
-      expect(r.valid_move?(0, 7)).to eq(true)
-    end
-
-    it "should check that rook doesn't move like a knight" do
-      r = Rook.create(x_cord: 0, y_cord: 0)
-      expect(r.valid_move?(1, 2)).to eq(false)
-    end
-
-    it "should check that rook doesn't move like a bishop" do
-      r = Rook.create(x_cord: 0, y_cord: 0)
-      expect(r.valid_move?(7, 7)).to eq(false)
-    end
-
-    it "should check that rook doesn't blatantly break rules" do
-      r = Rook.create(x_cord: 0, y_cord: 0)
-      expect(r.valid_move?(2, 7)).to eq(false)
-    end
-
-    it "should check that rook moves vertically downwards" do
-      r = Rook.create(x_cord: 7, y_cord: 7)
-      expect(r.valid_move?(7, 0)).to eq(true)
-    end
-
-    it "should check that rook moves horizontally to the left" do
-      r = Rook.create(x_cord: 7, y_cord: 0)
-      expect(r.valid_move?(0, 0)).to eq(true)
-    end
-
-    it "should check that rook isn't allowed to move to the same spot" do
-      r = Rook.create(x_cord: 0, y_cord: 0)
-      expect(r.valid_move?(0,0)).to eq(false)
+    }.each do |before_and_after_coords, result|
+      it "returns #{result} when moving from #{before_and_after_coords.first} to #{before_and_after_coords.last}" do
+        rook = Rook.create(x_cord: before_and_after_coords.first.first, y_cord: before_and_after_coords.first.last)
+        expect(rook.valid_move?(before_and_after_coords.last.first, before_and_after_coords.last.last)).to eq result
+      end
     end
   end
 end
