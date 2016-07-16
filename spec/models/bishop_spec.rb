@@ -17,8 +17,8 @@ RSpec.describe Bishop, type: :model do
         it "returns #{result} when moving from #{before_and_after_coords.first} to #{before_and_after_coords.last}" do
           bishop = Bishop.create(x_cord: before_and_after_coords.first.first, y_cord: before_and_after_coords.first.last)
           expect(bishop.valid_move?(before_and_after_coords.last.first, before_and_after_coords.last.last)).to eq result
-        end
       end
+    end
   end
 
 end

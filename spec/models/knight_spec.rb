@@ -24,6 +24,7 @@ RSpec.describe Knight, type: :model do
         [[3, 3], [1, 1]] => false, # wrong logic
         [[3, 3], [0, 0]] => false, # wrong logic
         [[3, 3], [-1, -1]] => false, # wrong logic & off-board
+        [[3, 3], [nil, nil]] => false, # wrong logic & off-board        
       }.each do |before_and_after_coords, result|
         it "returns #{result} when moving from #{before_and_after_coords.first} to #{before_and_after_coords.last}" do
           knight = Knight.create(x_cord: before_and_after_coords.first.first, y_cord: before_and_after_coords.first.last)

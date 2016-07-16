@@ -137,8 +137,8 @@ class Piece < ActiveRecord::Base
   end
 
   def position_exist?(new_x, new_y)
-    new_x >= 0 && new_x <= 7 && 
-      new_y >= 0 && new_y <= 7
+    new_x != nil && new_y != nil &&
+      new_x >= 0 && new_x <= 7 && new_y >= 0 && new_y <= 7
   end
 
   def not_original_position?(new_x, new_y)
