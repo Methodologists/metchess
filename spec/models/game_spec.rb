@@ -19,7 +19,7 @@ RSpec.describe Game, type: :model do
   end
 
   describe '#check?' do
-    it 'checks if king is in check' do
+    it 'should return true if either king is in check' do
       g = Game.create
       k = King.find_by(color: 'black', game_id: g.id)
       k.update(x_cord: 0, y_cord: 3)
@@ -28,7 +28,7 @@ RSpec.describe Game, type: :model do
       expect(g.check?).to eq true
     end
 
-    it 'checks if king is not in check' do
+    it 'should return false if white king is in path of white rook' do
       g = Game.create
       p = Piece.where(color: 'black', game_id: g.id)
       p.each do |piece|
