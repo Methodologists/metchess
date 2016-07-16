@@ -3,7 +3,7 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
 	def is_obstructed?(x, y)
-
+    #refactoring
 		#check moving direction
 		path = moving_direction(x, y)
 
