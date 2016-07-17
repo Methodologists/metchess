@@ -9,6 +9,7 @@ class PiecesController < ApplicationController
   def update
     @game = Game.find(params[:game_id])
     @piece = Piece.find(params[:id])
+    #add check here for my_turn?
     @piece.move_to!(piece_params[:new_x], piece_params[:new_y])
     redirect_to game_path(@game)
   end

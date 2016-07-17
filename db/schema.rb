@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160714215015) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
-    t.integer  "player_turn"
+    t.string   "current_turn"
   end
 
   add_index "games", ["player_black_id"], name: "index_games_on_player_black_id", using: :btree

@@ -3,8 +3,7 @@ class Game < ActiveRecord::Base
   belongs_to :black_player, class_name: "User", foreign_key: "player_black_id"
   has_many :pieces
   after_create :initialize_board!
-  after_create :game_begin
-    #how to trigger after 2nd player joins instead of at creation?
+  after_create :set_first_turn
   
   
   def initialize_board!
@@ -76,20 +75,14 @@ class Game < ActiveRecord::Base
 
   #turn states
   def set_first_turn
-    update_attributes(player_turn: player_white_id)
+    update_attributes(current_turn: "white")
   end
 
-  def game_begin
-    set_first_turn
-    #assign_players
-  end
-
-  #can't seem to get this to work
-  def next_turn
-    if self.player_turn == white_player.id
-      self.update_attributes(player_turn: black_player.id)
-    elsif self.player_turn == black_player.id
-      self.update_attributes(player_turn: white_player.id)
+  def next_turn!
+    if self.current_turn == "white"
+      self.update_attributes(current_turn: "black")
+    elsif self.current_turn == "black"
+      self.update_attributes(current_turn: "white")
     end
   end
 

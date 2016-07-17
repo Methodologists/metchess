@@ -122,7 +122,7 @@ class Piece < ActiveRecord::Base
 
     piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
     update(x_cord: new_x, y_cord: new_y)
-    game.next_turn
+    game.next_turn!
   end
 
   def own_piece?(piece)
@@ -152,9 +152,8 @@ class Piece < ActiveRecord::Base
   end
 
   def my_turn?
-    return if player_turn == current_user.id
-    flash[:alert] = "Sorry, it's not your turn"
-    redirect_to game_path(@game)
+    #rewrite to make sure self.color (on piece) = color of current_turn
+    flash[:alert] = "Sorry, it's not your turn" #does this belong in controller instead?
   end
 
 end

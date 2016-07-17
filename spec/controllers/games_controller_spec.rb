@@ -43,6 +43,7 @@ RSpec.describe GamesController, type: :controller do
 
   end
 
+  #THIS TEST FAILS -- why?
   describe 'games#update action' do
     it "should add current user as black player when joining game" do
       black_user = FactoryGirl.create(:user)
