@@ -110,19 +110,22 @@ class Piece < ActiveRecord::Base
 
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
-    #game.my_turn? -- doesn't currently work. trying to check
-    #if correct player is making move before allowing move
-    piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
+    if my_turn? == true
+      #if correct player is making move before allowing move
+      piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
 
-    return if piece_to_capture && own_piece?(piece_to_capture)
+      return if piece_to_capture && own_piece?(piece_to_capture)
 
-    # if the rest of this method is executed, either
-    #   * piece_to_capture is nil
-    #   * piece_to_capture is opposite color
+      # if the rest of this method is executed, either
+      #   * piece_to_capture is nil
+      #   * piece_to_capture is opposite color
 
-    piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
-    update(x_cord: new_x, y_cord: new_y)
-    game.next_turn!
+      piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
+      update(x_cord: new_x, y_cord: new_y)
+      game.next_turn!
+    else
+      return false
+    end
   end
 
   def own_piece?(piece)
@@ -152,8 +155,7 @@ class Piece < ActiveRecord::Base
   end
 
   def my_turn?
-    #rewrite to make sure self.color (on piece) = color of current_turn
-    flash[:alert] = "Sorry, it's not your turn" #does this belong in controller instead?
+    self.color == game.current_turn
   end
 
 end

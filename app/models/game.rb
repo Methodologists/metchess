@@ -3,7 +3,7 @@ class Game < ActiveRecord::Base
   belongs_to :black_player, class_name: "User", foreign_key: "player_black_id"
   has_many :pieces
   after_create :initialize_board!
-  after_create :set_first_turn
+  after_create :set_first_turn!
   
   
   def initialize_board!
@@ -74,7 +74,7 @@ class Game < ActiveRecord::Base
   end
 
   #turn states
-  def set_first_turn
+  def set_first_turn!
     update_attributes(current_turn: "white")
   end
 
