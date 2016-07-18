@@ -11,12 +11,11 @@ class PiecesController < ApplicationController
     @piece = Piece.find(params[:id])
 
     if @piece.color != @game.current_turn
-      return render text: 'It\'s not your turn, you barnacle!', status: :unauthorized
-    else      
+      flash[:alert] = "It's not your turn, you barnacle!"
+    else 
       @piece.move_to!(piece_params[:new_x], piece_params[:new_y])
-      redirect_to game_path(@game)
     end
-    
+      redirect_to game_path(@game)
   end
 
 
