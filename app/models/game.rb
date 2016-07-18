@@ -74,4 +74,13 @@ class Game < ActiveRecord::Base
 
     return false
   end
+
+  #make sure that when the king moves it is not moving itself into check
+  #this logic should probably go into the valid_move? method...
+
+  #ways a king can move out of check
+  #if true, only valid moves become:
+    # -move king out of check: loop through valid_moves to see if moving to new position takes out of check
+    # -block piece checking you with another piece
+    # -capture piece putting you in check
 end
