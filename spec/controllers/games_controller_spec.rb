@@ -26,24 +26,8 @@ RSpec.describe GamesController, type: :controller do
       expect(game.player_white_id).to eq(user.id)
     end
 
-    it "should assign pieces after game creation" do
-      white_user = FactoryGirl.create(:user)
-      game = FactoryGirl.create(:game, white_player: white_user)
-
-      sign_in white_user
-
-      white_piece = game.pieces.where(color: "white").first
-
-      patch :update, id: game.id, game: {player_white_id: white_user.id}
-      game.reload
-
-      expect(white_piece.user_id).to eq(white_user.id)
-
-    end
-
   end
 
-  #THIS TEST FAILS -- why?
   describe 'games#update action' do
     it "should add current user as black player when joining game" do
       black_user = FactoryGirl.create(:user)

@@ -35,7 +35,6 @@ RSpec.describe Game, type: :model do
     it 'does not allow piece to move unless it is the turn of that color' do
       game = FactoryGirl.create(:game)
       piece = game.pieces.where(type: "Pawn", x_cord: 1, y_cord: 6).first
-      #piece.move_to!(1, 5)
       expect(piece.move_to!(1, 5)).to eq(false)
     end
   end

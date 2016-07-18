@@ -110,8 +110,6 @@ class Piece < ActiveRecord::Base
 
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
-    if my_turn? == true
-      #if correct player is making move before allowing move
       piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
 
       return if piece_to_capture && own_piece?(piece_to_capture)
@@ -123,9 +121,6 @@ class Piece < ActiveRecord::Base
       piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
       update(x_cord: new_x, y_cord: new_y)
       game.next_turn!
-    else
-      return false
-    end
   end
 
   def own_piece?(piece)

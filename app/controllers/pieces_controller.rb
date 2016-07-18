@@ -10,7 +10,7 @@ class PiecesController < ApplicationController
     @game = Game.find(params[:game_id])
     @piece = Piece.find(params[:id])
 
-    if @piece.color != @game.current_turn
+    if @piece.my_turn? == false || my_piece? == false
       flash[:alert] = "It's not your turn, you barnacle!"
     else 
       @piece.move_to!(piece_params[:new_x], piece_params[:new_y])
@@ -18,6 +18,10 @@ class PiecesController < ApplicationController
       redirect_to game_path(@game)
   end
 
+  def my_piece?
+    (@game.current_turn == "white" && current_user == :white_player) ||
+        (@game.current_turn == "black" && current_user == :black_player)
+  end
 
   private
 
