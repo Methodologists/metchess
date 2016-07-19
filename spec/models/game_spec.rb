@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Game, type: :model do
   describe 'game#create' do
-    xit 'adds to the database' do
+    it 'adds to the database' do
       Game.create
       expect(Game.count).to eq(1)
     end
 
-    xit 'creates all 32 pieces' do
+    it 'creates all 32 pieces' do
       Game.create
       expect(Pawn.count).to eq(16)
       expect(King.count).to eq(2)

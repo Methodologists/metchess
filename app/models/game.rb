@@ -2,7 +2,6 @@ class Game < ActiveRecord::Base
   belongs_to :white_player, class_name: "User", foreign_key: "player_white_id"
   belongs_to :black_player, class_name: "User", foreign_key: "player_black_id"
   has_many :pieces
-  accepts_nested_attributes_for :pieces
   
   after_create :initialize_board!
   after_create :set_first_turn!
