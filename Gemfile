@@ -17,6 +17,9 @@ gem 'devise', '>= 3.2.4'
 # Figaro for security of private information
 gem 'figaro'
 
+# Use omniauth-facebook gem for login via Facebook
+gem 'omniauth-facebook'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
