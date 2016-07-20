@@ -6,8 +6,8 @@ class Piece < ActiveRecord::Base
   end
   
   def obstructed_horizontally?(new_x, new_y)
-    path = moving_direction(new_x, new_y)
-    if path == 'horizontal' && x_cord < new_x
+
+    if allowed_move?(new_x, new_y) && y_cord == new_y
       (x_cord + 1).upto(new_x - 1) do |delta_x|
         return true if occupied?(delta_x, y_cord)
       end
@@ -15,8 +15,13 @@ class Piece < ActiveRecord::Base
       (x_cord - 1).downto(new_x + 1) do |delta_x|
         return true if occupied?(delta_x, y_cord)
       end
+    else
+      return false
     end
-    false
+  end
+
+  def horizontal_move?(x,y)
+    (x != x_cord) && (y == y_cord) ? true : false
   end
 
   # def obstructed_vertically?(new_x, new_y)
@@ -71,18 +76,6 @@ class Piece < ActiveRecord::Base
   def occupied?(new_x, new_y)
     Piece.where(x_cord: new_x, y_cord: new_y, game_id: id).present?
   end
-
-  def moving_direction(new_x, new_y)
-    if y_cord == new_y
-      return 'horizontal'
-    elsif x_cord == new_x
-      return 'vertical'
-    elsif (new_y-y_cord).abs == (new_x-x_cord).abs
-      return 'diagonal'
-
-    else
-      false
-    end
 
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
