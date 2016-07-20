@@ -99,6 +99,4 @@ class Game < ActiveRecord::Base
       self.update_attributes(current_turn: "white")
     end
   end
-
-  
 end

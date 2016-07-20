@@ -40,6 +40,7 @@ RSpec.describe Game, type: :model do
       r.update(x_cord: 4, y_cord: 3)
       expect(g.check?).to eq false
     end
+  end
 
   describe 'turn logic' do
     it 'makes first turn white player' do
