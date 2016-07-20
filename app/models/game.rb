@@ -2,8 +2,11 @@ class Game < ActiveRecord::Base
   belongs_to :white_player, class_name: "User", foreign_key: "player_white_id"
   belongs_to :black_player, class_name: "User", foreign_key: "player_black_id"
   has_many :pieces
+  
   after_create :initialize_board!
-
+  after_create :set_first_turn!
+  
+  
   def initialize_board!
     make_pawns!
     make_rooks!
@@ -75,12 +78,25 @@ class Game < ActiveRecord::Base
     return false
   end
 
-  #make sure that when the king moves it is not moving itself into check
-  #this logic should probably go into the valid_move? method...
+  #game states
+  def pending_opponent?
+    player_black_id.blank?
+  end
 
-  #ways a king can move out of check
-  #if true, only valid moves become:
-    # -move king out of check: loop through valid_moves to see if moving to new position takes out of check
-    # -block piece checking you with another piece
-    # -capture piece putting you in check
+  def ready_to_play?
+    player_white_id.present? && player_black_id.present?
+  end
+
+  #turn states
+  def set_first_turn!
+    update_attributes(current_turn: "white")
+  end
+
+  def next_turn!
+    if self.current_turn == "white"
+      self.update_attributes(current_turn: "black")
+    elsif self.current_turn == "black"
+      self.update_attributes(current_turn: "white")
+    end
+  end
 end

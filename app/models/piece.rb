@@ -110,16 +110,17 @@ class Piece < ActiveRecord::Base
 
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
-    piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
+      piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
 
-    return if piece_to_capture && own_piece?(piece_to_capture)
+      return if piece_to_capture && own_piece?(piece_to_capture)
 
-    # if the rest of this method is executed, either
-    #   * piece_to_capture is nil
-    #   * piece_to_capture is opposite color
+      # if the rest of this method is executed, either
+      #   * piece_to_capture is nil
+      #   * piece_to_capture is opposite color
 
-    piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
-    update(x_cord: new_x, y_cord: new_y)
+      piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
+      update(x_cord: new_x, y_cord: new_y)
+      game.next_turn!
   end
 
   def own_piece?(piece)
@@ -147,6 +148,11 @@ class Piece < ActiveRecord::Base
   def piece_on_board?
     !(x_cord == nil && y_cord == nil)
   end
+
+  def my_turn?
+    self.color == game.current_turn
+  end
+
 end
 
 

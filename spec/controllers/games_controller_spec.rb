@@ -27,4 +27,20 @@ RSpec.describe GamesController, type: :controller do
     end
 
   end
+
+  describe 'games#update action' do
+    it "should add current user as black player when joining game" do
+      black_user = FactoryGirl.create(:user)
+      white_user = FactoryGirl.create(:user)
+      game = FactoryGirl.create(:game, white_player: white_user)
+
+      sign_in black_user
+
+      put :update, id: game.id, game: {player_black_id: black_user.id}
+      game.reload
+      
+      expect(game.player_black_id).to eq(black_user.id)
+
+    end
+  end
 end
