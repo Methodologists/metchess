@@ -1,6 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
+  describe "#is_obstructed" do
+    context "when moving horizontally" do
+      it "returns true if something is in the way" do
+        rook = Rook.create(x_cord: 0, y_cord: 0)
+        pawn = Pawn.create(x_cord: 1, y_cord: 0)
+        expect(rook.is_obstructed?(5,0)).to eq true
+      end
+
+      it "returns false if path is clear and there is no obstruction" do
+        rook = Rook.create(x_cord: 3, y_cord: 3)
+        expect(rook.is_obstructed?(4, 3)).to eq false
+      end
+    end
+
+    context "when moving horizontally"
+    context "when moving diagonally up (y=x)"
+    context "when moving diagonally down (y=-x)"
+  end
+
   describe "#move_to!" do
     context "when another piece is on the new spot" do
       it "captures it by updating its coords to nil" do
