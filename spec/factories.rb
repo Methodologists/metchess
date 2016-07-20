@@ -8,5 +8,8 @@ FactoryGirl.define do
     password_confirmation "secretPassword"
   end
 
-  
+  factory :game do
+    name "Testgame"
+    association :white_player, factory: :user
+  end
 end
