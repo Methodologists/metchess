@@ -80,9 +80,10 @@ class Piece < ActiveRecord::Base
       return 'vertical'
     elsif (new_y-y_cord).abs == (new_x-x_cord).abs
       return 'diagonal'
+
+    else
+    	false
     end
-    false
-  end
 
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
