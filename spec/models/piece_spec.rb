@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+ 
 RSpec.describe Piece, type: :model do
   describe "#move_to!" do
     context "when another piece is on the new spot" do
@@ -49,4 +49,6 @@ RSpec.describe Piece, type: :model do
       end
     end
   end
+
+
 end
