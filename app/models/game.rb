@@ -2,8 +2,11 @@ class Game < ActiveRecord::Base
   belongs_to :white_player, class_name: "User", foreign_key: "player_white_id"
   belongs_to :black_player, class_name: "User", foreign_key: "player_black_id"
   has_many :pieces
+  
   after_create :initialize_board!
-
+  after_create :set_first_turn!
+  
+  
   def initialize_board!
     make_pawns!
     make_rooks!
@@ -61,4 +64,28 @@ class Game < ActiveRecord::Base
     Queen.create(game_id: self.id, color: 'white', x_cord: 3, y_cord: 0)
     Queen.create(game_id: self.id, color: 'black', x_cord: 3, y_cord: 7)
   end
+
+  #game states
+  def pending_opponent?
+    player_black_id.blank?
+  end
+
+  def ready_to_play?
+    player_white_id.present? && player_black_id.present?
+  end
+
+  #turn states
+  def set_first_turn!
+    update_attributes(current_turn: "white")
+  end
+
+  def next_turn!
+    if self.current_turn == "white"
+      self.update_attributes(current_turn: "black")
+    elsif self.current_turn == "black"
+      self.update_attributes(current_turn: "white")
+    end
+  end
+
+  
 end

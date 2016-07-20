@@ -9,12 +9,22 @@ class PiecesController < ApplicationController
   def update
     @game = Game.find(params[:game_id])
     @piece = Piece.find(params[:id])
-    @piece.move_to!(piece_params[:new_x], piece_params[:new_y])
-    redirect_to game_path(@game)
+
+    if @piece.my_turn? == false || my_piece? == false
+      flash[:alert] = "It's not your turn, you barnacle!"
+    else 
+      @piece.move_to!(piece_params[:new_x], piece_params[:new_y])
+    end
+      redirect_to game_path(@game)
   end
 
+  def my_piece?
+    (@game.current_turn == "white" && current_user == :white_player) ||
+        (@game.current_turn == "black" && current_user == :black_player)
+  end
 
   private
+
 
   def piece_params
     params.require(:piece).permit(:x_cord, :y_cord, :new_x, :new_y)

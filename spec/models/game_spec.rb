@@ -17,4 +17,25 @@ RSpec.describe Game, type: :model do
       expect(Rook.count).to eq(4)
     end
   end
+
+  describe 'turn logic' do
+    it 'makes first turn white player' do
+      game = FactoryGirl.create(:game)
+      expect(game.current_turn).to eq("white")
+    end
+
+    it 'switches turn color after move is made' do
+      game = FactoryGirl.create(:game)
+      piece = game.pieces.where(type: "Pawn", x_cord: 0, y_cord: 1).first
+      piece.move_to!(0, 2)
+      game.reload
+      expect(game.current_turn).to eq("black")
+    end
+
+    it 'does not allow piece to move unless it is the turn of that color' do
+      game = FactoryGirl.create(:game)
+      piece = game.pieces.where(type: "Pawn", x_cord: 1, y_cord: 6).first
+      expect(piece.move_to!(1, 5)).to eq(false)
+    end
+  end
 end
