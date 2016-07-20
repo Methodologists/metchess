@@ -1,0 +1,7 @@
+<h3>Invite an opponent</h3>
+
+<%= simple_form_for @invite, url: game_invites_path(@game) do |f| %>
+  <%= f.hidden_field :game_id, value: @invite.game_id %>
+  <%= f.email_field :email, placeholder: 'Enter email to invite' %>
+  <%= f.submit 'Send' %>
+<% end %>

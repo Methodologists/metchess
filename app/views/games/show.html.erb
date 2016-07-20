@@ -29,4 +29,10 @@
   <i><%= "Black Player: #{@game.black_player.email}" %></i>
 <% else %>
   <i>You need an opponent! Invite a friend to play.</i>
+  <%= simple_form_for @invite, url: game_invites_path(@game) do |f| %>
+    <%= f.hidden_field :game_id, value: @invite.game_id %>
+    <%= f.association :recipient, collection: User.all(order: 'email') %>
+    <%= f.submit 'Send' %>
+  <% end %>
+  
 <% end %>
