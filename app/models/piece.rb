@@ -3,50 +3,85 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
 	def is_obstructed?(new_x, new_y)
-    start_x = (x_cord > new_x ? new_x : x_cord).to_i
-    end_x = (x_cord > new_x ? x_cord : new_x).to_i    
-    start_y = y_cord > new_y ? new_y : y_cord
-
-    if allowed_move?(new_x, new_y)
-      if diagonal_pos_move?(new_x, new_y)
-        return true
-      elsif diagonal_neg_move?(new_x, new_y)
-        return true
-      elsif vertical_move?(new_x, new_y)
-        return true
-      elsif horizontal_move?(new_x, new_y)
-        ((start_x + 1)...(end_x -1)).each do |x|
-          return true if is_occupied?(x, y_cord)
-        end
-      else
-        return false
-        puts "your move is not legal."      
+    obstructed_horizontally?(new_x, new_y) # || obstructed_vertically?(new_x, new_y) || obstructed_diagonally?(new_x, new_y)
+  end
+  
+  def obstructed_horizontally?(new_x, new_y)
+    path = moving_direction(new_x, new_y)
+    if path == 'horizontal' && x_cord < new_x
+      (x_cord + 1).upto(new_x - 1) do |delta_x|
+        return true if occupied?(delta_x, y_cord)
       end
-    else
-      return false
+    elsif path == 'horizontal' && x_cord > new_x
+      (x_cord - 1).downto(new_x + 1) do |delta_x|
+        return true if occupied?(delta_x, y_cord)
+      end
     end
+    false
   end
 
-  def is_occupied?(x,y)
-    Piece.find_by(x_cord: x, y_cord: y).present?
+  # def obstructed_vertically?(new_x, new_y)
+  #   path = moving_direction(new_x, new_y)
+  #   if path == 'vertical' && y_cord < new_y
+  #     (y_cord + 1).upto(new_y - 1) do |delta_y|
+  #       return true if occupied?(x_cord, delta_y)
+  #     end
+  #   elsif path == 'vertical' && y_cord > new_y
+  #     (y_cord - 1).downto(new_y + 1) do |delta_y|
+  #       return true if occupied?(x_cord, delta_y)
+  #     end
+  #   end
+  #   false
+  # end
+
+  # def obstructed_diagonally?(new_x, new_y)
+  #   path = moving_direction(new_x, new_y)
+  #   # upwards on graph direction y = x
+  #   if path == 'diagonal' && x_cord < new_x && y_cord < new_y
+  #     (x_cord + 1).upto(new_x - 1) do |delta_x|
+  #       (y_cord + 1).upto(new_y - 1) do |delta_y|
+  #         return true if occupied?(delta_x, delta_y)
+  #       end
+  #     end
+  #   # downwards on graph direction y = x
+  #   elsif path == 'diagonal' && x_cord > new_x && y_cord > y
+  #     (x_cord - 1).downto(new_x + 1) do |delta_x|
+  #       (y_cord - 1).downto(new_y + 1) do |delta_y|
+  #         return true if occupied(delta_x, delta_y)
+  #       end
+  #     end
+  #   # upwards on graph direction y = -x
+  #   elsif path == 'diagonal' && x_cord > new_x && y_cord < new_y
+  #     (x_cord - 1).downto(new_x + 1) do |delta_x|
+  #       (y_cord + 1).upto(new_y - 1) do |delta_y|
+  #         return true if occupied?(delta_x, delta_y)
+  #       end
+  #     end
+  #   # downwards on graph direction y = -x
+  #   elsif path == 'diagonal' && x_cord < new_x && y_cord > new_y
+  #     (x_cord + 1).upto(new_x - 1) do |delta_x|
+  #       (y_cord - 1).downto(new_y + 1) do |delta_y|
+  #         return true if occupied?(delta_x, delta_y)
+  #       end
+  #     end
+  #   else
+  #   return  false
+  #   end
+  # end
+
+  def occupied?(new_x, new_y)
+    Piece.where(x_cord: new_x, y_cord: new_y, game_id: id).present?
   end
 
-  def diagonal_pos_move?(new_x, new_y)
-    # y = x
-    new_x - x_cord == new_y - y_cord
-  end
-
-  def diagonal_neg_move?(new_x, new_y)
-    # y = -x
-    (new_x - x_cord == -(new_y - y_cord)) || (-(new_x - x_cord) == new_y - y_cord)
-  end
-
-  def vertical_move?(new_x, new_y)
-    x_cord == new_x && y_cord != new_y
-  end
-
-  def horizontal_move?(new_x, new_y)
-    x_cord != new_x && y_cord == new_y
+  def moving_direction(new_x, new_y)
+    if y_cord == new_y
+      return 'horizontal'
+    elsif x_cord == new_x
+      return 'vertical'
+    elsif (new_y-y_cord).abs == (new_x-x_cord).abs
+      return 'diagonal'
+    end
+    false
   end
 
 # Moving piece to new location & Captures piece if valid

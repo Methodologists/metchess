@@ -4,14 +4,14 @@ RSpec.describe Piece, type: :model do
   describe "#is_obstructed" do
     context "when moving horizontally" do
       it "returns true if something is in the way" do
-        bishop = Bishop.create(x_cord: 0, y_cord: 0)
+        rook = Rook.create(x_cord: 0, y_cord: 0)
         pawn = Pawn.create(x_cord: 1, y_cord: 0)
-        expect(bishop.is_obstructed?(5,0)).to eq true
+        expect(rook.is_obstructed?(5,0)).to eq true
       end
 
       it "returns false if path is clear and there is no obstruction" do
-        bishop = Bishop.create(x_cord: 0, y_cord: 0)
-        expect(bishop.is_obstructed?(3, 0)).to eq false
+        rook = Rook.create(x_cord: 3, y_cord: 3)
+        expect(rook.is_obstructed?(4, 3)).to eq false
       end
     end
 
