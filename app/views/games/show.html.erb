@@ -30,8 +30,7 @@
 <% else %>
   <i>You need an opponent! Invite a friend to play.</i>
   <%= simple_form_for @invite, url: game_invites_path(@game) do |f| %>
-    <%= f.hidden_field :game_id, value: @invite.game_id %>
-    <%= f.association :recipient, collection: User.all(order: 'email') %>
+    <%= f.association :recipient, label: 'Choose a player to invite',collection: User.all(order: 'email'), label_method: :email, value_method: :id %>
     <%= f.submit 'Send' %>
   <% end %>
   
