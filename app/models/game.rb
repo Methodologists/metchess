@@ -99,4 +99,9 @@ class Game < ActiveRecord::Base
       self.update_attributes(current_turn: "white")
     end
   end
+
+  def checkmate?
+    #if the game is in check? && every position the king that is in check can move to is a valid_move
+    #for the opponent's pieces, then return true 
+  end
 end

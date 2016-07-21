@@ -42,6 +42,16 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe '#checkmate?' do
+    it 'should return true if either king is in checkmate' do
+
+    end
+
+    it 'shoudld return false if both kings are not in checkmate' do
+      
+    end 
+  end
+
   describe '#set_first_turn' do
     it 'makes first turn white player' do
       game = Game.create
