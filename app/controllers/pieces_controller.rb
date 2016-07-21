@@ -1,4 +1,5 @@
 class PiecesController < ApplicationController
+before_action :authenticate_user!, only: [:update]
 
   def show
     @game = Game.find(params[:game_id])
@@ -12,15 +13,15 @@ class PiecesController < ApplicationController
 
     if @piece.my_turn? == false || my_piece? == false
       flash[:alert] = "It's not your turn, you barnacle!"
-    else 
+    else
       @piece.move_to!(piece_params[:new_x], piece_params[:new_y])
     end
       redirect_to game_path(@game)
   end
 
   def my_piece?
-    (@game.current_turn == "white" && current_user == :white_player) ||
-        (@game.current_turn == "black" && current_user == :black_player)
+    (@game.current_turn == "white" && current_user == @game.white_player) ||
+        (@game.current_turn == "black" && current_user == @game.black_player)
   end
 
   private

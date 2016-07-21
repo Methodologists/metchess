@@ -111,13 +111,12 @@ class Piece < ActiveRecord::Base
 # Moving piece to new location & Captures piece if valid
   def move_to!(new_x, new_y)
       piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
-
       return if piece_to_capture && own_piece?(piece_to_capture)
+
 
       # if the rest of this method is executed, either
       #   * piece_to_capture is nil
       #   * piece_to_capture is opposite color
-
       piece_to_capture.update(x_cord: nil, y_cord: nil) if piece_to_capture
       update(x_cord: new_x, y_cord: new_y)
       game.next_turn!
