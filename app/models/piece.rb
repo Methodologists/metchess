@@ -2,26 +2,36 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
 	def is_obstructed?(new_x, new_y)
-    obstructed_horizontally?(new_x, new_y) # || obstructed_vertically?(new_x, new_y) || obstructed_diagonally?(new_x, new_y)
-  end
-  
-  def obstructed_horizontally?(new_x, new_y)
+    if allowed_move?(new_x, new_y)
+      #horizontal
+      if x_cord != new_x && y_cord == new_y
+        #moving right
+        if x_cord - new_x > 0
+          occupied = []
+          occupied << (x_cord + 1).upto(new_x - 1) do |delta_x|
+            Piece.where(x_cord: delta_x, y_cord: y_cord).present?
+          end
+          return true if occupied.include?(true)
+        #moving left
+        elsif x_cord - new_x < 0
+          delta_x = []
+         (x_cord..new_x).each do |x|
+            delta_x << x
+          end
+          delta_x.pop
+          delta_x.shift
+puts "------ HELLO #{delta_x}"
 
-    if allowed_move?(new_x, new_y) && y_cord == new_y
-      # move left
-      if x_cord > new_x
-        (x_cord - 1).downto(new_x + 1) {|delta_x| occupied?(delta_x, y_cord)}
-      elsif x_cord < new_x
-        (x_cord + 1).downto(new_x - 1) {|delta_x| occupied?(delta_x, y_cord)}
+          occupied = []
+          puts "OCCUPIED #{occupied}"
+          occupied = delta_x.each do |delta_x|
+            Piece.where(x_cord: delta_x, y_cord: y_cord).present?
+          end
+          puts "OCCUPIED?????? #{occupied}"
+          return true if occupied.include?(true)
+        end
       end
-    else
-      return false
     end
-
-  end
-
-  def occupied?(new_x, new_y)
-    Piece.where(x_cord: new_x, y_cord: new_y, game_id: id).present?
   end
 
 # Moving piece to new location & Captures piece if valid
