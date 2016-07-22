@@ -8,6 +8,7 @@ class InvitesController < ApplicationController
   def create
     @invite = @game.invites.create(invite_params)
     @invite.sender_id = current_user.id
+    #add mailer step here?
     redirect_to game_path(@game)
   end
 
@@ -15,7 +16,19 @@ class InvitesController < ApplicationController
   
   end
 
+  def accept_invite
+    current_game = current_invite.game
+    current_game.update_attributes(player_black_id: current_user.id)
+    redirect_to game_path(@game)
+  end
 
+  def reject_invite
+    #find invite
+    #delete/destroy invite
+    #redirect to my_games
+  end
+
+  #when invite is accepted or rejected, how is sender notified?
 
   helper_method :current_invite
   def current_invite

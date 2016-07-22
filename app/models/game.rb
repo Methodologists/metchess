@@ -71,6 +71,10 @@ class Game < ActiveRecord::Base
     player_black_id.blank?
   end
 
+  def no_invitation?
+    self.invites.empty?
+  end
+
   def ready_to_play?
     player_white_id.present? && player_black_id.present?
   end

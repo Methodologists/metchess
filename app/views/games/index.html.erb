@@ -1,7 +1,9 @@
 <div class="col-xs-6 col-xs-offset-3">
-  <h3>Join an existing game</h3>
+  <h3>Join an open game</h3>
     <% @games.each do |game| %>
-      <% if game.pending_opponent? && game.player_white_id != current_user.id %>
+      <% if game.pending_opponent? &&
+              game.no_invitation? &&
+                game.player_white_id != current_user.id %>
         <%= "Game Name: #{game.name}; White Player: #{game.white_player.email}" %>
         <%= simple_form_for game do |f| %>
           <%= f.hidden_field :player_black_id, value: current_user.id %>
