@@ -4,3 +4,4 @@
   <%= f.hidden_field :sender, value: current_user.id %> 
   <%= f.association :recipient, label: 'Choose a player to invite',collection: User.all(order: 'email'), label_method: :email, value_method: :id %>
   <%= f.submit 'Send' %>
+<% end %>

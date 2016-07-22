@@ -13,7 +13,10 @@ class InvitesController < ApplicationController
   end
 
   def show
-  
+    current_invite
+  end
+
+  def edit
   end
 
   def accept_invite

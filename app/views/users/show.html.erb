@@ -11,7 +11,7 @@
       <% if game.ready_to_play? %>
         <%= link_to "Game Name: #{game.name}", game_path(game) %>
       <% elsif game.pending_opponent?%>
-        <%= "#{game.name} is awaiting an opponent" %>
+        <%= link_to "#{game.name} is awaiting an opponent, invite a friend to play!", new_game_invite_path(game) %>
       <% end %>
       <br />
     <% end %>
@@ -26,4 +26,17 @@
       <br />
     <% end %>
   <% end %>
+
+  <br />
+  <strong>Pending Invitations:</strong>
+  <br />
+  <% @games.each do |game| %>
+    <% if game.invites.present? && game.invites.last.recipient_id == current_user.id %>
+      <%= "Game Name: #{game.name}" %>
+      <!-- can't seem to get path right here: game_invite_path(game) -->
+      <br />
+    <% end %>
+  <% end %>
 </div>
+
+
