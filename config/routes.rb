@@ -8,6 +8,22 @@ Chess::Application.routes.draw do
   resources :conversations, only: [:index, :show, :destroy]
   resources :messages, only: [:new, :create]
 
+
+resources :conversations, only: [:index, :show, :destroy] do
+  member do
+    post :restore
+    post :mark_as_read
+    post :reply
+  end
+end
+
+resources :conversations, only: [:index, :show, :destroy] do
+  collection do
+    delete :empty_trash
+  end
+end
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
