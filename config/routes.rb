@@ -6,6 +6,7 @@ Chess::Application.routes.draw do
   end
   resources :users, only: :show
   resources :conversations, only: [:index, :show, :destroy]
+  resources :messages, only: [:new, :create]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

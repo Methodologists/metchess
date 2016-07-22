@@ -1,16 +1,27 @@
 <% page_header "Conversation" %>
 
+<p>Chatting with
+  <%= render 'conversations/participants', conversation: @conversation %>
+</p>
+
 <div class="panel panel-default">
   <div class="panel-heading"><%= @conversation.subject %></div>
 
   <div class="panel-body">
     <div class="messages">
       <% @conversation.receipts_for(current_user).each do |receipt| %>
-        <% message = receipt.message %>
+        <div class="media">
+          <% message = receipt.message %>
+          <div class="media-left">
+            <%= 45, message.sender.username %>
+          </div>
 
-        <%= message.sender.name %>
-          says at <%= message.created_at.strftime("%-d %B %Y, %H:%M:%S") %>
-        <%= message.body %>
+          <div class="media-body">
+            <h6 class="media-heading"><%= message.sender.username %>
+              says at <%= message.created_at.strftime("%-d %B %Y, %H:%M:%S") %></h6>
+            <%= message.body %>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
