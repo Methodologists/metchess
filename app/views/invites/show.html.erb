@@ -1,0 +1,11 @@
+<% if current_invite.present? %>
+  <h3>Your invitation is waiting...</h3>
+  <p><%= @game.white_player.email %> has challenged you to a game of chess.</p>
+
+  <%= simple_form_for @game, url: game_path(@game) do |f| %>
+    <%= f.hidden_field :player_black_id, value: current_user.id %> 
+    <%= f.submit 'Join Game' %>
+  <% end %>
+<% else %>
+  <p>This game has no pending invitations.</p>
+<% end %>
