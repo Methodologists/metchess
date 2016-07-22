@@ -67,17 +67,6 @@ class Game < ActiveRecord::Base
     Queen.create(game_id: id, color: 'black', x_cord: 3, y_cord: 7)
   end
 
-  def check?
-    kings = King.where(game_id: id)
-    kings.each do |king|
-      pieces.each do |piece|
-        return true if piece.color != king.color && piece.valid_move?(king.x_cord, king.y_cord)
-      end
-    end
-
-    return false
-  end
-
   #game states
   def pending_opponent?
     player_black_id.blank?
@@ -100,8 +89,35 @@ class Game < ActiveRecord::Base
     end
   end
 
+#end game check and checkmate
+  def check?
+    kings = King.where(game_id: id)
+    kings.each do |king|
+      pieces.each do |piece|
+        return true if piece.color != king.color && piece.valid_move?(king.x_cord, king.y_cord)
+      end
+    end
+
+    return false
+  end
+
   def checkmate?
-    #if the game is in check? && every position the king that is in check can move to is a valid_move
-    #for the opponent's pieces, then return true 
+    if check? == true
+      #1. if can't capture piece: if piece putting king in check coords are not valid move for any opposition, return true
+      #||
+      #2. if can't block piece: 
+      #||
+      #3. if king can't move safely: valid_moves for king still puts king in check 
+      king_in_check = King.where(game_id: id)
+      king_in_check.each do |king|
+        pieces.each do |piece|
+          if piece.color != king.color && piece.valid_move?(king.x_cord, king.y_cord)
+            king_in_check = King.where(game_id: id,  x_cord: king.x_cord, y_cord: king.y_cord)
+          end
+        end
+      end
+    else 
+      return false
+    end
   end
 end
