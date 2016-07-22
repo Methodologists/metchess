@@ -18,24 +18,60 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  describe 'turn logic' do
+  describe '#check?' do
+    it 'should return true if either king is in check' do
+      g = Game.create
+      k = King.find_by(color: 'black', game_id: g.id)
+      k.update(x_cord: 0, y_cord: 3)
+      r = Rook.find_by(color: 'white', game_id: g.id)
+      r.update(x_cord: 4, y_cord: 3)
+      expect(g.check?).to eq true
+    end
+
+    it 'should return false if white king is in path of white rook' do
+      g = Game.create
+      p = Piece.where(color: 'black', game_id: g.id)
+      p.each do |piece|
+        piece.update(x_cord: nil, y_cord: nil)
+      end
+      k = King.find_by(color: 'white', game_id: g.id)
+      k.update(x_cord: 5, y_cord: 3)
+      r = Rook.find_by(color: 'white', game_id: g.id)
+      r.update(x_cord: 4, y_cord: 3)
+      expect(g.check?).to eq false
+    end
+  end
+
+  describe '#set_first_turn' do
     it 'makes first turn white player' do
-      game = FactoryGirl.create(:game)
+      game = Game.create
       expect(game.current_turn).to eq("white")
     end
 
-    it 'switches turn color after move is made' do
-      game = FactoryGirl.create(:game)
-      piece = game.pieces.where(type: "Pawn", x_cord: 0, y_cord: 1).first
-      piece.move_to!(0, 2)
-      game.reload
-      expect(game.current_turn).to eq("black")
-    end
+    describe '#next_turn' do
+      let(:game) { Game.create }
+      
+      before { game.update(current_turn: color) }
 
-    it 'does not allow piece to move unless it is the turn of that color' do
-      game = FactoryGirl.create(:game)
-      piece = game.pieces.where(type: "Pawn", x_cord: 1, y_cord: 6).first
-      expect(piece.move_to!(1, 5)).to eq(false)
-    end
+      context 'when the current turn is white' do
+        let(:color) { 'white' }
+
+        it 'switches to black' do
+          game.next_turn!
+          game.reload
+          expect(game.current_turn).to eq('black')
+        end
+      end
+
+      context 'when the current turn is black' do
+        let(:color) { 'black' }
+
+        it 'switches to white' do
+          game.next_turn!
+          game.reload
+          expect(game.current_turn).to eq('white')
+        end
+      end    
+    end  
   end
 end

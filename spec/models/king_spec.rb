@@ -3,6 +3,11 @@ require 'rails_helper'
 RSpec.describe King, type: :model do
 
     describe "#valid_move?" do
+      it "should return false if the king is moving into check position" do
+        king = King.create(x_cord: 0, y_cord: 0, color: 'black', game_id: 1)
+        rook = Rook.create(x_cord: 1, y_cord: 7, color: 'white', game_id: 1)
+        expect(king.valid_move?(1,0)).to eq false
+      end
 
       {
         #starting at edge of board

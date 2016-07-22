@@ -3,8 +3,11 @@ require 'rails_helper'
 
 RSpec.describe PiecesController, type: :controller do
 
-  let(:game){Game.create}
-  let(:piece){Pawn.create(x_cord: 0, y_cord: 1, game_id: game.id)}
+  let(:user){FactoryGirl.create(:user)}
+  let(:game){Game.create(white_player: user, black_player: user)}
+  let(:piece){Pawn.create(x_cord: 0, y_cord: 1, game_id: game.id, color: "white")}
+
+  before { sign_in user }
 
   describe '#update' do
     it "should redirect after update" do
