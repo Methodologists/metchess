@@ -3,7 +3,7 @@
 <h4><%= "Current Turn: #{@game.current_turn}" %></h4>
 <br />
 
-<i><%= "White Player: #{@game.white_player.name}" %></i>
+<i><%= "White Player: #{@game.white_player.username}" %></i>
 
 <table class="chessboard">
   <% 8.times do |row| %>
@@ -26,7 +26,7 @@
 </table>
 
 <% if @game.black_player.present? %>
-  <i><%= "Black Player: #{@game.black_player.email}" %></i>
+  <i><%= "Black Player: #{@game.black_player.username}" %></i>
 <% else %>
   <i>You need an opponent! Invite a friend to play.</i>
 <% end %>
