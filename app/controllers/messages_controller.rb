@@ -5,10 +5,12 @@ class MessagesController < ApplicationController
     @chosen_recipient = User.find_by(id: params[:to].to_i) if params[:to]
   end 
 
-  def create
+     def create
     recipients = User.where(id: params['recipients'])
-    conversation = current_user.send_message(recipients, params[:message][:body], params[:message][:subject]).conversation
+    recipients.each do |recipient|
+      conversation = current_user.send_message(recipient, params[:message][:body], params[:message][:subject]).conversation
+    end
     flash[:success] = "Message has been sent!"
-    redirect_to conversation_path(conversation)
+    redirect_to conversations_path
   end
 end

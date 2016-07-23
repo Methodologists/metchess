@@ -9,25 +9,26 @@
 
   <div class="panel-body">
     <div class="messages">
-      <% @conversation.receipts_for(current_user).each do |receipt| %>
+      <% @conversation.receipts_for(current_user).order(:created_at).each do |receipt| %>
         <div class="media">
           <% message = receipt.message %>
           <div class="media-left">
-            <%= 45, message.sender.username %>
+            <%=  message.sender.username %>
           </div>
 
           <div class="media-body">
-            <h6 class="media-heading"><%= message.sender.username %>
+            <h6 class="media-heading"><%= message.sender.username.titleize %>
               says at <%= message.created_at.strftime("%-d %B %Y, %H:%M:%S") %></h6>
-            <%= message.body %>
+            <%= simple_format(message.body) %>
           </div>
         </div>
-      <%= form_tag reply_conversation_path(@conversation), method: :post do %>
-  <div class="form-group">
-    <%= text_area_tag 'body', nil, cols: 3, class: 'form-control', placeholder: 'Type something...', required: true %>
-  </div>
-  <%= submit_tag "Send Message", class: 'btn btn-primary' %>
-<% end %>
+      <% end %>
     </div>
   </div>
 </div>
+<%= form_tag reply_conversation_path(@conversation), method: :post do %>
+  <div class="form-group">
+    <%= text_area_tag 'body', nil, cols: 3, rows: 4, class: 'form-control', id:'summernote', required: true, placeholder: 'Reply to conversation' %>
+  </div>
+  <%= submit_tag "Send Message", class: 'btn btn-primary' %>
+<% end %>

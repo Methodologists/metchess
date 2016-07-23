@@ -5,23 +5,17 @@ Chess::Application.routes.draw do
     resources :pieces
   end
   resources :users, only: :show
-  resources :conversations, only: [:index, :show, :destroy]
+  resources :conversations, only: [:index, :show, :destroy] do
+    member do
+      post :reply
+      post :restore
+      post :mark_as_read
+    end
+    collection do
+      delete :empty_trash
+    end
+  end
   resources :messages, only: [:new, :create]
-
-
-resources :conversations, only: [:index, :show, :destroy] do
-  member do
-    post :restore
-    post :mark_as_read
-    post :reply
-  end
-end
-
-resources :conversations, only: [:index, :show, :destroy] do
-  collection do
-    delete :empty_trash
-  end
-end
 
 resources :users, only: [:index]
 
