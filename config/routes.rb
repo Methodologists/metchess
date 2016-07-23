@@ -23,6 +23,8 @@ resources :conversations, only: [:index, :show, :destroy] do
   end
 end
 
+resources :users, only: [:index]
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

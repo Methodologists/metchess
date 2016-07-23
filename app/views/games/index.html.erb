@@ -5,9 +5,11 @@
         <%= "Game Name: #{game.name}; White Player: #{game.white_player.username}" %>
         <%= simple_form_for game do |f| %>
           <%= f.hidden_field :player_black_id, value: current_user.id %>
+    
           <%= f.submit 'Join this game', class: 'btn btn-info btn-sm' %>
         <% end %>
         <br />
       <% end %>
     <% end %>
 </div>
+
