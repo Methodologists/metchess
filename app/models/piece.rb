@@ -3,35 +3,72 @@ class Piece < ActiveRecord::Base
 
 	def is_obstructed?(new_x, new_y)
     if allowed_move?(new_x, new_y)
-      #horizontal
-      if x_cord != new_x && y_cord == new_y
-        #moving right
-        if x_cord - new_x > 0
-          occupied = []
-          occupied << (x_cord + 1).upto(new_x - 1) do |delta_x|
-            Piece.where(x_cord: delta_x, y_cord: y_cord).present?
-          end
-          return true if occupied.include?(true)
-        #moving left
-        elsif x_cord - new_x < 0
-          delta_x = []
-         (x_cord..new_x).each do |x|
-            delta_x << x
-          end
-          delta_x.pop
-          delta_x.shift
-puts "------ HELLO #{delta_x}"
+      delta_y = []
+      delta_x = []
+      occupied = []
 
-          occupied = []
-          puts "OCCUPIED #{occupied}"
-          occupied = delta_x.each do |delta_x|
-            Piece.where(x_cord: delta_x, y_cord: y_cord).present?
-          end
-          puts "OCCUPIED?????? #{occupied}"
-          return true if occupied.include?(true)
+      # - HORIZONTAL: left, right -
+      if x_cord != new_x && y_cord == new_y
+        if x_cord - new_x > 0
+          (new_x..x_cord).each {|x| delta_x << x}
+        elsif x_cord - new_x < 0
+         (x_cord..new_x).each {|x| delta_x << x}
         end
+        pop_and_shift(delta_x)
+        delta_x.each do |delta_x|
+          occupied << Piece.where(x_cord: delta_x, y_cord: y_cord).present?
+        end
+
+      # | VERTICAL: down, up |
+      elsif x_cord == new_x && y_cord != new_y
+        if y_cord - new_y > 0
+          (new_y..y_cord).each {|y| delta_y << y}
+        elsif y_cord - new_y < 0
+          (y_cord..new_y).each {|y| delta_y << y}
+        end
+        pop_and_shift(delta_y)
+        delta_y.each do |delta_x|
+          occupied << Piece.where(x_cord: x_cord, y_cord: delta_y).present?
+        end
+
+      # / DIAGONAL graph y=x: down, up /
+      elsif (x_cord - new_x) == (y_cord - new_y)
+        if x_cord - new_x > 0
+          puts "MOVING DOWN"
+          (new_x..x_cord).each {|x| delta_x << x}
+          (new_y..y_cord).each {|y| delta_y << y}
+        elsif x_cord - new_x < 0
+          puts "MOVING UP"
+          (x_cord..new_x).each {|x| delta_x << x}
+          puts "#{delta_x} up x"
+          (y_cord..new_y).each {|y| delta_y << y}
+          puts "#{delta_y} up y"
+        end
+        pop_and_shift(delta_x)
+        puts "#{delta_x} XXXXXX"
+        pop_and_shift(delta_y)
+puts "#{delta_y} YYYYYY"
+        deltas = [delta_x, delta_y]
+        puts "#{deltas} DDDDDDD"
+        deltas.each do |i|
+            occupied << Piece.where(x_cord: deltas.first, y_cord: deltas.last).present?
+            puts "#{occupied} oooooooo"
+          end
       end
+
+      if occupied.include?(true)
+        return true
+      else
+        return false
+      end
+
     end
+    # move not allowed
+  end
+
+  def pop_and_shift(array)
+    array.shift
+    array.pop
   end
 
 # Moving piece to new location & Captures piece if valid
