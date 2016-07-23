@@ -5,6 +5,7 @@ class Piece < ActiveRecord::Base
     if allowed_move?(new_x, new_y)
       delta_y = []
       delta_x = []
+      deltas = []
       occupied = []
 
       # - HORIZONTAL: left, right -
@@ -31,29 +32,45 @@ class Piece < ActiveRecord::Base
           occupied << Piece.where(x_cord: x_cord, y_cord: delta_y).present?
         end
 
-      # / DIAGONAL graph y=x: down, up /
-      elsif (x_cord - new_x) == (y_cord - new_y)
+      # / DIAGONAL: down, up /
+      elsif x_cord - new_x == y_cord - new_y
         if x_cord - new_x > 0
-          puts "MOVING DOWN"
           (new_x..x_cord).each {|x| delta_x << x}
           (new_y..y_cord).each {|y| delta_y << y}
         elsif x_cord - new_x < 0
-          puts "MOVING UP"
           (x_cord..new_x).each {|x| delta_x << x}
-          puts "#{delta_x} up x"
           (y_cord..new_y).each {|y| delta_y << y}
-          puts "#{delta_y} up y"
         end
         pop_and_shift(delta_x)
-        puts "#{delta_x} XXXXXX"
         pop_and_shift(delta_y)
-puts "#{delta_y} YYYYYY"
-        deltas = [delta_x, delta_y]
-        puts "#{deltas} DDDDDDD"
-        deltas.each do |i|
-            occupied << Piece.where(x_cord: deltas.first, y_cord: deltas.last).present?
-            puts "#{occupied} oooooooo"
+        delta_x.each_with_index do |x, column|
+          delta_y.each_with_index do |y, row|
+            deltas << [x, y] if column == row
           end
+        end
+        deltas.each do |i|
+          occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
+        end
+
+      # / DIAGONAL: down, up /
+      elsif x_cord - new_x == -(y_cord - new_y)
+        if x_cord - new_x > 0
+          (new_x..x_cord).each {|x| delta_x << x}
+          (y_cord..new_y).each {|y| delta_y << y}
+        elsif x_cord - new_x < 0
+          (x_cord..new_x).each {|x| delta_x << x}
+          (new_y..y_cord).each {|y| delta_y << y}
+        end
+        pop_and_shift(delta_x)
+        pop_and_shift(delta_y)
+        delta_x.each_with_index do |x, column|
+          delta_y.each_with_index do |y, row|
+            deltas << [x, y] if column == row
+          end
+        end
+        deltas.each do |i|
+          occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
+        end
       end
 
       if occupied.include?(true)
@@ -65,6 +82,7 @@ puts "#{delta_y} YYYYYY"
     end
     # move not allowed
   end
+
 
   def pop_and_shift(array)
     array.shift

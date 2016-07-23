@@ -70,13 +70,13 @@ RSpec.describe Piece, type: :model do
       it "returns true if something is in the way in between moving up" do
         game1= Game.create(id: 1)
         bishop = Piece.find_by(type: "Bishop", x_cord: 2, y_cord: 0)
-        expect(bishop.is_obstructed?(4,2)).to eq true
+        expect(bishop.is_obstructed?(5,3)).to eq true
       end
 
       it "returns true if something is in the way in between moving down" do
         game1= Game.create(id: 1)
         bishop = Piece.find_by(type: "Bishop", x_cord: 5, y_cord: 7)
-        expect(bishop.is_obstructed?(2,4)).to eq true
+        expect(bishop.is_obstructed?(0,2)).to eq true
       end
 
       it "returns false if path clear and there is no obstruction" do
@@ -88,7 +88,34 @@ RSpec.describe Piece, type: :model do
       end
     end
 
-    context "when moving diagonally (graph y=-x)"
+    context "when moving diagonally (graph y= -x)" do
+      it "returns false if moving only 1 space -- nothing in between to check" do
+        game1= Game.create(id: 1)
+        bishop = Piece.find_by(type: "Bishop", x_cord: 5, y_cord: 0)
+        expect(bishop.is_obstructed?(4,1)).to eq false
+      end
+
+      it "returns true if something is in the way in between moving up" do
+        game1= Game.create(id: 1)
+        bishop = Piece.find_by(type: "Bishop", x_cord: 5, y_cord: 0)
+        expect(bishop.is_obstructed?(2,3)).to eq true
+      end
+
+      it "returns true if something is in the way in between moving down" do
+        game1= Game.create(id: 1)
+        bishop = Piece.find_by(type: "Bishop", x_cord: 2, y_cord: 7)
+        expect(bishop.is_obstructed?(7,2)).to eq true
+      end
+
+      it "returns false if path clear and there is no obstruction" do
+        game1= Game.create(id: 1)
+        bishop = Piece.find_by(type: "Bishop", x_cord: 5, y_cord: 0)
+        bishop.update(x_cord: 3, y_cord: 2)
+        bishop.reload
+        expect(bishop.is_obstructed?(5,4)).to eq false
+      end
+    end
+
   end
 
   describe "#move_to!" do
