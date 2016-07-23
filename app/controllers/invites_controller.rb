@@ -17,12 +17,7 @@ class InvitesController < ApplicationController
   end
 
   def edit
-  end
-
-  def accept_invite
-    current_game = current_invite.game
-    current_game.update_attributes(player_black_id: current_user.id)
-    redirect_to game_path(@game)
+    current_invite
   end
 
   def reject_invite

@@ -33,7 +33,13 @@
   <% @games.each do |game| %>
     <% if game.invites.present? && game.invites.last.recipient_id == current_user.id %>
       <%= "Game Name: #{game.name}" %>
-      <!-- can't seem to get path right here: game_invite_path(game) -->
+      <%= simple_form_for game do |f| %>
+        <%= f.hidden_field :player_black_id, value: current_user.id %>
+        <%= f.submit 'Join Game', class: 'btn btn-info btn-sm' %>
+      <% end %>
+      <%= link_to 'No Thanks', game_invite_path(@game), method: :delete,
+        data: {confirm: 'Are you sure you want to reject this challenge?'},
+        class: 'btn btn-danger btn-sm' %>
       <br />
     <% end %>
   <% end %>
