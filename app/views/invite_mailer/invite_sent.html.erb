@@ -1,6 +1,6 @@
 <p>You've been challenged by <%= @sender.email %> to a chess match!</p>
-<p>Click here to join:</p>
-<p><%= link_to 'Match Name: #{@game.name}', game_invite_url(@invite.game) %></p>
+<p>Click here to join or decline your invitation:</p>
+<p><%= link_to 'See My Invitations', user_url(@recipient) %></p>
 
 <p>May the force be with you!</p>
 <i>mChess</i>

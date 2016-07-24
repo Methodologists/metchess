@@ -3,7 +3,9 @@ Chess::Application.routes.draw do
   root 'home_pages#index'
   resources :games do
     resources :pieces
-    resources :invites
+    resources :invites do
+      get :accept_invite
+    end
   end
   resources :users, only: :show
   

@@ -30,5 +30,5 @@
 <% elsif @game.invites.present? %>
   <i>You've invited <%= @game.invites.last.recipient.email %> to play, check back soon!</i>
 <% else %>
-  <i>You need an opponent!<%= link_to 'Invite a friend to play', new_game_invite_path(game) %></i>
+  <i>You need an opponent! <%= link_to 'Invite a friend to play', new_game_invite_path(game_id: @game) %></i>
 <% end %>
