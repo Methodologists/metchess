@@ -101,7 +101,56 @@ class Game < ActiveRecord::Base
   end
 
   def checkmate?
-    #if the game is in check? && every position the king that is in check can move to is a valid_move
-    #for the opponent's pieces, then return true 
+    return false if method1? || method2? || method3?
+    return true if check?
+  end
+
+  def method1? #checks if king can move out of check
+    8.times do |row|
+      8.times do |column|
+        return true if king_in_check.valid_move?(column, row)
+      end
+    end
+
+    return false
+  end
+
+  def method2? #checks if there's any piece that can obstruct the path of the piece putting in check
+    if check_piece.is_obstructed?
+      return false
+    else
+      
+    end
+    #find the check_piece, then what?
+    #see if there's any piece that can move and obstruct check_piece's path to the king
+    #run a loop through all of the coordinates and each of the pieces and ask the same question every time
+    # => does the check_piece.is_obstructed? return true?
+    # => just realized that is_obstructed probably wouldn't work because our idea of using is_obstructed
+    # => is hypothetical. Like will this piece hypothetically cause this reaction?
+    # => need a better way to check if path get's obstructed...
+    #if check_piece.is_obstructed? == true
+  end
+
+  def method3? #checks if there's a piece that can capture the piece that's putting the king in check
+    pieces.each do |piece|
+      return true if piece.valid_move?(check_piece.x_cord, check_piece.y_cord)
+    end
+
+    return false
+  end
+
+  def check_piece
+    pieces = Piece.where(game_id: id)
+    pieces.each do |piece|
+      if piece.color != current_turn && piece.valid_move?(king_in_check.x_cord, king_in_check.y_cord)
+        check_piece = piece
+        return check_piece
+      end
+    end
+  end
+
+  def king_in_check
+    king = King.find_by(game_id: id, color: current_turn).last
+    return king
   end
 end

@@ -132,7 +132,8 @@ class Piece < ActiveRecord::Base
   def allowed_move?(new_x, new_y)
     piece_on_board? &&
       position_exist?(new_x, new_y) &&
-        not_original_position?(new_x, new_y)
+        not_original_position?(new_x, new_y) && 
+          is_obstructed?(new_x, new_y) == false
   end
 
   def position_exist?(new_x, new_y)
