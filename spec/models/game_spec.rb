@@ -44,11 +44,18 @@ RSpec.describe Game, type: :model do
 
   describe '#checkmate?' do
     it 'should return true if either king is in checkmate' do
-
+      g = Game.create(id: 1)
+      Piece.destroy_all(game_id: g.id)
+      King.create(color: "white", type: "King", x_cord: 7, y_cord: 0)
+      Knight.create(color: "black", type: "Knight", x_cord: 7, y_cord: 3)
+      Queen.create(color:"black", type: "Queen", x_cord: 6, y_cord: 3)
+      Bishop.create(color: "black", type: "Bishop", x_cord: 5, y_cord: 3)
+      expect(g.checkmate?).to eq true
     end
 
-    it 'shoudld return false if both kings are not in checkmate' do
-      
+    it 'should return false if both kings are not in checkmate' do
+      g = Game.create(id: 1)
+      expect(g.checkmate?).to eq false
     end 
   end
 
