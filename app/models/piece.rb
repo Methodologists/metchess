@@ -1,111 +1,92 @@
 class Piece < ActiveRecord::Base
   belongs_to :game
 
-	def is_obstructed?(x, y)
+	def is_obstructed?(new_x, new_y)
+    if allowed_move?(new_x, new_y)
+      delta_y = []
+      delta_x = []
+      deltas = []
+      occupied = []
 
-		#check moving direction
-		path = moving_direction(x, y)
+      # - HORIZONTAL: left, right -
+      if x_cord != new_x && y_cord == new_y
+        if x_cord - new_x > 0
+          (new_x..x_cord).each {|x| delta_x << x}
+        elsif x_cord - new_x < 0
+         (x_cord..new_x).each {|x| delta_x << x}
+        end
+        pop_and_shift(delta_x)
+        delta_x.each do |delta_x|
+          occupied << Piece.where(x_cord: delta_x, y_cord: y_cord).present?
+        end
 
-		#path is diagonal from lower left to upper right
-		if path = 'diagonal' && x_cord < x && y_cord < y
-			(x_cord + 1).upto(x - 1) do |changing_x|
-				(y_cord + 1).upto(y - 1) do |changing_y|
-					return true if occupied?(changing_x, changing_y)
-				end
-			end
-		end
+      # | VERTICAL: down, up |
+      elsif x_cord == new_x && y_cord != new_y
+        if y_cord - new_y > 0
+          (new_y..y_cord).each {|y| delta_y << y}
+        elsif y_cord - new_y < 0
+          (y_cord..new_y).each {|y| delta_y << y}
+        end
+        pop_and_shift(delta_y)
+        delta_y.each do |delta_x|
+          occupied << Piece.where(x_cord: x_cord, y_cord: delta_y).present?
+        end
 
-		#path is diagonal from lower right to upper left 
-		if path = 'diagonal' && x_cord > x && y_cord < y
-			(x_cord - 1).downto(x + 1) do |changing_x|
-				(y_cord + 1).upto(y - 1) do |changing_y|
-					return true if occupied?(changing_x, changing_y)
-				end
-			end
-		end
+      # / DIAGONAL: down, up /
+      elsif x_cord - new_x == y_cord - new_y
+        if x_cord - new_x > 0
+          (new_x..x_cord).each {|x| delta_x << x}
+          (new_y..y_cord).each {|y| delta_y << y}
+        elsif x_cord - new_x < 0
+          (x_cord..new_x).each {|x| delta_x << x}
+          (y_cord..new_y).each {|y| delta_y << y}
+        end
+        pop_and_shift(delta_x)
+        pop_and_shift(delta_y)
+        delta_x.each_with_index do |x, column|
+          delta_y.each_with_index do |y, row|
+            deltas << [x, y] if column == row
+          end
+        end
+        deltas.each do |i|
+          occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
+        end
 
-		#path is diagonal from upper left to lower right
-		if path = 'diagonal' && x_cord < x && y_cord > y
-			(x_cord + 1).upto(x - 1) do |changing_x|
-				(y_cord - 1).downto(y + 1) do |changing_y|
-					return true if occupied?(changing_x, changing_y)
-				end
-			end
-		end
+      # / DIAGONAL: down, up /
+      elsif x_cord - new_x == -(y_cord - new_y)
+        if x_cord - new_x > 0
+          (new_x..x_cord).each {|x| delta_x << x}
+          (y_cord..new_y).each {|y| delta_y << y}
+        elsif x_cord - new_x < 0
+          (x_cord..new_x).each {|x| delta_x << x}
+          (new_y..y_cord).each {|y| delta_y << y}
+        end
+        pop_and_shift(delta_x)
+        pop_and_shift(delta_y)
+        delta_x.each_with_index do |x, column|
+          delta_y.each_with_index do |y, row|
+            deltas << [x, y] if column == row
+          end
+        end
+        deltas.each do |i|
+          occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
+        end
+      end
 
-		#path is diagonal from upper right to lower left
-		if path = 'diagonal' && x_cord > x && y_cord > y
-			(x_cord - 1).downto(x + 1) do |changing_x|
-				(y_cord -1 ).downto(y + 1) do |changing_y|
-					return true if occupied?(changing_x, changing_y)
-				end
-			end
-		end
+      if occupied.include?(true)
+        return true
+      else
+        return false
+      end
 
-
-		#path is horizontal from left to right
-		if path == 'horizontal' && x_cord < x
-			(x_cord + 1).upto(x - 1) do |changing_x|
-				return true if occupied?(changing_x, y_cord)
-			end
-		end
-
-
-		#path is horizontal from right to left
-		if path == 'horizontal' && x_cord > x
-			(x_cord - 1).downto(x + 1) do |changing_x|
-				return true if occupied?(changing_x, y_cord)
-			end
-		end
-
-
-		#path is vertical from down to up
-		if path == 'vertical' && y_cord < y
-			(y_cord + 1).upto(y - 1) do |changing_y|
-				return true if occupied?(x_cord, changing_y)
-			end
-		end
-
-		#path is vertical from up to down
-		if path == 'vertical' && y_cord > y
-			(y_cord - 1).downto(y + 1) do |changing_y|
-				return true if occupied?(x_cord, changing_y)
-			end
-		end
-
-
-
-		#path does not exist
-		if path == 'error'
-			 alert("you have to make a legal move first.");
-		end
-
-		#path is neither diagonal, vertical, nor horizontal
-		if path == 'neither'
-			alert("your move is not legal.");
-		end
-
-		return false
-	end
-
-
-  def occupied?(x, y)
-    game.pieces.where(x_cord: x, y_cord: y).present?
-  end 
-
-  def moving_direction(x, y)
-
-    if y_cord == y && x_cord == x
-      return 'error'
-    elsif y_cord == y
-      return 'horizontal'
-    elsif x_cord == x
-      return 'vertical'
-    elsif (y-y_cord).abs == (x-x_cord).abs
-      return 'diagonal'
-    else
-      return 'neither'
     end
+    # move not allowed
+  end
+
+
+  def pop_and_shift(array)
+    array.shift
+    array.pop
   end
 
 # Moving piece to new location & Captures piece if valid
