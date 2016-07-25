@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 20160722050332) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
-    t.integer  "user_id"
     t.boolean  "moved"
+    t.integer  "user_id"
   end
 
   create_table "users", force: true do |t|

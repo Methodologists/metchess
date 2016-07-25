@@ -1,4 +1,5 @@
 class InvitesController < ApplicationController
+  before_action :authenticate_user!
   before_filter :get_game
 
   def new
@@ -6,9 +7,10 @@ class InvitesController < ApplicationController
   end
 
   def create
-    @invite = @game.invites.create(invite_params)
+    @game = Game.find(params[:game_id])
+    @invite = @game.invites.create(invite_params.merge(sender: current_user))
     @invite.sender_id = current_user.id
-    #mailer action?
+    #InviteMailer.invite_sent(self).deliver
     redirect_to game_path(@game)
   end
 
@@ -23,13 +25,8 @@ class InvitesController < ApplicationController
 
   def destroy
     @invite = Invite.find(params[:id])
-    if @invite.destroy
-      redirect_to user_path(current_user)
-      #message
-    else
-      redirect_to user_path(current_user)
-      #message flash
-    end
+    @invite.destroy
+    redirect_to user_path(current_user)
   end
 
   def accept_invite
