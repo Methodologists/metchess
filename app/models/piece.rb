@@ -2,6 +2,7 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
 	def is_obstructed?(new_x, new_y)
+    return false if type == "Knight"
     if allowed_move?(new_x, new_y)
       delta_y = []
       delta_x = []
