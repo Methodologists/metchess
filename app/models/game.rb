@@ -129,18 +129,17 @@ class Game < ActiveRecord::Base
     #check if any own_piece is valid_move? in those in between positions
     #check_pieces.each do |piece|
 
+    #the only check_pieces that can be "interfered" with are the rook, bishop, and the queen. With every other
+    #piece, this method won't matter (pawn, knight, king)
+
     block_pieces << Pieces.where(game_id: id, color: current_turn).where.not(x_cord: nil, y_cord: nil)
     
     #path from king to check_pieces
     check_pieces.each do |pieces|
       pieces.x_cord - check_x
       pieces.y_cord - check_y
-
-    end
-
     end
     
-
     if check_piece.is_obstructed?
       return false
     else
@@ -167,7 +166,7 @@ class Game < ActiveRecord::Base
     King.find_by(game_id: id, color: current_turn)
   end
 
- def check_x
+  def check_x
     king_in_check.x_cord
   end
 
