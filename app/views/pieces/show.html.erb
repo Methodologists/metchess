@@ -24,6 +24,10 @@
  <script>
 $(function() {
 
+$("button").click(function(){
+        $("#div1").load("demo_test.txt #p1");
+    });
+});
     $( ".draggable" ).draggable({
     containment: ".chessboard",
     handle: "a",
