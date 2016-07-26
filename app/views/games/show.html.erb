@@ -12,13 +12,15 @@
         <% piece = @game.pieces.where(x_cord: column, y_cord: row).first %>
         <% if piece %>
           <td data-row="<%= row %>" data-column="<%= column %>">
-              <div class="content piece" data-piece_id="<%= piece.id %>">
-                <%= link_to piece.image, game_piece_path(game_id: @game, id: piece.id) %>
-              </div>
+            <div class="content piece droppable" data-piece_id="<%= piece.id %>">
+              <span class="draggable"><%= piece.image %></span>
+            </div>
           </td>
         <% else %>
           <td data-row="<%= row %>" data-column="<%= column %>">
-            <div class="content">&nbsp;</div></td>
+            <div class="content piece droppable">
+              <span class="droppable"><%= link_to '&nbsp;'.html_safe %></span>
+            </div></td>
         <% end %>
       <% end %>
     </tr>
