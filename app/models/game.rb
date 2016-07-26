@@ -102,21 +102,22 @@ class Game < ActiveRecord::Base
   end
 
   def checkmate?
-    return false if method1? || method2? || method3?
+    return false if move_out_of_check? || method2? || method3?
     return true if check?
   end
 
-  def method1? #checks if king can move out of check
+  def move_out_of_check?
     8.times do |row|
       8.times do |column|
         return true if king_in_check.valid_move?(column, row)
       end
     end
-
     return false
   end
 
-  def method2? #checks if there's any piece that can obstruct the path of the piece putting in check
+  def obstruct_out_of_check? #checks if there's any piece that can obstruct the path of the piece putting in check
+    #own pieces that can get in between check piece 
+
     if check_piece.is_obstructed?
       return false
     else
@@ -141,18 +142,16 @@ class Game < ActiveRecord::Base
   end
 
   def check_piece
-    pieces = Piece.where(game_id: id)
-    pieces.each do |piece|
-      if piece.color != current_turn && piece.valid_move?(king_in_check.x_cord, king_in_check.y_cord)
-        check_piece = piece
-        return check_piece
-      end
+    check_pieces = []
+    Piece.where(game_id: id).each do |piece|
+      check_pieces << piece.valid_move?(king_in_check.x_cord, king_in_check.y_cord) if piece.color != current_turn
     end
   end
 
   def king_in_check
     king = King.find_by(game_id: id, color: current_turn).last
     return king
+  end
 
   # def checkmate?
   #   if check? == true

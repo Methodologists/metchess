@@ -113,8 +113,8 @@ class Piece < ActiveRecord::Base
   def allowed_move?(new_x, new_y)
     piece_on_board? &&
       position_exist?(new_x, new_y) &&
-        not_original_position?(new_x, new_y) && 
-          is_obstructed?(new_x, new_y) == false
+        not_original_position?(new_x, new_y)
+          # need to implement is_obstructed?(new_x, new_y) == false; make sure to overwrite this for knight
   end
 
   def position_exist?(new_x, new_y)
@@ -134,6 +134,16 @@ class Piece < ActiveRecord::Base
     self.color == game.current_turn
   end
 
+  def not_check?(new_x, new_y)
+    pieces = Piece.where(game_id: game_id)
+    pieces.each do |piece|
+      return false if piece.color != color && piece.valid_move?(new_x, new_y)
+    end
+    return true
+  end
+
+
+ 
 end
 
 

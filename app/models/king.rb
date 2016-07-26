@@ -9,14 +9,7 @@ class King < Piece
     (x_cord - new_x).abs <= 1 && (y_cord - new_y).abs <= 1
   end
 
-  def not_check?(new_x, new_y)
-    pieces = Piece.where(game_id: game_id)
-    pieces.each do |piece|
-      return false if piece.color != color && piece.valid_move?(new_x, new_y)
-    end
 
-    return true
-  end
 
 # image for king
   def image
