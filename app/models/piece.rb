@@ -114,7 +114,6 @@ class Piece < ActiveRecord::Base
     piece_on_board? &&
       position_exist?(new_x, new_y) &&
         not_original_position?(new_x, new_y)
-          # need to implement is_obstructed?(new_x, new_y) == false; make sure to overwrite this for knight
   end
 
   def position_exist?(new_x, new_y)
