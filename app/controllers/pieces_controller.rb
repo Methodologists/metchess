@@ -13,6 +13,9 @@ before_action :authenticate_user!, only: [:update]
 
     if @piece.my_turn? == false || my_piece? == false
       flash[:alert] = "It's not your turn, you barnacle!"
+    elsif @piece.is_obstructed?(piece_params[:new_x].to_i, piece_params[:new_y].to_i) || 
+        !@piece.valid_move?(piece_params[:new_x].to_i, piece_params[:new_y].to_i)
+      flash[:alert] = "Sorry, can't move there"
     else
       @piece.move_to!(piece_params[:new_x], piece_params[:new_y])
     end
