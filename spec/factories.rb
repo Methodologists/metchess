@@ -1,4 +1,7 @@
 FactoryGirl.define do
+  factory :invite do
+    
+  end
 
   factory :user do
     sequence :email do |n|

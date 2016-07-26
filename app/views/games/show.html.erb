@@ -27,6 +27,8 @@
 
 <% if @game.black_player.present? %>
   <i><%= "Black Player: #{@game.black_player.email}" %></i>
+<% elsif @game.invites.present? %>
+  <i>You've invited <%= @game.invites.last.recipient.email %> to play, check back soon!</i>
 <% else %>
-  <i>You need an opponent! Invite a friend to play.</i>
+  <i>You need an opponent! <%= link_to 'Invite a friend to play', new_game_invite_path(game_id: @game) %></i>
 <% end %>

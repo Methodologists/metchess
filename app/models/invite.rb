@@ -1,0 +1,7 @@
+class Invite < ActiveRecord::Base
+  belongs_to :game
+  belongs_to :sender, class_name: "User"
+  belongs_to :recipient, class_name: "User"
+  validates :sender, presence: true
+ 
+end

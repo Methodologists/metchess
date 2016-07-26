@@ -83,7 +83,7 @@
       </div>
       <div class="modal-body">
         <% if user_signed_in? %>
-          <%= render "games/new" %>
+          <%= render "games/new", game: Game.new %>
         <% else %>
          <%= link_to "Please log in to start a game", new_user_session_path %>
         <% end %>

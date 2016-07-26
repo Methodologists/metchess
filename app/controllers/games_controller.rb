@@ -22,7 +22,8 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.includes(:pieces).find(params[:id])
-    @piece = Piece.find(params[:id])
+    @piece = Piece.find(params[:id]) # is this line needed?
+    @invite = Invite.new
   end
 
 
