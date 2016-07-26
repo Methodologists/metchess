@@ -17,6 +17,9 @@ gem 'devise', '>= 3.2.4'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
+gem 'figaro'
+gem 'omniauth-facebook'
+
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 
