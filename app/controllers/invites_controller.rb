@@ -8,8 +8,8 @@ class InvitesController < ApplicationController
 
   def create
     @game = Game.find(params[:game_id])
-    @invite = @game.invites.create(invite_params.merge(sender: current_user))
-    @invite.sender_id = current_user.id
+    @invite = @game.invites.create(invite_params.merge(sender_id: current_user.id))
+    #@invite.sender_id = current_user.id
     #InviteMailer.invite_sent(self).deliver
     redirect_to game_path(@game)
   end
