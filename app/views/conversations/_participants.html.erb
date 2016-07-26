@@ -1,3 +1,5 @@
 <% conversation.participants.each do |participant| %>
-  <% participant.username %>
+   <% unless participant == current_user %>
+   <%= participant.username %>
+  <% end %>
 <% end %>
