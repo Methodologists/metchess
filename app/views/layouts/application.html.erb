@@ -55,7 +55,8 @@
             <% if user_signed_in? %>
               <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
             <% else %>
-              <li><%= link_to "Log In", new_user_session_path %></li>
+              <!-- Button trigger modal -->
+              <li><%= link_to "Log In", "#", data: {toggle: 'modal', target: '#myModalForLogIn'} %></li>
                <!-- Button trigger modal for sign up-->
               <li><%= link_to "Register", "#", data: {toggle: 'modal', target: '#myModal'} %></li>
             <% end %>
@@ -141,6 +142,47 @@
       </div>
     </div>
   </div>
+
+    <!-- Modal for Log In-->
+    <div class="modal fade" id="myModalForLogIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h2 class="modal-title text-center" id="myModalLabel">Log In</h4>
+          </div>
+          <br />
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="modal-body">
+              <div class="field">
+                <%= f.label :email %><br />
+                <%= f.email_field :email, autofocus: true, class: 'col-xs-12' %>
+              </div>
+              <br class="clr"/>
+              <br />
+              <div class="field">
+                <%= f.label :password %><br />
+                <%= f.password_field :password, autocomplete: "off", class: 'col-xs-12' %>
+              </div>
+              <br class="clr"/>
+              <br />
+              <% if devise_mapping.rememberable? -%>
+                <div class="field">
+                  <%= f.check_box :remember_me %>
+                  <%= f.label :remember_me %>
+                </div>
+              <% end -%>
+            <br class="clr"/>
+            <%= render "devise/shared/links" %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= f.submit "Log In", class: 'btn btn-primary' %>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
   <div id="footer">
     <div class="container">
