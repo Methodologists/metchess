@@ -42,7 +42,8 @@
                     <% if user_signed_in? %>
                       <%= link_to 'Join an existing game', games_path %>
                     <% else %>
-                      <%= link_to "Please log in to join a game", new_user_session_path %>
+                      <!-- Button trigger modal -->
+                      <li><%= link_to "Please log in to join a game", "#", data: {toggle: 'modal', target: '#myModalForLogIn'} %></li>
                     <% end %>
                   </li>
                 </ul>
