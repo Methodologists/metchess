@@ -97,8 +97,7 @@ class Game < ActiveRecord::Base
         return true if piece.color != king.color && piece.valid_move?(king.x_cord, king.y_cord)
       end
     end
-
-    return false
+    false
   end
 
   def checkmate?
@@ -118,33 +117,50 @@ class Game < ActiveRecord::Base
       [check_x - 1, check_y - 1]
       ]
     king_allowed_moves.each do |coord|
-        return true if king_in_check.valid_move?(coord.first, coord.last)
+      return true if king_in_check.valid_move?(coord.first, coord.last)
     end
-    return false
+    false
   end
 
   def obstruct_out_of_check? #checks if there's any piece that can obstruct the path of the piece putting in check
-    #own pieces that can get in between check piece 
-    #positions are for piece putting king in check
-    #check if any own_piece is valid_move? in those in between positions
-    #check_pieces.each do |piece|
+    obstructable_positions = []
+    if king_in_check.y_cord == check_piece.y_cord && king_in_check.x_cord > check_piece.x_cord
+      (check_piece.x_cord).upto(king_in_check.x_cord) do |x|
+        obstructable_positions << [x, king_in_check.y_cord]
+      end
+    elsif king_in_check.y_cord == check_piece.y_cord && king_in_check.x_cord < check_piece.x_cord
+      (king_in_check.x_cord).upto(check_piece.x_cord) do |x|
+        obstructable_positions << [x, king_in_check.y_cord]
+      end
+    elsif king_in_check.x_cord == check_piece.x_cord && king_in_check.y_cord > check_piece.y_cord
+      (check_piece.y_cord).upto(king_in_check.y_cord) do |y|
+        obstructable_positions << [king_in_check.x_cord, y]
+      end
+    elsif king_in_check.x_cord == check_piece.x_cord && king_in_check.y_cord < check_piece.y_cord
+      (king_in_check.y_cord).upto(check_piece.y_cord) do |y|
+        obstructable_positions << [king_in_check.x_cord, y]
+      end
+    elsif (king_in_check.x_cord - check_piece.x_cord) == (king_in_check.y_cord - check_piece.x_cord)
 
-    #the only check_pieces that can be "interfered" with are the rook, bishop, and the queen. With every other
-    #piece, this method won't matter (pawn, knight, king)
+    end
+    #this is going to be very similar to the is_obstructed logic
+    #we are going to find every situation where the king can be in check
+    #this method will only apply horizontally and diagonally
+    #we will loop through each of our pieces and see if any of them can make a valid move into the path of
+    #the check_piece
+    #so let's break this down into micro steps...
+    #first we need to find the check piece (check_pieces)
+    #then we need to find the positions that make up the path from the check_piece to the king in check
+    #we need to do this for every possible scenario
+    # => horizontal to the right, horizontal to the left
+    # => vertically upwards, vertically downwards
+    # => diagonally upper right, diagonally lower right, diagonally upper left, diagonally lower left
+    #whenever an obstructable position fits the description, we put it into an array obstructable_positions
+    #then we need to loop through each of our pieces and see which ones are allowed to move to these positions
+    #if any of our pieces fits this description then return true for method
+    #if after looping through everything, there is no piece that can obstruct the path, return false
+    #block_pieces << Pieces.where(game_id: id, color: current_turn).where.not(x_cord: nil, y_cord: nil)
 
-    block_pieces << Pieces.where(game_id: id, color: current_turn).where.not(x_cord: nil, y_cord: nil)
-    
-    #path from king to check_pieces
-    check_pieces.each do |pieces|
-      pieces.x_cord - check_x
-      pieces.y_cord - check_y
-    end
-    
-    if check_piece.is_obstructed?
-      return false
-    else
-      
-    end
   end
 
   # def method3? #checks if there's a piece that can capture the piece that's putting the king in check
@@ -155,42 +171,26 @@ class Game < ActiveRecord::Base
   #   return false
   # end
 
-  def check_pieces
-    check_pieces = []
-    Piece.where(game_id: id).each do |piece|
-      check_pieces << piece.valid_move?(check_x, check_y) if piece.color != current_turn
+  def check_piece
+    check_piece = []
+    Piece.where(game_id: id).where.not(color: current_turn).each do |piece|
+      check_piece << piece.valid_move?(check_x, check_y)
     end
+    check_piece
   end
 
   def king_in_check
-    King.find_by(game_id: id, color: current_turn)
+    king = King.find_by(game_id: id, color: current_turn)
+    king
   end
 
   def check_x
-    king_in_check.x_cord
+    x = king_in_check.x_cord
+    x
   end
 
   def check_y
-    king_in_check.y_cord
+    y = king_in_check.y_cord
+    y
   end
-
-  # def checkmate?
-  #   if check? == true
-  #     #1. if can't capture piece: if piece putting king in check coords are not valid move for any opposition, return true
-  #     #||
-  #     #2. if can't block piece: 
-  #     #||
-  #     #3. if king can't move safely: valid_moves for king still puts king in check 
-  #     king_in_check = King.where(game_id: id)
-  #     king_in_check.each do |king|
-  #       pieces.each do |piece|
-  #         if piece.color != king.color && piece.valid_move?(king.x_cord, king.y_cord)
-  #           king_in_check = King.where(game_id: id,  x_cord: king.x_cord, y_cord: king.y_cord)
-  #         end
-  #       end
-  #     end
-  #   else 
-  #     return false
-  #   end
-  # end
 end
