@@ -140,8 +140,14 @@ class Game < ActiveRecord::Base
       (king_in_check.y_cord).upto(check_piece.y_cord) do |y|
         obstructable_positions << [king_in_check.x_cord, y]
       end
-    elsif (king_in_check.x_cord - check_piece.x_cord) == (king_in_check.y_cord - check_piece.x_cord)
-
+    #diagonally upper right  
+    elsif (king_in_check.x_cord > check_piece.x_cord) &&
+     (king_in_check.x_cord - check_piece.x_cord) == (king_in_check.y_cord - check_piece.x_cord)
+      (check_piece.x_cord).upto(king_in_check.x_cord) do |x|
+        (check_piece.y_cord).upto(king_in_check.y_cord) do |y|
+          obstructable_positions << [x, y] if (x - check_piece.x_cord == y) - (check_piece.y_cord)
+        end
+      end
     end
     #this is going to be very similar to the is_obstructed logic
     #we are going to find every situation where the king can be in check
