@@ -92,98 +92,106 @@ class Game < ActiveRecord::Base
 
   def checkmate?
     return false unless check?
-    return false if capture_by_other_piece? #|| move_out_of_check? # || obstruct_out_of_check?
+    return false if capture_by_other_piece?
+    return false if move_out_of_check?
+    #return false if obstruct_out_of_check?
     true
   end
 
   def move_out_of_check?
-    king_in_check = King.find_by(game_id: id, color: current_turn)
+    king_in_check = King.find_by(game_id: self.id, color: self.current_turn)
     king_allowed_moves = 
-    [ [king_in_check.x_cord, king_in_check.y_cord + 1],
-      [king_in_check.x_cord, king_in_check.y_cord - 1],
-      [king_in_check.x_cord + 1, king_in_check.y_cord + 1],
-      [king_in_check.x_cord + 1, king_in_check.y_cord],
-      [king_in_check.x_cord + 1, king_in_check.y_cord - 1],
-      [king_in_check.x_cord - 1, king_in_check.y_cord + 1],
-      [king_in_check.x_cord - 1, king_in_check.y_cord],
-      [king_in_check.x_cord - 1, king_in_check.y_cord - 1]
+    [ [king_in_check.x_cord, (king_in_check.y_cord + 1)],
+      [king_in_check.x_cord, (king_in_check.y_cord - 1)],
+      [(king_in_check.x_cord + 1), (king_in_check.y_cord + 1)],
+      [(king_in_check.x_cord + 1), king_in_check.y_cord],
+      [(king_in_check.x_cord + 1), (king_in_check.y_cord - 1)],
+      [(king_in_check.x_cord - 1), (king_in_check.y_cord + 1)],
+      [(king_in_check.x_cord - 1), king_in_check.y_cord],
+      [(king_in_check.x_cord - 1), (king_in_check.y_cord - 1)]
       ]
+
     king_allowed_moves.each do |coord|
+      puts coord.first
+      puts coord.last
+      puts " "
+      puts "#{king_in_check.x_cord}, #{king_in_check.y_cord}"
+      puts " "
       return true if king_in_check.valid_move?(coord.first, coord.last)
     end
     false
   end
 
-  # def obstruct_out_of_check? #checks if there's any piece that can obstruct the path of the piece putting in check
-  #   obstructable_positions = []
-  #   king_in_check = King.find_by(game_id: id, color: current_turn)
-  #   check_piece = []
-  #   Piece.where(game_id: id).where.not(color: current_turn).each do |piece|
-  #     check_piece = piece if piece.valid_move?(king_in_check.x_cord, king_in_check.y_cord)
-  #   end
+  def obstruct_out_of_check? #checks if there's any piece that can obstruct the path of the piece putting in check
+    obstructable_positions = []
+    king_in_check = King.find_by(game_id: id, color: current_turn)
+    check_piece = []
+    Piece.where(game_id: id).where.not(color: current_turn).each do |piece|
+      check_piece = piece if piece.valid_move?(king_in_check.x_cord, king_in_check.y_cord)
+    end
 
-  #   if check_piece
-  #     if king_in_check.y_cord == check_piece.y_cord && king_in_check.x_cord > check_piece.x_cord
-  #       (check_piece.x_cord + 1).upto(king_in_check.x_cord - 1) do |x|
-  #         obstructable_positions << [x, king_in_check.y_cord]
-  #       end
-  #     elsif king_in_check.y_cord == check_piece.y_cord && king_in_check.x_cord < check_piece.x_cord
-  #       (king_in_check.x_cord + 1).upto(check_piece.x_cord - 1) do |x|
-  #         obstructable_positions << [x, king_in_check.y_cord]
-  #       end
-  #     elsif king_in_check.x_cord == check_piece.x_cord && king_in_check.y_cord > check_piece.y_cord
-  #       (check_piece.y_cord + 1).upto(king_in_check.y_cord - 1) do |y|
-  #         obstructable_positions << [king_in_check.x_cord, y]
-  #       end
-  #     elsif king_in_check.x_cord == check_piece.x_cord && king_in_check.y_cord < check_piece.y_cord
-  #       (king_in_check.y_cord + 1).upto(check_piece.y_cord - 1) do |y|
-  #         obstructable_positions << [king_in_check.x_cord, y]
-  #       end
-  #     #diagonally upper right  
-  #     elsif (king_in_check.x_cord > check_piece.x_cord) && (king_in_check.y_cord > check_piece.y_cord)
-  #       (check_piece.x_cord + 1).upto(king_in_check.x_cord - 1) do |x|
-  #         (check_piece.y_cord + 1).upto(king_in_check.y_cord - 1) do |y|
-  #           obstructable_positions << [x, y] if (x - check_piece.x_cord).abs == (y - check_piece.y_cord).abs
-  #         end
-  #       end
-  #     #diagonally upper left
-  #     elsif (king_in_check.x_cord < check_piece.x_cord) && (king_in_check.y_cord > check_piece.y_cord)
-  #       (king_in_check.x_cord + 1).upto(check_piece.x_cord - 1) do |x|
-  #         (check_piece.y_cord + 1).upto(king_in_check.y_cord - 1) do |y|
-  #           obstructable_positions << [x, y] if (x - king_in_check.x_cord).abs == (y - check_piece.y_cord).abs
-  #         end
-  #       end
-  #     #diagonally lower left
-  #     elsif (king_in_check.x_cord < check_piece.x_cord) && (king_in_check.y_cord < check_piece.y_cord)
-  #       (king_in_check.x_cord + 1).upto(check_piece.x_cord - 1) do |x|
-  #         (king_in_check.y_cord + 1).upto(check_piece.y_cord - 1) do |y|
-  #           obstructable_positions << [x, y] if (x - king_in_check.x_cord).abs == (y - king_in_check.y_cord).abs
-  #         end
-  #       end
-  #     #diagonally lower right
-  #     elsif (king_in_check.x_cord > check_piece.x_cord) && (king_in_check.y_cord < check_piece.y_cord)
-  #       (check_piece.x_cord + 1).upto(king_in_check - 1) do |x|
-  #         (king_in_check.y_cord + 1).upto(check_piece - 1) do |y|
-  #           obstructable_positions << [x, y] if (x - check_piece.x_cord).abs == (y - check_piece.y_cord).abs
-  #         end
-  #       end
-  #     end
+    if check_piece
+      if king_in_check.y_cord == check_piece.y_cord && king_in_check.x_cord > check_piece.x_cord
+        (check_piece.x_cord + 1).upto(king_in_check.x_cord - 1) do |x|
+          obstructable_positions << [x, king_in_check.y_cord]
+        end
+      elsif king_in_check.y_cord == check_piece.y_cord && king_in_check.x_cord < check_piece.x_cord
+        (king_in_check.x_cord + 1).upto(check_piece.x_cord - 1) do |x|
+          obstructable_positions << [x, king_in_check.y_cord]
+        end
+      elsif king_in_check.x_cord == check_piece.x_cord && king_in_check.y_cord > check_piece.y_cord
+        (check_piece.y_cord + 1).upto(king_in_check.y_cord - 1) do |y|
+          obstructable_positions << [king_in_check.x_cord, y]
+        end
+      elsif king_in_check.x_cord == check_piece.x_cord && king_in_check.y_cord < check_piece.y_cord
+        (king_in_check.y_cord + 1).upto(check_piece.y_cord - 1) do |y|
+          obstructable_positions << [king_in_check.x_cord, y]
+        end
+      #diagonally upper right  
+      elsif (king_in_check.x_cord > check_piece.x_cord) && (king_in_check.y_cord > check_piece.y_cord)
+        (check_piece.x_cord + 1).upto(king_in_check.x_cord - 1) do |x|
+          (check_piece.y_cord + 1).upto(king_in_check.y_cord - 1) do |y|
+            obstructable_positions << [x, y] if (x - check_piece.x_cord).abs == (y - check_piece.y_cord).abs
+          end
+        end
+      #diagonally upper left
+      elsif (king_in_check.x_cord < check_piece.x_cord) && (king_in_check.y_cord > check_piece.y_cord)
+        (king_in_check.x_cord + 1).upto(check_piece.x_cord - 1) do |x|
+          (check_piece.y_cord + 1).upto(king_in_check.y_cord - 1) do |y|
+            obstructable_positions << [x, y] if (x - king_in_check.x_cord).abs == (y - check_piece.y_cord).abs
+          end
+        end
+      #diagonally lower left
+      elsif (king_in_check.x_cord < check_piece.x_cord) && (king_in_check.y_cord < check_piece.y_cord)
+        (king_in_check.x_cord + 1).upto(check_piece.x_cord - 1) do |x|
+          (king_in_check.y_cord + 1).upto(check_piece.y_cord - 1) do |y|
+            obstructable_positions << [x, y] if (x - king_in_check.x_cord).abs == (y - king_in_check.y_cord).abs
+          end
+        end
+      #diagonally lower right
+      elsif (king_in_check.x_cord > check_piece.x_cord) && (king_in_check.y_cord < check_piece.y_cord)
+        (check_piece.x_cord + 1).upto(king_in_check.x_cord - 1) do |x|
+          (king_in_check.y_cord + 1).upto(check_piece.y_cord - 1) do |y|
+            obstructable_positions << [x, y] if (x - check_piece.x_cord).abs == (y - check_piece.y_cord).abs
+          end
+        end
+      end
 
-  #     friendly_pieces = Piece.where(game_id: id, color: current_turn)
-  #     friendly_pieces.each do |piece|
-  #       obstructable_positions.each do |position|
-  #         return true if piece.valid_move?(position[0], position[1])
-  #       end
-  #     end
-  #   end
+      friendly_pieces = Piece.where(game_id: id, color: current_turn)
+      friendly_pieces.each do |piece|
+        obstructable_positions.each do |position|
+          return true if piece.valid_move?(position[0], position[1])
+        end
+      end
+    end
 
-  #   false
-  # end
+    false
+  end
 
   def capture_by_other_piece?
     check_piece = []
-    king_in_check = King.find_by(game_id: id, color: current_turn)
-    Piece.where(game_id: id).where.not(color: current_turn).each do |piece|
+    king_in_check = King.find_by(game_id: self.id, color: self.current_turn)
+    Piece.where(game_id: self.id).where.not(color: self.current_turn).each do |piece|
       check_piece = piece if piece.valid_move?(king_in_check.x_cord, king_in_check.y_cord)
     end
 
