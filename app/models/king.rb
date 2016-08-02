@@ -17,8 +17,7 @@ class King < Piece
   end
 
   def not_next_to_king?(new_x, new_y)
-    opp_king = King.where(game_id: game_id).where.not(color: color)
-    possible_king = [
+    possible_king_positions = [
       [new_x, new_y + 1],
       [new_x + 1, new_y + 1],
       [new_x + 1, new_y],
@@ -29,8 +28,8 @@ class King < Piece
       [new_x - 1, new_y + 1]
     ]
 
-    opp_king.each do |king|
-      possible_king.each do |position|
+    King.where(game_id: game_id).where.not(color: color).each do |king|
+      possible_king_positions.each do |position|
         return false if king.x_cord == position[0] && king.y_cord == position[1]
       end
     end
