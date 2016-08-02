@@ -92,9 +92,7 @@ class Game < ActiveRecord::Base
 
   def checkmate?
     return false unless check?
-    return false if capture_by_other_piece?
-    return false if move_out_of_check?
-    #return false if obstruct_out_of_check?
+    return false if capture_by_other_piece? || move_out_of_check? || obstruct_out_of_check?
     true
   end
 
@@ -112,17 +110,12 @@ class Game < ActiveRecord::Base
       ]
 
     king_allowed_moves.each do |coord|
-      puts coord.first
-      puts coord.last
-      puts " "
-      puts "#{king_in_check.x_cord}, #{king_in_check.y_cord}"
-      puts " "
       return true if king_in_check.valid_move?(coord.first, coord.last)
     end
     false
   end
 
-  def obstruct_out_of_check? #checks if there's any piece that can obstruct the path of the piece putting in check
+  def obstruct_out_of_check?
     obstructable_positions = []
     king_in_check = King.find_by(game_id: id, color: current_turn)
     check_piece = []

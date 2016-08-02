@@ -115,7 +115,7 @@ RSpec.describe Game, type: :model do
       expect(g.checkmate?).to eq false
     end
 
-    it 'should return false if white piece can obstruct path of check_piece' do
+    it 'should return false if white rook can obstruct path of check_piece' do
       g = Game.create(id: 1, current_turn: "white")
       Piece.destroy_all(game_id: g.id)
       King.create(color:"white", x_cord: 7, y_cord: 0, game_id: g.id)
@@ -126,7 +126,40 @@ RSpec.describe Game, type: :model do
       expect(g.checkmate?).to eq false
     end
 
-    it 'should return false if both kings are not in checkmate' do
+    it 'should return false if white knight can obstruct path of check_piece' do
+      g = Game.create(id: 1, current_turn: "white")
+      Piece.destroy_all(game_id: g.id)
+      King.create(color:"white", x_cord: 7, y_cord: 0, game_id: g.id)
+      Knight.create(color: "black", x_cord: 7, y_cord: 2, game_id: g.id)
+      Queen.create(color:"black", x_cord: 6, y_cord: 2, game_id: g.id)
+      Bishop.create(color:"black", x_cord: 5, y_cord: 2, game_id: g.id)
+      Knight.create(color: "white", x_cord: 4, y_cord: 2, game_id: g.id)
+      expect(g.checkmate?).to eq false
+    end
+
+    it 'should return false if white queen can obstruct path of check_piece' do
+      g = Game.create(id: 1, current_turn: "white")
+      Piece.destroy_all(game_id: g.id)
+      King.create(color:"white", x_cord: 7, y_cord: 0, game_id: g.id)
+      Knight.create(color: "black", x_cord: 7, y_cord: 2, game_id: g.id)
+      Queen.create(color:"black", x_cord: 6, y_cord: 2, game_id: g.id)
+      Bishop.create(color:"black", x_cord: 5, y_cord: 2, game_id: g.id)
+      Queen.create(color: "white", x_cord: 2, y_cord: 1, game_id: g.id)
+      expect(g.checkmate?).to eq false
+    end
+
+    it 'should return false if white pawn can obstruct path of check_piece' do
+      g = Game.create(id: 1, current_turn: "white")
+      Piece.destroy_all(game_id: g.id)
+      King.create(color:"white", x_cord: 7, y_cord: 0, game_id: g.id)
+      Knight.create(color: "black", x_cord: 7, y_cord: 2, game_id: g.id)
+      Queen.create(color:"black", x_cord: 6, y_cord: 2, game_id: g.id)
+      Bishop.create(color:"black", x_cord: 5, y_cord: 2, game_id: g.id)
+      Pawn.create(color: "white", x_cord: 6, y_cord: 0, game_id: g.id)
+      expect(g.checkmate?).to eq false
+    end
+
+    it 'should return false if game is not in checkmate' do
       g = Game.create(id: 1)
       Piece.destroy_all(game_id: g.id)
       King.create(color: "white", x_cord: 7, y_cord: 7, game_id: g.id)
