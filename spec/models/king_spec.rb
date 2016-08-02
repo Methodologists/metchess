@@ -28,5 +28,13 @@ RSpec.describe King, type: :model do
           expect(king.valid_move?(before_and_after_coords.last.first, before_and_after_coords.last.last)).to eq result
       end
     end
+
+    it 'should return false if king moves next to other king' do
+      g = Game.create(id: 1)
+      Piece.destroy_all
+      k1 = King.create(game_id: g.id, color: "white", x_cord: 7, y_cord: 0)
+      k2 = King.create(game_id: g.id, color: "black", x_cord: 5, y_cord: 2)
+      expect(k1.valid_move?(6, 1)).to eq false
+    end
   end
 end

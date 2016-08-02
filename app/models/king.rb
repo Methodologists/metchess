@@ -1,8 +1,7 @@
 class King < Piece
-
-# valid move for king
   def valid_move?(new_x, new_y)
-    allowed_move?(new_x, new_y) && passes_king_rules?(new_x, new_y) && not_check?(new_x, new_y)
+    allowed_move?(new_x, new_y) && not_next_to_king?(new_x, new_y) && passes_king_rules?(new_x, new_y) &&
+     not_check?(new_x, new_y)
   end
 
   def passes_king_rules?(new_x, new_y)
@@ -10,12 +9,32 @@ class King < Piece
   end
 
   def not_check?(new_x, new_y)
-    pieces = Piece.where(game_id: game_id)
-    pieces.each do |piece|
-      return false if piece.color != color && piece.valid_move?(new_x, new_y)
+    Piece.where(game_id: game_id).where.not(color: color).each do |piece|
+      return false if piece.valid_move?(new_x, new_y)
     end
 
     return true
+  end
+
+  def not_next_to_king?(new_x, new_y)
+    opp_king = King.where(game_id: game_id).where.not(color: color)
+    possible_king = [
+      [new_x, new_y + 1],
+      [new_x + 1, new_y + 1],
+      [new_x + 1, new_y],
+      [new_x + 1, new_y - 1],
+      [new_x, new_y - 1],
+      [new_x - 1, new_y - 1],
+      [new_x - 1, new_y],
+      [new_x - 1, new_y + 1]
+    ]
+
+    opp_king.each do |king|
+      possible_king.each do |position|
+        return false if king.x_cord == position[0] && king.y_cord == position[1]
+      end
+    end
+    true
   end
 
 # image for king
