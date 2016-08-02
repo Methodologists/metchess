@@ -10,90 +10,191 @@
 
 <body>
 
+  <div id="wrap">
+      <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <%= link_to 'mChess', root_path, class: 'navbar-brand' %>
+        </div>
 
-  <nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <%= link_to 'mChess', root_path, class: 'navbar-brand' %>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <% if user_signed_in? %>
-          <li class="active">
-            <%= link_to 'My Games', user_path(current_user) %><span class="sr-only">(current)</span>
-          </li>
-        <% end %>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Create or Join a Game <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="#" data-toggle="modal" data-target="#createModal">Create a new game</a>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <% if user_signed_in? %>
+              <li class="active">
+                <%= link_to 'My Games', user_path(current_user) %><span class="sr-only">(current)</span>
               </li>
-              <li>
-                <% if user_signed_in? %>
-                  <%= link_to 'Join an existing game', games_path %>
-                <% else %>
-                  <%= link_to "Please log in to join a game", new_user_session_path %>
-                <% end %>
+            <% end %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Create or Join a Game <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="#" data-toggle="modal" data-target="#createModal">Create a new game</a>
+                  </li>
+                  <li>
+                    <% if user_signed_in? %>
+                      <%= link_to 'Join an existing game', games_path %>
+                    <% else %>
+                      <!-- Button trigger modal -->
+                      <li><%= link_to "Please log in to join a game", "#", data: {toggle: 'modal', target: '#myModalForLogIn'} %></li>
+                    <% end %>
+                  </li>
+                </ul>
               </li>
-            </ul>
-          </li>
-        
-        <li><a href="#">mChess Team</a></li>
-      </ul>
-      
-      <ul class="nav navbar-nav navbar-right">
-        <% if user_signed_in? %>
-          <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
-        <% else %>
-          <li><%= link_to "Log In", new_user_session_path %></li>
-          <li><%= link_to "Register", new_user_registration_path %></li>
-        <% end %>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+            
+            <li><a href="#">mChess Team</a></li>
+          </ul>
+          
+          <ul class="nav navbar-nav navbar-right">
+            <% if user_signed_in? %>
+              <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
+            <% else %>
+              <!-- Button trigger modal -->
+              <li><%= link_to "Log In", "#", data: {toggle: 'modal', target: '#myModalForLogIn'} %></li>
+               <!-- Button trigger modal for sign up-->
+              <li><%= link_to "Register", "#", data: {toggle: 'modal', target: '#myModal'} %></li>
+            <% end %>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
 
-  <% if notice.present? %>
-    <p class="alert alert-info"><%= notice %></p>
-  <% end %>
-  <% if alert.present? %>
-    <p class="alert alert-danger"><%= alert %></p>
-  <% end %>
+      <% if notice.present? %>
+        <p class="alert alert-info"><%= notice %></p>
+      <% end %>
+      <% if alert.present? %>
+        <p class="alert alert-danger"><%= alert %></p>
+      <% end %>
 
 
-  <%= yield %>
+      <%= yield %>
   
 
-<!-- Modal -->
-<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Shall We Play a Game?</h4>
-      </div>
-      <div class="modal-body">
-        <% if user_signed_in? %>
-          <%= render "games/new" %>
-        <% else %>
-         <%= link_to "Please log in to start a game", new_user_session_path %>
-        <% end %>
-      </div>
-      <div class="modal-footer">
+    <!-- Modal for create game -->
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Shall We Play a Game?</h4>
+          </div>
+          <div class="modal-body">
+            <% if user_signed_in? %>
+              <%= render "games/new" %>
+            <% else %>
+             <%= link_to "Please log in to start a game", new_user_session_path %>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
+  <!-- Modal for sign up -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h2 class="modal-title text-center" id="myModalLabel">Sign Up</h4>
+        </div>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <div class="modal-body">
+            <%= devise_error_messages! %>
+            <br />
+            <div class="field">
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true, class: 'col-xs-12' %>
+            </div>
+            <br />
+            <br />
+            <div class="field">
+              <%= f.label :password %>
+              <% if @minimum_password_length %>
+              <em>(<%= @minimum_password_length %> characters minimum)</em>
+              <% end %><br />
+              <%= f.password_field :password, autocomplete: "off", class: 'col-xs-12' %>
+            </div>
+            <br />
+            <br />
+            <div class="field">
+              <%= f.label :password_confirmation %><br />
+              <%= f.password_field :password_confirmation, autocomplete: "off", class: 'col-xs-12' %>
+            </div>
+            <br />
+            <br />
+
+          <%= render "devise/shared/links" %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Sign Up", class: 'btn btn-primary' %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal for Log In-->
+    <div class="modal fade" id="myModalForLogIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h2 class="modal-title text-center" id="myModalLabel">Log In</h4>
+          </div>
+          <br />
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="modal-body">
+              <div class="field">
+                <%= f.label :email %><br />
+                <%= f.email_field :email, autofocus: true, class: 'col-xs-12' %>
+              </div>
+              <br class="clr"/>
+              <br />
+              <div class="field">
+                <%= f.label :password %><br />
+                <%= f.password_field :password, autocomplete: "off", class: 'col-xs-12' %>
+              </div>
+              <br class="clr"/>
+              <br />
+              <% if devise_mapping.rememberable? -%>
+                <div class="field">
+                  <%= f.check_box :remember_me %>
+                  <%= f.label :remember_me %>
+                </div>
+              <% end -%>
+            <br class="clr"/>
+            <%= render "devise/shared/links" %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= f.submit "Log In", class: 'btn btn-primary' %>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <div id="footer">
+    <div class="container">
+      <div class='col-xs-12 col-sm-6'>
+        Made proudly by the Methodologists in the U.S.A.
+      </div>
+
+      <div class="col-xs-12 col-sm-6">
+        <%= link_to "About Team", "#", class: 'pull-right' %>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
