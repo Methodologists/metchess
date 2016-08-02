@@ -2,7 +2,6 @@ class Game < ActiveRecord::Base
   belongs_to :white_player, class_name: "User", foreign_key: "player_white_id"
   belongs_to :black_player, class_name: "User", foreign_key: "player_black_id"
   has_many :pieces
-  
   after_create :initialize_board!
   after_create :set_first_turn!
   
@@ -97,7 +96,7 @@ class Game < ActiveRecord::Base
   end
 
   def move_out_of_check?
-    king_in_check = King.find_by(game_id: self.id, color: self.current_turn)
+    king_in_check = King.find_by(game_id: id, color: current_turn)
     king_allowed_moves = 
     [ [king_in_check.x_cord, (king_in_check.y_cord + 1)],
       [king_in_check.x_cord, (king_in_check.y_cord - 1)],
@@ -177,14 +176,13 @@ class Game < ActiveRecord::Base
         end
       end
     end
-
     false
   end
 
   def capture_by_other_piece?
     check_piece = []
-    king_in_check = King.find_by(game_id: self.id, color: self.current_turn)
-    Piece.where(game_id: self.id).where.not(color: self.current_turn).each do |piece|
+    king_in_check = King.find_by(game_id: id, color: current_turn)
+    Piece.where(game_id: id).where.not(color: current_turn).each do |piece|
       check_piece = piece if piece.valid_move?(king_in_check.x_cord, king_in_check.y_cord)
     end
 
@@ -193,15 +191,6 @@ class Game < ActiveRecord::Base
         return true if piece.valid_move?(check_piece.x_cord, check_piece.y_cord)
       end
     end
-
     false
   end
-
-  # def check_piece
-  #   king_in_check = King.find_by(game_id: id, color: current_turn)
-  #   check_piece = []
-  #   Piece.where(game_id: id).where.not(color: current_turn).each do |piece|
-  #     check_piece << piece.valid_move?(king_in_check.x_cord, king_in_check.y_cord)
-  #   end
-  # end
 end
