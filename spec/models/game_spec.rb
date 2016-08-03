@@ -42,6 +42,10 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe 'game#castle' do
+
+  end
+
   describe '#set_first_turn' do
     it 'makes first turn white player' do
       game = Game.create

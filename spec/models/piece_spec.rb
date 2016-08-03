@@ -171,7 +171,64 @@ RSpec.describe Piece, type: :model do
         expect(piece.y_cord).to eq 1
       end
     end
+
+    context 'when castling' do
+      it 'should unsuccessfully short castle' do
+        g = Game.create(id: 1)
+        king = Piece.find_by(x_cord: 4, y_cord: 0, game_id: g.id)
+        rook = Piece.find_by(x_cord: 7, y_cord: 0, game_id: g.id)
+        king.move_to!(6, 0)
+        king.reload
+        rook.reload
+        expect(king.x_cord).to eq 4
+        expect(king.y_cord).to eq 0
+        expect(rook.x_cord).to eq 7
+        expect(rook.y_cord).to eq 0
+      end
+
+      it 'should unsuccessfully long castle' do
+        g = Game.create(id: 1)
+        king = Piece.find_by(x_cord: 4, y_cord: 0, game_id: g.id)
+        rook = Piece.find_by(x_cord: 0, y_cord: 0, game_id: g.id)
+        king.move_to!(2, 0)
+        king.reload
+        rook.reload
+        expect(king.x_cord).to eq 4
+        expect(king.y_cord).to eq 0
+        expect(rook.x_cord).to eq 0
+        expect(rook.y_cord).to eq 0
+      end
+
+      it 'should successfully short castle' do
+        g = Game.create(id: 1)
+        Piece.where(x_cord: 5, y_cord: 0, game_id: g.id).destroy_all
+        Piece.where(x_cord: 6, y_cord: 0, game_id: g.id).destroy_all
+        king = Piece.find_by(x_cord: 4, y_cord: 0, game_id: g.id)
+        rook = Piece.find_by(x_cord: 7, y_cord: 0, game_id: g.id)
+        king.move_to!(6, 0)
+        king.reload
+        rook.reload
+        expect(king.x_cord).to eq 6
+        expect(king.y_cord).to eq 0
+        expect(rook.x_cord).to eq 5
+        expect(rook.y_cord).to eq 0
+      end
+
+      it 'should successfully long castle' do
+        g = Game.create(id: 1)
+        Piece.where(x_cord: 3, y_cord: 0, game_id: g.id).destroy_all
+        Piece.where(x_cord: 2, y_cord: 0, game_id: g.id).destroy_all
+        Piece.where(x_cord: 1, y_cord: 0, game_id: g.id).destroy_all
+        king = Piece.find_by(x_cord: 4, y_cord: 0, game_id: g.id)
+        rook = Piece.find_by(x_cord: 0, y_cord: 0, game_id: g.id)
+        king.move_to!(2, 0)
+        king.reload
+        rook.reload
+        expect(king.x_cord).to eq 2
+        expect(king.y_cord).to eq 0
+        expect(rook.x_cord).to eq 3
+        expect(rook.y_cord).to eq 0
+      end
+    end
   end
-
-
 end
