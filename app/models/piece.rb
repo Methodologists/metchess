@@ -117,19 +117,6 @@ class Piece < ActiveRecord::Base
         not_original_position?(new_x, new_y)
   end
 
-  def castle!
-    #we want to allow the king to castle only when these game conditions are met...
-    # => king is not in check
-    # => king has not moved from original position yet
-    # => rook has not moved from original position yet
-    # => there are no pieces between the king and the rook
-    # => king does not move through any positions that are under attack by opposition
-    # => king is not in check after castling
-    #also there are 2 types of castling: long and short
-    #both castlings, however, move the king 2 spaces toward the rook and after the rook is placed 
-    #to the right of the king
-  end
-
   def position_exist?(new_x, new_y)
     new_x != nil && new_y != nil &&
       new_x >= 0 && new_x <= 7 && new_y >= 0 && new_y <= 7
