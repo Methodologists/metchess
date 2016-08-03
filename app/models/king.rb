@@ -17,16 +17,8 @@ class King < Piece
   end
 
   def not_next_to_king?(new_x, new_y)
-    possible_king_positions = [
-      [new_x, new_y + 1],
-      [new_x + 1, new_y + 1],
-      [new_x + 1, new_y],
-      [new_x + 1, new_y - 1],
-      [new_x, new_y - 1],
-      [new_x - 1, new_y - 1],
-      [new_x - 1, new_y],
-      [new_x - 1, new_y + 1]
-    ]
+    possible_king_positions = [[new_x, new_y + 1],[new_x + 1, new_y + 1],[new_x + 1, new_y],
+    [new_x + 1, new_y - 1],[new_x, new_y - 1],[new_x - 1, new_y - 1],[new_x - 1, new_y],[new_x - 1, new_y + 1]]
 
     King.where(game_id: game_id).where.not(color: color).each do |king|
       possible_king_positions.each do |position|
