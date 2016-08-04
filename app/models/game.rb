@@ -71,17 +71,13 @@ class Game < ActiveRecord::Base
   end
 
   def next_turn!
-    if self.current_turn == "white"
-      self.update_attributes(current_turn: "black")
-    elsif self.current_turn == "black"
-      self.update_attributes(current_turn: "white")
-    end
+    return update_attributes(current_turn: "black") if current_turn == "white"
+    return update_attributes(current_turn: "white") if current_turn == "black"
   end
 
 #end game check and checkmate
   def check?
-    kings = King.where(game_id: id)
-    kings.each do |king|
+    King.where(game_id: id).each do |king|
       pieces.each do |piece|
         return true if piece.color != king.color && piece.valid_move?(king.x_cord, king.y_cord)
       end
@@ -97,17 +93,10 @@ class Game < ActiveRecord::Base
 
   def move_out_of_check?
     king_in_check = King.find_by(game_id: id, color: current_turn)
-    king_allowed_moves = 
-    [ [king_in_check.x_cord, (king_in_check.y_cord + 1)],
-      [king_in_check.x_cord, (king_in_check.y_cord - 1)],
-      [(king_in_check.x_cord + 1), (king_in_check.y_cord + 1)],
-      [(king_in_check.x_cord + 1), king_in_check.y_cord],
-      [(king_in_check.x_cord + 1), (king_in_check.y_cord - 1)],
-      [(king_in_check.x_cord - 1), (king_in_check.y_cord + 1)],
-      [(king_in_check.x_cord - 1), king_in_check.y_cord],
-      [(king_in_check.x_cord - 1), (king_in_check.y_cord - 1)]
-      ]
-
+    king_allowed_moves = [[king_in_check.x_cord, (king_in_check.y_cord + 1)],[king_in_check.x_cord, (king_in_check.y_cord - 1)],
+      [(king_in_check.x_cord + 1), (king_in_check.y_cord + 1)],[(king_in_check.x_cord + 1), king_in_check.y_cord],
+      [(king_in_check.x_cord + 1), (king_in_check.y_cord - 1)],[(king_in_check.x_cord - 1), (king_in_check.y_cord + 1)],
+      [(king_in_check.x_cord - 1), king_in_check.y_cord],[(king_in_check.x_cord - 1), (king_in_check.y_cord - 1)]]
     king_allowed_moves.each do |coord|
       return true if king_in_check.valid_move?(coord.first, coord.last)
     end
