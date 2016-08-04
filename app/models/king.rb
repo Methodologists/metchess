@@ -19,8 +19,9 @@ class King < Piece
   end
 
   def move_to!(new_x, new_y)
-    #update coordinates of the king to new_x and new_y if castle conditions are met
-    #otherwise just super and go on to the move_to! method in the piece
+    if can_castle?
+      self.update(x_cord: new_x, y_cord: new_y)
+    end
 
     super
   end
@@ -51,7 +52,6 @@ class King < Piece
     update_castle_moved_status!
     return true if castle_moved == false
     return false if caslte_moved == true
-    #at the creation of the game, we need to update the castle_moved status to false
   end
 
   def update_castle_moved_time!
@@ -61,9 +61,7 @@ class King < Piece
   end
 
   def update_castle_moved_status!
-    if castle_moved_time == nil
-      self.update(castle_moved: false)
-    elsif castle_moved_time
+    if !castle_moved_time.nil?
       self.update(castle_moved: true)
     end
   end

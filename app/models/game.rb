@@ -5,7 +5,7 @@ class Game < ActiveRecord::Base
   
   after_create :initialize_board!
   after_create :set_first_turn!
-  
+  after_create :set_castle_moved_status!
   
   def initialize_board!
     make_pawns!
@@ -90,6 +90,12 @@ class Game < ActiveRecord::Base
   #turn states
   def set_first_turn!
     update_attributes(current_turn: "white")
+  end
+
+  def set_castle_moved_status!
+    King.where(game_id: id).each do |king|
+      king.update(castle_moved: false)
+    end
   end
 
   def next_turn!
