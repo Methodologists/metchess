@@ -47,7 +47,19 @@ class King < Piece
   end
 
   def moved_from_start_position?
-    
+    #we can add a column to the piece model called castle_moved with a boolean designation of true/false
+    #but what stops a person from moving the king and then moving it back to its start position?
+    # => under normal chess rules, this would not be allowed but in our game it would happen any way...
+    #maybe we can use the timestamps?
+    #there are 2 timestamp columns in the game model
+    # => created_at and updated_at
+    #just for example, what if created_at => 0 and we happen to move the king for one of our first moves?
+    #we'll say that if the king is not at x_cord: 4 and y_cord: 0 then change castle_moved to true
+    #we could also make a castle_moved_time as well, maybe that will fix things...
+    #so when king is moved, change castle_moved_time to updated_at time
+    #then we'll make an update_castle_status! method
+    # => if updated_at > castle_moved_time then do nothing and stop method
+    # => however, if this is not the case, then change the status to false
   end
 
 # image for king
