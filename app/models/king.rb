@@ -10,13 +10,13 @@ class King < Piece
   end
 
   def not_check?(new_x, new_y)
-    pieces = Piece.where(game_id: game_id).where.not(color: color)
-    pieces.each do |piece|
+    Piece.where(game_id: game_id).where.not(color: color).each do |piece|
       return false if piece.valid_move?(new_x, new_y)
     end
     true
   end
-
+  
+# logic for castling
   def move_to!(new_x, new_y)
     if can_castle?(new_x, new_y)
       self.update(x_cord: new_x, y_cord: new_y)
@@ -24,7 +24,6 @@ class King < Piece
       r2 = Rook.find_by(color: color, game_id: game_id, x_cord: 0).update(x_cord: 3) if new_x < 4
     end
     puts "king: #{x_cord}, #{y_cord}"
-
     super
   end
 
@@ -49,7 +48,6 @@ class King < Piece
     false
   end
 
-  #we need to check that the rook has also not moved as well...
   def not_moved_from_start_position?
     update_castle_moved_time!
     update_castle_moved_status!
@@ -58,15 +56,11 @@ class King < Piece
   end
 
   def update_castle_moved_time!
-    if !((x_cord == 4 && y_cord == 0) || (x_cord == 4 && y_cord == 7))
-      self.update(castle_moved_time: updated_at)
-    end
+    self.update(castle_moved_time: updated_at) if !((x_cord == 4 && y_cord == 0) || (x_cord == 4 && y_cord == 7))
   end
 
   def update_castle_moved_status!
-    if !castle_moved_time.nil?
-      self.update(castle_moved: true)
-    end
+    self.update(castle_moved: true) if !castle_moved_time.nil?
   end
 
 # image for king
