@@ -1,14 +1,39 @@
 $(function() {
 
-  $( ".piece" ).draggable({
-  containment: ".chessboard",
-  cursor: 'move',
-   });
+  $( ".draggable" ).draggable({
+    containment: ".chessboard",
+    cursor: 'move',
+    snap: '.droppable',
+    stack: '.draggable'
+  });
 
   $('td').droppable({
-    drop: 
+    drop: function(event, ui){
+      // $(ui.draggable).detach().css({top: 0,left: 0});
+      // $(this).replaceWith(ui.draggable);
+      var pieceId = ui.draggable.data('piece_id');
+      var gameTable = ui.draggable.parents('table');
+      var gameId = $(gameTable).data('game_id');
+      var updateUrl = "/games/" + gameId + "/pieces/" + pieceId;
+      var row = $(this).data('row');
+      var col = $(this).data('column');
+
+      $.ajax({
+        type: 'PUT',
+        url: updateUrl,
+        dataType: 'json', 
+        data: { piece: { 
+                y_cord: row, 
+                x_cord: col 
+        }},
+        complete: function(){
+          location.reload(true);
+        }
+      });
+    }
 
   });
+
 
 
 
@@ -26,29 +51,10 @@ $(function() {
    });
 
 
-$(function() {
-  $('.move_mode').draggable({ containment: '.board'});
-  $( '.piece' ).droppable({
-    drop: function( event, ui ) {
-      $(ui.draggable).detach().css({top: 0,left: 0});
-      $(this).replaceWith(ui.draggable);
-      var draggableId = ui.draggable.attr("id");
-      var droppableId = $(this).attr("pos");
-      var updateUrl = "/pieces/" + draggableId
-      var row = droppableId[0];
-      var col = droppableId[1];
-
-      $.ajax({
-        type: 'PUT',
-        url: updateUrl,
-        dataType: 'json',
-        data: { piece: { 
-                row_position: row, 
-                col_position: col 
-        }},
-        complete: function(){
-          location.reload(true);
-        }
-      });
-    }     
-  });
+// $(function() {
+//   $('.move_mode').draggable({ containment: '.board'});
+//   $( '.piece' ).droppable({
+//     drop: function( event, ui ) {
+//       
+//     }     
+//   });

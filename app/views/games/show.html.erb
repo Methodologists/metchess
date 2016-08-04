@@ -5,15 +5,15 @@
 
 <i><%= "White Player: #{@game.white_player.email}" %></i>
 
-<table class="chessboard">
+<table class="chessboard" data-game_id="<%= @game.id %>">
   <% 8.times do |row| %>
     <tr>
       <% 8.times do |column| %>
         <% piece = @game.pieces.where(x_cord: column, y_cord: row).first %>
         <% if piece %>
           <td data-row="<%= row %>" data-column="<%= column %>">
-            <div class="content piece droppable" data-piece_id="<%= piece.id %>">
-              <span class="draggable"><%= piece.image %></span>
+            <div class="content piece droppable" >
+              <span class="draggable" data-piece_id="<%= piece.id %>"><%= piece.image %></span>
             </div>
           </td>
         <% else %>
