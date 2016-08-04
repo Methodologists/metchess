@@ -10,52 +10,55 @@ class King < Piece
   end
 
   def not_check?(new_x, new_y)
-    pieces = Piece.where(game_id: game_id)
+    pieces = Piece.where(game_id: game_id).where.not(color: color)
     pieces.each do |piece|
-      return false if piece.color != color && piece.valid_move?(new_x, new_y)
+      return false if piece.valid_move?(new_x, new_y)
     end
-
-    return true
+    true
   end
 
   def move_to!(new_x, new_y)
-    if can_castle?
+    if can_castle?(new_x, new_y)
       self.update(x_cord: new_x, y_cord: new_y)
+      r1 = Rook.find_by(color: color, game_id: game_id, x_cord: 7).update(x_cord: 5) if new_x > 4
+      r2 = Rook.find_by(color: color, game_id: game_id, x_cord: 0).update(x_cord: 3) if new_x < 4
     end
+    puts "king: #{x_cord}, #{y_cord}"
 
     super
   end
 
   def can_castle?(new_x, new_y)
-    not_check?(new_x, new_y) && !game.check? && caslte_positioning? && not_moved_from_start_position?
+    castle_positioning? && not_check?(new_x, new_y) && !game.check? && not_moved_from_start_position?
   end
 
   def castle_positioning?
     if color == 'black'
-      return true if Piece.find_by(game_id: game_id, x_cord: 5, y_cord: 7) == nil &&
-       Piece.find_by(game_id: game_id, x_cord: 6, y_cord: 7) == nil
       return true if Piece.find_by(game_id: game_id, x_cord: 3, y_cord: 7) == nil &&
        Piece.find_by(game_id: game_id, x_cord: 2, y_cord: 7) == nil && 
         Piece.find_by(game_id: game_id, x_cord: 1, y_cord: 7) == nil
+      return true if Piece.find_by(game_id: game_id, x_cord: 5, y_cord: 7) == nil &&
+       Piece.find_by(game_id: game_id, x_cord: 6, y_cord: 7) == nil
     elsif color == 'white'
-      return true if Piece.find_by(game_id: game_id, x_cord: 5, y_cord: 0) == nil &&
-       Piece.find_by(game_id: game_id, x_cord: 6, y_cord: 0) == nil
       return true if Piece.find_by(game_id: game_id, x_cord: 3, y_cord: 0) == nil &&
        Piece.find_by(game_id: game_id, x_cord: 2, y_cord: 0) == nil && 
         Piece.find_by(game_id: game_id, x_cord: 1, y_cord: 0) == nil
+      return true if Piece.find_by(game_id: game_id, x_cord: 5, y_cord: 0) == nil &&
+       Piece.find_by(game_id: game_id, x_cord: 6, y_cord: 0) == nil
     end
     false
   end
 
+  #we need to check that the rook has also not moved as well...
   def not_moved_from_start_position?
     update_castle_moved_time!
     update_castle_moved_status!
     return true if castle_moved == false
-    return false if caslte_moved == true
+    return false if castle_moved == true
   end
 
   def update_castle_moved_time!
-    if !((x_cord == 4 && y_cord == 0) && () || (x_cord == 4 && y_cord == 7))
+    if !((x_cord == 4 && y_cord == 0) || (x_cord == 4 && y_cord == 7))
       self.update(castle_moved_time: updated_at)
     end
   end
