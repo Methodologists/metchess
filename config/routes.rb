@@ -4,6 +4,8 @@ Chess::Application.routes.draw do
   resources :games do
     resources :pieces
   end
+  get 'games/:id/:piece_id/:x_coord/:y_coord', :to => 'games#select', :as => 'select'
+  post 'games/:id/:piece_id/:x_coord/:y_coord', :to => 'games#move', :as => 'move'
   resources :users, only: :show
 
   # The priority is based upon order of creation: first created -> highest priority.
