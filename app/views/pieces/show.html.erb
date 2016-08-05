@@ -5,14 +5,14 @@
         <% piece = Piece.where(x_cord: column, y_cord: row, game_id: @game).first %>
         <% if piece %>
           <td class="<%= 'highlighted' if @piece == piece %>" data-row="<%= row %>" data-column="<%= column %>">
-            <div class="content piece draggable droppable" data-piece_id="<%= piece.id %>">
-              <%= link_to piece.image, game_piece_path(game_id: @game, piece:{id: piece.id, new_x: column, new_y: row}), remote: true, method: :put %>
+            <div class="content piece" data-piece_id="<%= piece.id %>">
+              <%= link_to piece.image, game_piece_path(game_id: @game, piece:{id: piece.id, new_x: column, new_y: row}), method: :put %>
             </div>   
           </td>
         <% else %>
           <td data-row="<%= row %>" data-column="<%= column %>">
-            <div class="content piece draggable droppable">
-              <%= link_to '&nbsp;'.html_safe, game_piece_path(game_id: @game, piece:{new_x: column, new_y: row}), remote: true, method: :put %>
+            <div class="content">
+              <%= link_to '&nbsp;'.html_safe, game_piece_path(game_id: @game, piece:{new_x: column, new_y: row}), method: :put %>
             </div>
           </td>
         <% end %>
@@ -20,29 +20,3 @@
     </tr>
   <% end %>
 </table>
-
-
- <script>
-$(function() {
-
-$("button").click(function(){
-        $("#div1").load("demo_test.txt #p1");
-    });
-});
-    $( ".draggable" ).draggable({
-    containment: ".chessboard",
-    handle: "a",
-    revert: "invaild",
-     });
-    $( ".draggable a" ).disableSelection();
-     $('td').droppable({
-       drop: function(ev, ui) {
-            var dropped = ui.draggable;
-            var droppedOn = $(this);
-           $(droppedOn).droppable("disable");
-           $(dropped).parent().droppable("enable");
-            $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
-        }
-      });
-     });
-</script>

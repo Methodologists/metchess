@@ -49,12 +49,3 @@ $(function() {
   //     }
   //   });
    });
-
-
-// $(function() {
-//   $('.move_mode').draggable({ containment: '.board'});
-//   $( '.piece' ).droppable({
-//     drop: function( event, ui ) {
-//       
-//     }     
-//   });
