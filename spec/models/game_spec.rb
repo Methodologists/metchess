@@ -18,6 +18,26 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe 'game#stalemate' do
+    it 'returns true when game is a stalemate' do
+      g = Game.create(id: 1, current_turn: 'black')
+      Piece.destroy_all
+      King.create(x_cord: 5, y_cord: 7, game_id: g.id, color: 'black')
+      Bishop.create(x_cord: 5, y_cord: 6, game_id: g.id, color: 'white')
+      King.create(x_cord: 5, y_cord: 5, game_id: g.id, color: 'white')
+      expect(g.stalemate?).to eq true
+    end
+
+    it 'returns false when game is not a stalemate' do
+      g = Game.create(id: 1, current_turn: 'black')
+      Piece.destroy_all
+      King.create(x_cord: 5, y_cord: 7, game_id: g.id, color: 'black')
+      Bishop.create(x_cord: 5, y_cord: 5, game_id: g.id, color: 'white')
+      King.create(x_cord: 5, y_cord: 4, game_id: g.id, color: 'white')
+      expect(g.stalemate?).to eq false
+    end
+  end
+
   describe '#check?' do
     it 'should return true if either king is in check' do
       g = Game.create

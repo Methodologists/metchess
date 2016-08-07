@@ -80,7 +80,7 @@ class Game < ActiveRecord::Base
 
   def stalemate?
     return false if check?
-    king = King.find(game_id: id, color: current_turn)
+    king = King.find_by(game_id: id, color: current_turn)
     8.times do |x|
       8.times do |y|
         return false if king.valid_move?(x, y)
