@@ -68,26 +68,31 @@ class Game < ActiveRecord::Base
   end
 
   def check?
-    kings = King.where(game_id: id)
+    kings = King.where(game_id: id, color: current_turn)
     kings.each do |king|
-      pieces.each do |piece|
-        return true if piece.color != king.color && piece.valid_move?(king.x_cord, king.y_cord)
+      pieces.where.not(color: current_turn).each do |piece|
+        # puts "king: #{king.x_cord}, #{king.y_cord}"
+        # puts "#{piece.x_cord}, #{piece.y_cord}"
+        return true if piece.valid_move?(king.x_cord, king.y_cord)
       end
     end
-
-    return false
+    false
   end
 
-  def stalemate?
-    return false if check?
-    king = King.find_by(game_id: id, color: current_turn)
-    8.times do |x|
-      8.times do |y|
-        return false if king.valid_move?(x, y)
-      end
-    end
-    true
-  end
+  # def stalemate?
+  #   puts "#{check?}"
+  #   return false if check?
+  #   king = King.find_by(game_id: id, color: current_turn)
+  #   puts "#{king.color}"
+  #   puts "#{current_turn}"
+  #   8.times do |x|
+  #     8.times do |y|
+  #       puts "#{x}, #{y}"
+  #       return false if king.valid_move?(x, y)
+  #     end
+  #   end
+  #   true
+  # end
 
   #game states
   def pending_opponent?
