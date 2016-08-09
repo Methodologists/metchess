@@ -79,8 +79,11 @@ RSpec.describe Game, type: :model do
       g.update_attributes(current_turn: 'black')
       king = King.create(color: 'black', x_cord: 5, y_cord: 7, game_id: g.id)
       Pawn.create(color: 'white', x_cord: 5, y_cord: 6, game_id: g.id)
-      Queen.create(color: 'white', x_cord: 5, y_cord: 5, game_id: g.id)
+      Queen.create(color: 'white', x_cord: 0, y_cord: 0, game_id: g.id)
       expect(g.check?).to eq false
+      #the problem in this case is the pawn...
+      #this returns true for check because the pawn can move to the position right in front of it...
+      #what if I adjusted the pawn valid_move method and added is_obstructed to it?
     end
 
     # it 'should return false if white king is in path of white rook' do
