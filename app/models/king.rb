@@ -12,8 +12,7 @@ class King < Piece
     Piece.where(game_id: game_id).where.not(color: color).each do |piece|
       return false if piece.valid_move?(new_x, new_y)
     end
-
-    return true
+    true
   end
 
   def not_next_to_king?(new_x, new_y)
@@ -22,9 +21,6 @@ class King < Piece
 
     King.where(game_id: game_id).where.not(color: color).each do |king|
       possible_king_positions.each do |position|
-        puts "opposite_king: #{king.x_cord}, #{king.y_cord}"
-        puts "possible_current_king: #{position[0]}, #{position[1]}"
-        puts "#{king.x_cord == position[0]}, #{(king.y_cord == position[1])}"
         return false if (king.y_cord == position[1]) && (king.x_cord == position[0])
       end
     end
