@@ -12,7 +12,7 @@
         <% piece = @game.pieces.where(x_cord: column, y_cord: row).first %>
         <% if piece %>
           <td data-row="<%= row %>" data-column="<%= column %>">
-            <div class="content piece droppable" >
+            <div class="content piece droppable">
               <span class="draggable" data-piece_id="<%= piece.id %>"><%= piece.image %></span>
             </div>
           </td>
