@@ -12,14 +12,27 @@ before_action :authenticate_user!, only: [:update]
     @piece = Piece.find(params[:id])
 
     if @piece.my_turn? == false || my_piece? == false
-      flash[:alert] = "It's not your turn, you barnacle!"
-    elsif @piece.is_obstructed?(piece_params[:new_x].to_i, piece_params[:new_y].to_i) || 
-        !@piece.valid_move?(piece_params[:new_x].to_i, piece_params[:new_y].to_i)
-      flash[:alert] = "Sorry, can't move there"
+      error = "It's not your turn, you barnacle!"
+    elsif @piece.is_obstructed?(piece_params[:new_x].to_i, piece_params[:new_y].to_i)
+      error = "Obstructed is being a bugger."
+    elsif !@piece.valid_move?(piece_params[:new_x].to_i, piece_params[:new_y].to_i)
+      error = "Sorry, can't move there"
     else
       @piece.move_to!(piece_params[:new_x], piece_params[:new_y])
     end
-      redirect_to game_path(@game)
+    respond_to do |format|
+      format.html {
+        flash[:alert] = error
+        redirect_to game_path(@game)
+      }
+      format.js {
+        if error
+          render json: {error: error}, status: :unprocessable_entity
+        else
+          render json: {response: 'huzzah!'}, status: :ok
+        end
+      }
+    end
   end
 
   def my_piece?
