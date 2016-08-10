@@ -3,7 +3,7 @@ class Piece < ActiveRecord::Base
 
 	def is_obstructed?(new_x, new_y)
     return false if type == "Knight"
-    if allowed_move?(new_x, new_y)
+    #if allowed_move?(new_x, new_y)
       delta_y = []
       delta_x = []
       deltas = []
@@ -72,7 +72,7 @@ class Piece < ActiveRecord::Base
         deltas.each do |i|
           occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
         end
-      end
+      #end
 
       if occupied.include?(true)
         return true
