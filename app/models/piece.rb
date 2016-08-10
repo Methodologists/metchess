@@ -133,17 +133,4 @@ class Piece < ActiveRecord::Base
   def my_turn?
     self.color == game.current_turn
   end
-
-  def not_check?(new_x, new_y)
-    pieces = Piece.where(game_id: game_id)
-    pieces.each do |piece|
-      return false if piece.color != color && piece.valid_move?(new_x, new_y)
-    end
-    return true
-  end
-
-
- 
 end
-
-
