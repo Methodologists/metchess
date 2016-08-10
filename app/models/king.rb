@@ -22,7 +22,10 @@ class King < Piece
 
     King.where(game_id: game_id).where.not(color: color).each do |king|
       possible_king_positions.each do |position|
-        return false if king.x_cord == position[0] && king.y_cord == position[1]
+        puts "opposite_king: #{king.x_cord}, #{king.y_cord}"
+        puts "possible_current_king: #{position[0]}, #{position[1]}"
+        puts "#{king.x_cord == position[0]}, #{(king.y_cord == position[1])}"
+        return false if (king.y_cord == position[1]) && (king.x_cord == position[0])
       end
     end
     true
