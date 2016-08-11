@@ -113,21 +113,13 @@ class Game < ActiveRecord::Base
 
     if check_piece
       if king_in_check.y_cord == check_piece.y_cord && king_in_check.x_cord > check_piece.x_cord
-        (check_piece.x_cord + 1).upto(king_in_check.x_cord - 1) do |x|
-          obstructable_positions << [x, king_in_check.y_cord]
-        end
+        (check_piece.x_cord + 1).upto(king_in_check.x_cord - 1).each {|x| obstructable_positions << [x, king_in_check.y_cord]}
       elsif king_in_check.y_cord == check_piece.y_cord && king_in_check.x_cord < check_piece.x_cord
-        (king_in_check.x_cord + 1).upto(check_piece.x_cord - 1) do |x|
-          obstructable_positions << [x, king_in_check.y_cord]
-        end
+        (king_in_check.x_cord + 1).upto(check_piece.x_cord - 1).each {|x| obstructable_positions << [x, king_in_check.y_cord]}
       elsif king_in_check.x_cord == check_piece.x_cord && king_in_check.y_cord > check_piece.y_cord
-        (check_piece.y_cord + 1).upto(king_in_check.y_cord - 1) do |y|
-          obstructable_positions << [king_in_check.x_cord, y]
-        end
+        (check_piece.y_cord + 1).upto(king_in_check.y_cord - 1).each {|y| obstructable_positions << [king_in_check.x_cord, y]}
       elsif king_in_check.x_cord == check_piece.x_cord && king_in_check.y_cord < check_piece.y_cord
-        (king_in_check.y_cord + 1).upto(check_piece.y_cord - 1) do |y|
-          obstructable_positions << [king_in_check.x_cord, y]
-        end
+        (king_in_check.y_cord + 1).upto(check_piece.y_cord - 1).each {|y| obstructable_positions << [king_in_check.x_cord, y]}
       #diagonally upper right  
       elsif (king_in_check.x_cord > check_piece.x_cord) && (king_in_check.y_cord > check_piece.y_cord)
         (check_piece.x_cord + 1).upto(king_in_check.x_cord - 1) do |x|
