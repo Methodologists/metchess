@@ -169,6 +169,7 @@ RSpec.describe Piece, type: :model do
         b = Bishop.find_by(game_id: g.id, x_cord: 2, y_cord: 7)
         Pawn.find_by(x_cord: 3, y_cord: 6).delete
         expect(b.is_obstructed?(7, 2)).to eq false
+        #path for bishop: (2,7) -> (3,6) -> (4,5) -> (5,4) -> (6,3) -> (7,2)
       end
 
       it "returns false if path for queen is clear moving up left diagonally" do
@@ -178,6 +179,7 @@ RSpec.describe Piece, type: :model do
         Pawn.find_by(x_cord: 4, y_cord: 6).delete
         q.reload
         expect(q.is_obstructed?(3, 7)).to eq false
+        #path for queen: (7,3) -> (6,4) -> (5,5) -> (4,6) -> (3,7)
       end
 
       it "returns false if path for bishop is clear moving up left diagonally" do

@@ -56,25 +56,22 @@ class Piece < ActiveRecord::Base
 
       # / DIAGONAL: down, up / movement is happening in upper left to lower right or vice versa
       elsif x_cord - new_x == -(y_cord - new_y)
-        if x_cord - new_x > 0
+        if x_cord - new_x > 0 #moving left and up
           (new_x..x_cord).each {|x| delta_x << x}
-          (y_cord..new_y).each {|y| delta_y << y}
-        elsif x_cord - new_x < 0
+          (new_y.downto(y_cord)).each {|y| delta_y << y}
+        elsif x_cord - new_x < 0 #moving right and down
           (x_cord..new_x).each {|x| delta_x << x}
-          (new_y..y_cord).each {|y| delta_y << y}
+          (y_cord.downto(new_y)).each {|y| delta_y << y}
         end
 
-        puts "delta x: #{delta_x}"
-        puts "delta y: #{delta_y}"
         pop_and_shift(delta_x)
         pop_and_shift(delta_y)
-        # delta_x.each_with_index do |x, column|
-        #   delta_y.each_with_index do |y, row|
-        #     deltas << [x, y] if column == row #what if position in path is (3,2)?
-        #   end
-        # end
+        delta_x.each_with_index do |x, column|
+          delta_y.each_with_index do |y, row|
+            deltas << [x, y] if column == row #what if position in path is (3,2)?
+          end
+        end
         
-        puts "deltas: #{deltas}"
         deltas.each do |i|
           occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
         end
