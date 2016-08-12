@@ -2,6 +2,8 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
 	def is_obstructed?(new_x, new_y)
+    puts "#{Piece.where(x_cord: new_x, y_cord: new_y).present?}"
+    return true if Piece.where(game_id: game_id, x_cord: new_x, y_cord: new_y).present?
     return false if type == "Knight"
     if allowed_move?(new_x, new_y)
       delta_y = []

@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe Piece, type: :model do
   describe "#is_obstructed" do
     context "when moving horizontally" do      
-      it "returns false if moving only 1 space -- nothing in between to check" do
+      it "returns true if moving only 1 space to occupied space" do
         game1= Game.create(id: 1)
         rook = Piece.find_by(type: "Rook", x_cord: 0, y_cord: 0)
-        expect(rook.is_obstructed?(1,0)).to eq false
+        expect(rook.is_obstructed?(1,0)).to eq true
       end
 
       it "returns true if something is in the way in between to the right" do
@@ -131,10 +131,10 @@ RSpec.describe Piece, type: :model do
     end
 
     context "when moving diagonally (graph y= -x)" do
-      it "returns false if moving only 1 space -- nothing in between to check" do
+      it "returns true if moving only 1 space into occupied position" do
         game1= Game.create(id: 1)
         bishop = Piece.find_by(type: "Bishop", x_cord: 5, y_cord: 0)
-        expect(bishop.is_obstructed?(4,1)).to eq false
+        expect(bishop.is_obstructed?(4,1)).to eq true
       end
 
       it "returns true if something is in the way in between moving up" do
