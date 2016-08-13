@@ -2,10 +2,9 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
 	def is_obstructed?(new_x, new_y)
-    puts "#{Piece.where(x_cord: new_x, y_cord: new_y).present?}"
     return true if Piece.where(game_id: game_id, x_cord: new_x, y_cord: new_y).present?
     return false if type == "Knight"
-    if allowed_move?(new_x, new_y)
+    return true unless allowed_move?(new_x, new_y)
       delta_y = []
       delta_x = []
       deltas = []
@@ -19,9 +18,7 @@ class Piece < ActiveRecord::Base
          (x_cord..new_x).each {|x| delta_x << x}
         end
         pop_and_shift(delta_x)
-        delta_x.each do |delta_x|
-          occupied << Piece.where(x_cord: delta_x, y_cord: y_cord).present?
-        end
+        delta_x.each {|delta_x| occupied << Piece.where(x_cord: delta_x, y_cord: y_cord).present?}
 
       # | VERTICAL: down, up |
       elsif x_cord == new_x && y_cord != new_y
@@ -31,9 +28,7 @@ class Piece < ActiveRecord::Base
           (y_cord..new_y).each {|y| delta_y << y}
         end
         pop_and_shift(delta_y)
-        delta_y.each do |delta_x|
-          occupied << Piece.where(x_cord: x_cord, y_cord: delta_y).present?
-        end
+        delta_y.each {|delta_y| occupied << Piece.where(x_cord: x_cord, y_cord: delta_y).present?}
 
       # / DIAGONAL: down, up / movement is happening in lower left to upper right or vice versa
       elsif x_cord - new_x == y_cord - new_y
@@ -52,9 +47,7 @@ class Piece < ActiveRecord::Base
             deltas << [x, y] if column == row
           end
         end
-        deltas.each do |i|
-          occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
-        end
+        deltas.each {|i| occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?}
 
       # / DIAGONAL: down, up / movement is happening in upper left to lower right or vice versa
       elsif x_cord - new_x == -(y_cord - new_y)
@@ -73,19 +66,11 @@ class Piece < ActiveRecord::Base
             deltas << [x, y] if column == row #what if position in path is (3,2)?
           end
         end
-        
-        deltas.each do |i|
-          occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
-        end
+        deltas.each {|i| occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?}
       end
 
-      if occupied.include?(true)
-        return true
-      else
-        return false
-      end
-    end
-    # move not allowed
+      return true if occupied.include?(true)
+      false
   end
 
   def pop_and_shift(array)
@@ -135,5 +120,3 @@ class Piece < ActiveRecord::Base
     self.color == game.current_turn
   end
 end
-
-
