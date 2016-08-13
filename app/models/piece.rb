@@ -2,7 +2,7 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
 	def is_obstructed?(new_x, new_y)
-    return true if Piece.where(game_id: game_id, x_cord: new_x, y_cord: new_y).present?
+    return true if Piece.where(game_id: game_id, color: color, x_cord: new_x, y_cord: new_y).present?
     return false if type == "Knight"
     return true unless allowed_move?(new_x, new_y)
       delta_y = []
@@ -63,7 +63,7 @@ class Piece < ActiveRecord::Base
         pop_and_shift(delta_y)
         delta_x.each_with_index do |x, column|
           delta_y.each_with_index do |y, row|
-            deltas << [x, y] if column == row #what if position in path is (3,2)?
+            deltas << [x, y] if column == row 
           end
         end
         deltas.each {|i| occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?}
