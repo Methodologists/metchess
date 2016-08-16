@@ -166,6 +166,29 @@ RSpec.describe Game, type: :model do
       King.create(color: "black", x_cord: 0, y_cord: 0, game_id: g.id)
       expect(g.checkmate?).to eq false
     end 
+
+    it 'should return true if black king is put in checkmate by rook' do
+      g = Game.create(id: 1)
+      g.update(current_turn: "black")
+      Piece.destroy_all(game_id: g.id)
+      Rook.create(color: "white", x_cord: 1, y_cord: 7, game_id: g.id)
+      King.create(color: "white", x_cord: 0, y_cord: 0, game_id: g.id)
+      King.create(color: "black", x_cord: 7, y_cord: 7, game_id: g.id)
+      Pawn.create(color: "black", x_cord: 7, y_cord: 6, game_id: g.id)
+      Pawn.create(color: "black", x_cord: 6, y_cord: 6, game_id: g.id)
+      Pawn.create(color: "black", x_cord: 5, y_cord: 6, game_id: g.id)
+      expect(g.checkmate?).to eq true
+    end
+
+    it 'should return true if black king is put in checkmate by queen' do
+      g = Game.create(id: 1)
+      g.update(current_turn: "black")
+      Piece.destroy_all(game_id: g.id)
+      King.create(game_id: g.id, color: "black", x_cord: 6, y_cord: 7)
+      King.create(game_id: g.id, color: "white", x_cord: 5, y_cord: 5)
+      Queen.create(game_id: g.id, color: "white", x_cord: 6, y_cord: 6)
+      expect(g.checkmate?).to eq true
+    end
   end
 
   describe '#set_first_turn' do
