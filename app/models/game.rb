@@ -68,11 +68,8 @@ class Game < ActiveRecord::Base
   end
 
   def check?
-    kings = King.where(game_id: id, color: current_turn)
-    kings.each do |king|
+    King.where(game_id: id, color: current_turn).each do |king|
       pieces.where.not(color: current_turn).each do |piece|
-        # puts "king: #{king.x_cord}, #{king.y_cord}"
-        # puts "#{piece.x_cord}, #{piece.y_cord}"
         return true if piece.valid_move?(king.x_cord, king.y_cord)
       end
     end

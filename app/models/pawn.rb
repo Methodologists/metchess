@@ -7,11 +7,16 @@ class Pawn < Piece
   end
 
   def passes_pawn_rules?(x, y)
-    return true if two_squares_forward?(x, y)
-    return true if one_square_forward?(x, y)
+    return true if two_squares_forward?(x, y) && allowed_vertical_move?(x, y)
+    return true if one_square_forward?(x, y) && allowed_vertical_move?(x, y)
     return true if diagonal_move?(x, y)
+    false
+  end
 
-    return false
+  #Checks if pawn can move to position occupied by opposition piece
+  def allowed_vertical_move?(new_x, new_y)
+    return true if (new_x - x_cord).abs == 1 && y_cord == new_y && Piece.find_by(game_id: game_id, x_cord: new_x, y_cord: new_y).nil?
+    false
   end
 
   #Checks if position is 2 squares in front of Pawn
