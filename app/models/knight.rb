@@ -2,7 +2,7 @@ class Knight < Piece
 
 # valid move for knight
   def valid_move?(new_x, new_y)
-    allowed_move?(new_x, new_y) && passes_knight_rules?(new_x, new_y)
+    allowed_move?(new_x, new_y) && passes_knight_rules?(new_x, new_y) && !is_obstructed?(new_x, new_y)
   end
 
   def passes_knight_rules?(new_x, new_y)

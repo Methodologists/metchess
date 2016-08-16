@@ -2,8 +2,9 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
 	def is_obstructed?(new_x, new_y)
+    return true if Piece.where(game_id: game_id, color: color, x_cord: new_x, y_cord: new_y).present?
     return false if type == "Knight"
-    if allowed_move?(new_x, new_y)
+    return true unless allowed_move?(new_x, new_y)
       delta_y = []
       delta_x = []
       deltas = []
@@ -17,9 +18,7 @@ class Piece < ActiveRecord::Base
          (x_cord..new_x).each {|x| delta_x << x}
         end
         pop_and_shift(delta_x)
-        delta_x.each do |delta_x|
-          occupied << Piece.where(x_cord: delta_x, y_cord: y_cord).present?
-        end
+        delta_x.each {|delta_x| occupied << Piece.where(x_cord: delta_x, y_cord: y_cord).present?}
 
       # | VERTICAL: down, up |
       elsif x_cord == new_x && y_cord != new_y
@@ -29,11 +28,9 @@ class Piece < ActiveRecord::Base
           (y_cord..new_y).each {|y| delta_y << y}
         end
         pop_and_shift(delta_y)
-        delta_y.each do |delta_x|
-          occupied << Piece.where(x_cord: x_cord, y_cord: delta_y).present?
-        end
+        delta_y.each {|delta_y| occupied << Piece.where(x_cord: x_cord, y_cord: delta_y).present?}
 
-      # / DIAGONAL: down, up /
+      # / DIAGONAL: down, up / movement is happening in lower left to upper right or vice versa
       elsif x_cord - new_x == y_cord - new_y
         if x_cord - new_x > 0
           (new_x..x_cord).each {|x| delta_x << x}
@@ -42,6 +39,7 @@ class Piece < ActiveRecord::Base
           (x_cord..new_x).each {|x| delta_x << x}
           (y_cord..new_y).each {|y| delta_y << y}
         end
+
         pop_and_shift(delta_x)
         pop_and_shift(delta_y)
         delta_x.each_with_index do |x, column|
@@ -49,41 +47,31 @@ class Piece < ActiveRecord::Base
             deltas << [x, y] if column == row
           end
         end
-        deltas.each do |i|
-          occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
-        end
+        deltas.each {|i| occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?}
 
-      # / DIAGONAL: down, up /
+      # / DIAGONAL: down, up / movement is happening in upper left to lower right or vice versa
       elsif x_cord - new_x == -(y_cord - new_y)
-        if x_cord - new_x > 0
+        if x_cord - new_x > 0 #moving left and up
           (new_x..x_cord).each {|x| delta_x << x}
-          (y_cord..new_y).each {|y| delta_y << y}
-        elsif x_cord - new_x < 0
+          (new_y.downto(y_cord)).each {|y| delta_y << y}
+        elsif x_cord - new_x < 0 #moving right and down
           (x_cord..new_x).each {|x| delta_x << x}
-          (new_y..y_cord).each {|y| delta_y << y}
+          (y_cord.downto(new_y)).each {|y| delta_y << y}
         end
+
         pop_and_shift(delta_x)
         pop_and_shift(delta_y)
         delta_x.each_with_index do |x, column|
           delta_y.each_with_index do |y, row|
-            deltas << [x, y] if column == row
+            deltas << [x, y] if column == row 
           end
         end
-        deltas.each do |i|
-          occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?
-        end
+        deltas.each {|i| occupied << Piece.where(x_cord: i.first, y_cord: i.last).present?}
       end
 
-      if occupied.include?(true)
-        return true
-      else
-        return false
-      end
-
-    end
-    # move not allowed
+      return true if occupied.include?(true)
+      false
   end
-
 
   def pop_and_shift(array)
     array.shift
@@ -94,8 +82,6 @@ class Piece < ActiveRecord::Base
   def move_to!(new_x, new_y)
       piece_to_capture = Piece.find_by(x_cord: new_x, y_cord: new_y, game_id: game_id)
       return if piece_to_capture && own_piece?(piece_to_capture)
-
-
       # if the rest of this method is executed, either
       #   * piece_to_capture is nil
       #   * piece_to_capture is opposite color
@@ -133,7 +119,4 @@ class Piece < ActiveRecord::Base
   def my_turn?
     self.color == game.current_turn
   end
-
 end
-
-

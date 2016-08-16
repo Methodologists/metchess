@@ -2,7 +2,7 @@ class Queen < Piece
 
 # valid move for queen
   def valid_move?(new_x, new_y)
-    allowed_move?(new_x, new_y) && passes_queen_rules?(new_x, new_y)
+    allowed_move?(new_x, new_y) && passes_queen_rules?(new_x, new_y) && !is_obstructed?(new_x, new_y)
   end
 
   def passes_queen_rules?(x, y)
