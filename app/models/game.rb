@@ -76,20 +76,20 @@ class Game < ActiveRecord::Base
     false
   end
 
-  # def stalemate?
-  #   puts "#{check?}"
-  #   return false if check?
-  #   king = King.find_by(game_id: id, color: current_turn)
-  #   puts "#{king.color}"
-  #   puts "#{current_turn}"
-  #   8.times do |x|
-  #     8.times do |y|
-  #       puts "#{x}, #{y}"
-  #       return false if king.valid_move?(x, y)
-  #     end
-  #   end
-  #   true
-  # end
+  def stalemate?
+    puts "#{check?}"
+    return false if check?
+    king = King.find_by(game_id: id, color: current_turn)
+    puts "#{king.color}"
+    puts "#{current_turn}"
+    8.times do |x|
+      8.times do |y|
+        puts "#{x}, #{y}"
+        return false if king.valid_move?(x, y)
+      end
+    end
+    true
+  end
 
   #game states
   def pending_opponent?
