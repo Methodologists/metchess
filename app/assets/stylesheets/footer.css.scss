@@ -1,0 +1,28 @@
+$footer-height: 80px;
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  color: white;
+  height: $footer-height;
+  background-color: rgba(36,32,33,0.9);
+  font-family: 'Helvetica-Neue', Helvetica;
+  padding: 10px 0px;
+  margin-top: 200px;
+  font-weight: 100;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -$footer-height;
+  /* Pad bottom by footer height */
+  padding: 0 0 $footer-height;
+}
