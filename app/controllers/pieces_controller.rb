@@ -14,7 +14,7 @@ before_action :authenticate_user!, only: [:update]
     if @piece.my_turn? == false || my_piece? == false
       error = "It's not your turn, you barnacle!"
     elsif @piece.is_obstructed?(piece_params[:new_x].to_i, piece_params[:new_y].to_i)
-      error = "Obstructed is being a bugger."
+      error = "Something's in the way."
     elsif !@piece.valid_move?(piece_params[:new_x].to_i, piece_params[:new_y].to_i)
       error = "Sorry, can't move there"
     else
