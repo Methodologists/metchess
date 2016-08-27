@@ -1,5 +1,10 @@
- <% if user_signed_in? %>
-<h1> Welcome <%= current_user.username %> To Our Chess App!</h1>
-<% else %>
-<h1> Welcome To Our Chess App!</h1>
-<% end %>
+<%= image_tag "chessboard.jpg", class: 'img-responsive' %>
+
+<br/>
+
+<div class="col-xs-10 col-xs-offset-1 text-center">
+  <h3>Start a new game, challenge a friend!</h3>
+  <br />
+  <%= link_to "Play Now", new_game_path, class: 'btn btn-warning btn-lg' %>
+</div>
+
