@@ -12,9 +12,15 @@ Metchess is a chess web app that reinforces the rules of chess (check, checkmate
 
 * JavaScript and jQuery for simple drag and drop of pieces throughout your chess match.
 
-* postgreSQL for database and database queries 
+* postgreSQL for database and database queries.
 
-* 
+* Rules of chess are enforced through chess rules logic in the game and pieces models.
+
+* Rspec was used for Test Driven Development to ensure high quality code.
+
+* Players can invite each other to play through email invites.
+
+* Players can view all active games and join if available.
 
 ###### Here's a sneakpeek at the homepage and chess board.
 ![alt_tag]()
