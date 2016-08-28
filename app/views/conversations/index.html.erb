@@ -9,7 +9,7 @@
         <%= mailbox_section 'trash', @box %>
       </ul>
     </div>
-    
+
     <div class="col-sm-9">
     <% if @box == 'trash' %>
       <p><%= link_to 'Empty trash', empty_trash_conversations_path, class: 'btn btn-danger', method: :delete,

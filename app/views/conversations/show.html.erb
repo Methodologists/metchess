@@ -1,34 +1,33 @@
-<% page_header "Conversation" %>
+<div class="booyah-box col-xs-10 col-xs-offset-1">
+  <h1 class="text-center"><%= render 'conversations/participants', conversation: @conversation %></h1>
+  <br />
+  <div class="panel panel-default">
+    <div class="panel-heading"><%= @conversation.subject %></div>
 
-<p>Chatting with
-  <%= render 'conversations/participants', conversation: @conversation %>
-</p>
+    <div class="panel-body">
+      <div class="messages">
+        <% @conversation.receipts_for(current_user).order(:created_at).each do |receipt| %>
+          <div class="media">
+            <% message = receipt.message %>
+            <div class="media-left">
+              <u><%= message.sender.username + ":" %></u>
+            </div>
 
-<div class="panel panel-default">
-  <div class="panel-heading"><%= @conversation.subject %></div>
-
-  <div class="panel-body">
-    <div class="messages">
-      <% @conversation.receipts_for(current_user).order(:created_at).each do |receipt| %>
-        <div class="media">
-          <% message = receipt.message %>
-          <div class="media-left">
-            <%=  message.sender.username %>
+            <div class="media-body">
+              <h6 class="media-heading pull-right"><%= message.created_at.strftime("%-d %B %Y, %H:%M:%S") %></h6>
+              <div class="from-me-two"><%= simple_format(message.body) %></div>
+            </div>
           </div>
-
-          <div class="media-body">
-            <h6 class="media-heading"><%= message.sender.username.titleize %>
-              says at <%= message.created_at.strftime("%-d %B %Y, %H:%M:%S") %></h6>
-            <%= simple_format(message.body) %>
-          </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
+  <%= form_tag reply_conversation_path(@conversation), method: :post do %>
+    <div class="form-group">
+      <%= text_area_tag 'body', nil, cols: 3, rows: 4, class: 'form-control', id:'summernote', required: true, placeholder: 'Reply to conversation' %>
+    </div>
+    <%= submit_tag "Send Message", class: 'btn btn-primary col-xs-12' %>
+  <% end %>
+  <br />
+  <br />
 </div>
-<%= form_tag reply_conversation_path(@conversation), method: :post do %>
-  <div class="form-group">
-    <%= text_area_tag 'body', nil, cols: 3, rows: 4, class: 'form-control', id:'summernote', required: true, placeholder: 'Reply to conversation' %>
-  </div>
-  <%= submit_tag "Send Message", class: 'btn btn-primary' %>
-<% end %>
