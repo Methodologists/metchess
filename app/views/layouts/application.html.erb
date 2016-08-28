@@ -118,6 +118,12 @@
             <%= devise_error_messages! %>
             <br />
             <div class="field">
+              <%= f.label :User_name %><br />
+              <%= f.text_field :username, autofocus: true, class: 'col-xs-12' %>
+            </div>
+            <br />
+            <br />
+            <div class="field">
               <%= f.label :email %><br />
               <%= f.email_field :email, autofocus: true, class: 'col-xs-12' %>
             </div>
