@@ -15,7 +15,11 @@
 
             <div class="media-body">
               <h6 class="media-heading pull-right"><%= message.created_at.strftime("%-d %B %Y, %H:%M:%S") %></h6>
-              <div class="from-me-two"><%= simple_format(message.body) %></div>
+              <% if message.sender.username == current_user.username %>
+                <div class="from-me-two"><%= simple_format(message.body) %></div>
+              <% else %>
+                <div class="from-them-two"><%= simple_format(message.body) %></div>
+              <% end %>
             </div>
           </div>
         <% end %>
