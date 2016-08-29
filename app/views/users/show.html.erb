@@ -1,10 +1,8 @@
-<div class="col-xs-6 col-xs-offset-3">
-  <h3>My Games</h3>
-  <i>logged in as <%= current_user.username%></i>
-  <br />
+<div class="booyah-box col-xs-10 col-xs-offset-1">
+  <h1 class="text-center"><%= "#{current_user.email}'s" %> Games</h3>
   <br />
   
-  <strong>As White Player:</strong>
+  <strong><u>As White Player:</u></strong>
   <br />
   <% @games.each do |game| %>
     <% if game.player_white_id == current_user.id %>
@@ -18,7 +16,7 @@
   <% end %>
 
   <br />
-  <strong>As Black Player:</strong>
+  <strong><u>As Black Player:</u></strong>
   <br />
   <% @games.each do |game| %>
     <% if game.player_black_id == current_user.id %>
@@ -26,4 +24,20 @@
       <br />
     <% end %>
   <% end %>
+
+  <br />
+  <br />
+  <strong><u>Games won:</u></strong>
+  <br />
+  <% @games.each do |game| %>
+
+  <% end %>
+
+  <br />
+  <br />
+  <strong><u>Games played:</u></strong>
+
+  <br />
+  <br />
+  <strong><u>Win Percentage:</u></strong>
 </div>
