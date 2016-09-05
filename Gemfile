@@ -14,6 +14,11 @@ gem 'bootstrap-sass', '~> 3.3.5.1'
 gem 'sprockets', '2.11.0'
 gem 'devise', '>= 3.2.4'
 
+gem 'bootstrap-will_paginate'
+gem 'will_paginate'
+
+gem 'chosen-rails'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
@@ -32,9 +37,13 @@ gem 'jquery-ui-rails'
 
 gem 'simple_form'
 
+gem "mailboxer"
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
+
+gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
