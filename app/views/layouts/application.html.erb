@@ -41,14 +41,19 @@
                   <li>
                     <% if user_signed_in? %>
                       <%= link_to 'Join an existing game', games_path %>
+
                     <% else %>
                       <!-- Button trigger modal -->
                       <li><%= link_to "Please log in to join a game", "#", data: {toggle: 'modal', target: '#myModalForLogIn'} %></li>
                     <% end %>
                   </li>
                 </ul>
+                <li>
+                  <% if user_signed_in? %>
+                    <%= link_to 'Messages', conversations_path %> 
+                  <% end %>
+                </li>
               </li>
-            
             <li><a href="#">mChess Team</a></li>
           </ul>
           
@@ -65,6 +70,7 @@
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
+
 
       <% if notice.present? %>
         <p class="alert alert-info"><%= notice %></p>
@@ -110,6 +116,12 @@
         <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <div class="modal-body">
             <%= devise_error_messages! %>
+            <br />
+            <div class="field">
+              <%= f.label :User_name %><br />
+              <%= f.text_field :username, autofocus: true, class: 'col-xs-12' %>
+            </div>
+            <br />
             <br />
             <div class="field">
               <%= f.label :email %><br />

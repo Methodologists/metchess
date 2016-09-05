@@ -5,7 +5,7 @@
       <% if game.pending_opponent? && game.player_white_id != current_user.id %>
         <u><%= "Game Name:"%></u><%= " #{game.name}" %> 
         <br />
-        <%= "White Player: #{game.white_player.email}" %>
+        <%= "White Player: #{game.white_player.username}" %>
         <%= simple_form_for game do |f| %>
           <%= f.hidden_field :player_black_id, value: current_user.id %>
           <br />
@@ -15,3 +15,4 @@
       <% end %>
     <% end %>
 </div>
+

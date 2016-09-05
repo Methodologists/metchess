@@ -18,6 +18,13 @@ h1, h2, h3, h4, h5, h6, .navbar {
   box-shadow: 0 0 6px 0;
 }
 
+.messages {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  }
+
 .hero {
   background-image:url('chessboard.jpg');
   background-size:cover;
