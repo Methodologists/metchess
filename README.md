@@ -18,8 +18,6 @@ Metchess is a chess web app that reinforces the rules of chess (check, checkmate
 
 * Rspec was used for Test Driven Development to ensure high quality code.
 
-* Players can invite each other to play through email invites.
-
 * Players can view all active games and join if available.
 
 ###### Here's a sneakpeek at the homepage and chess board.

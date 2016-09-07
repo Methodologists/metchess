@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
     @chosen_recipient = User.find_by(id: params[:to].to_i) if params[:to]
   end 
 
-     def create
+  def create
     recipients = User.where(id: params['recipients'])
     recipients.each do |recipient|
       conversation = current_user.send_message(recipient, params[:message][:body], params[:message][:subject]).conversation
