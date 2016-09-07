@@ -24,3 +24,5 @@ Metchess is a chess web app that reinforces the rules of chess (check, checkmate
 
 ###### Here's a sneakpeek at the homepage and chess board.
 ![alt_tag](https://github.com/Methodologists/metchess/blob/master/app/assets/images/Screen%20Shot%202016-08-27%20at%202.51.38%20PM.png)
+
+![alt_tag](https://github.com/Methodologists/metchess/blob/master/app/assets/images/chessboard_screenshot.png)
